@@ -14,15 +14,8 @@ public class QueryHandler {
 		String user = User.getUser();
 		return true;
 	}
-	
-	public static Boolean addUser(String password) {
-		// Checks SQL for user
-		String user = User.getUser();
-		return true;
-	}
 
 	public static void addUser(String username, String password) {
-		// TODO Auto-generated method stub
 		
 	}
 }
