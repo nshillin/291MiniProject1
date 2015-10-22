@@ -4,13 +4,12 @@ import java.io.Console;
 
 public class LoginView {
 	
-	public LoginView() {
-		
-	}
+	public static int LOGIN = 0;
+	public static int REGISTER = 1;
 	
-	public static void main(String[] args) {
-		LoginView loginView = new LoginView();
-		loginView.clearScreen();	
+	public int loginOrRegister() {
+		// Ask user if login or register
+		return LOGIN;
 	}
 	
 	public String getUserName() {

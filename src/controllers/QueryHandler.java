@@ -1,9 +1,23 @@
 package controllers;
 
+import models.User;
+import views.LoginView;
+
 public class QueryHandler {
 
-	public Boolean authenticateUser(String username, String password) {
+	public static void main(String[] args) {
+		// Setup SQL stuff	
+	}
+	
+	public static Boolean authenticateUser(String password) {
 		// Checks SQL for user
+		String user = User.getUser();
+		return true;
+	}
+	
+	public static Boolean addUser(String password) {
+		// Checks SQL for user
+		String user = User.getUser();
 		return true;
 	}
 }
