@@ -4,12 +4,25 @@ import java.io.Console;
 
 public class LoginView {
 	
-	public static int LOGIN = 0;
-	public static int REGISTER = 1;
+	public static int NULL = 0;
+	public static int LOGIN = 1;
+	public static int REGISTER = 2;
 	
 	public int loginOrRegister() {
 		// Ask user if login or register
-		return LOGIN;
+		Integer request = NULL;
+		while (request == NULL) {
+			System.out.print("1:Login, 2:Register\n"
+					+ ": ");
+	        Console co = System.console();
+	        String response = co.readLine();
+	        try {
+	        	request = Integer.parseInt(response);
+	        } catch (Exception e) {
+	        	request = NULL;
+	        }
+		}
+		return request;
 	}
 	
 	public String getUserName() {
@@ -27,22 +40,10 @@ public class LoginView {
 	}
 	
 	public void clearScreen() {
-        try {
-            final String os = System.getProperty("os.name");
-
-            if (os.contains("Windows"))
-            {
-                Runtime.getRuntime().exec("cls");
-            }
-            else
-            {
-                Runtime.getRuntime().exec("clear");
-            }
-        }
-        catch (final Exception e)
-        {
-            //  Handle any exceptions.
-        }
+		final String ANSI_CLS = "\u001b[2J";
+        final String ANSI_HOME = "\u001b[H";
+        System.out.print(ANSI_CLS+ANSI_HOME);
+        System.out.flush();
 	} 
 	
 }

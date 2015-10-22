@@ -12,6 +12,8 @@ public class OurSQLInitializer {
 		
 		// I just filled this with the stuff from CreateToffees.java
 		// Needs cleaning up (a lot)
+		// Should call login at the end and pass queryHandler the
+		// username and password
 		
 		// get username
         System.out.print("Username: ");

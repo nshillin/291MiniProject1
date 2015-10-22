@@ -2,18 +2,22 @@ package controllers;
 
 import models.User;
 import views.LoginView;
+import views.Test;
 
 public class LoginController {
 
 	private static LoginView loginView = new LoginView();
 
-	public static void main(String[] args) {	
+	public static void main(String[] args) {
+		new Test();
+	/*	loginView.clearScreen();
 		if (loginView.loginOrRegister() == loginView.LOGIN) {
 			loginScreen();
 		}
 		else {
 			registerScreen();
 		}
+		*/
 	}
 	
 	private static void loginScreen() {
@@ -25,7 +29,8 @@ public class LoginController {
 	}
 	
 	private static void registerScreen() {
-		
+		loginView.clearScreen();
+
 	}
 
 }
