@@ -38,13 +38,23 @@ public class LoginController {
 		MainView.main(null);
 	}
 	
-	public static void loginEntered(String username, String password) {
+	public static void login(String username, String password) {
 		User.setUser(username);
-		QueryHandler.authenticateUser(password);
+		if (QueryHandler.authenticateUser(password)) {
+			QueryHandler.addUser(username, password);
+		}
+		else {
+			RegisterView.errorMessage("Username already exists.");
+		}
 	}
 	
-	public static void registerEntered(String username, String password) {
-		QueryHandler.addUser(username, password);
+	public static void register(String username, String password) {
+		if (QueryHandler.isUsername()) {
+			QueryHandler.addUser(username, password);
+		}
+		else {
+			RegisterView.errorMessage("Username already exists.");
+		}
 	}
 
 }

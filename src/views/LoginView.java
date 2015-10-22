@@ -12,12 +12,14 @@ import controllers.LoginController;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class LoginView {
 	private Text passwordText;
 	private Text usernameText;
 	public static Shell shell;
 	private Button btnBack;
+	private static Label errLabel;
 
 	/**
 	 * Launch the application.
@@ -70,12 +72,23 @@ public class LoginView {
 		usernameText.setBounds(200, 106, 132, 19);
 		
 		Button btnEnter = new Button(shell, SWT.NONE);
-		btnEnter.setBounds(186, 159, 94, 28);
+		btnEnter.setBounds(185, 176, 94, 28);
 		btnEnter.setText("Enter");
+		btnEnter.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event arg0) {
+				checkLogin();
+			}
+		    });
 		
 		btnBack = new Button(shell, SWT.NONE);
 		btnBack.setText("back");
 		btnBack.setBounds(0, 0, 66, 28);
+		
+		errLabel = new Label(shell, SWT.NONE);
+		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		errLabel.setAlignment(SWT.CENTER);
+		errLabel.setBounds(133, 156, 199, 28);
 		btnBack.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
@@ -84,13 +97,24 @@ public class LoginView {
 		    });
 	}
 	
-	public String getUserName() {
-        String userName = "";
-		return userName;
+	private void checkLogin() {
+		String username = usernameText.getText();
+		String password = passwordText.getText();
+		
+		if (usernameText.getText().isEmpty()) {
+			errorMessage("No username entered.");
+		}
+		else if (passwordText.getText().isEmpty()) {
+			errorMessage("No password entered.");
+		}
+		else {
+			errorMessage("");
+			LoginController.login(username, password);
+		}
+
 	}
 	
-	public String getPassword() {
-        String password = "";
-        return password;
+	public static void errorMessage(String error) {
+		errLabel.setText(error);
 	}
 }

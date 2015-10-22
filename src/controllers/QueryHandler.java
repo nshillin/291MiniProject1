@@ -1,7 +1,6 @@
 package controllers;
 
 import models.User;
-import views.LoginView;
 
 public class QueryHandler {
 
@@ -17,5 +16,10 @@ public class QueryHandler {
 
 	public static void addUser(String username, String password) {
 		
+	}
+	
+	public static Boolean isUsername() {
+		//Checks if username already exists
+		return true;
 	}
 }

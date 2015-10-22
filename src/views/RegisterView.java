@@ -10,15 +10,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import controllers.LoginController;
+import controllers.QueryHandler;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class RegisterView {
 	private Text passwordText;
 	private Text usernameText;
 
 	protected Shell shell;
-	private Text text;
+	private Text cnfrmPasswordText;
 	private Label lblConfirmPassword;
 	private Button btnBack;
+	private static Label errLabel;
 
 	/**
 	 * Launch the application.
@@ -74,9 +77,15 @@ public class RegisterView {
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(186, 177, 94, 28);
 		btnEnter.setText("Enter");
+		btnEnter.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event arg0) {
+				checkLogin();
+			}
+		    });
 		
-		text = new Text(shell, SWT.BORDER | SWT.PASSWORD);
-		text.setBounds(200, 137, 132, 19);
+		cnfrmPasswordText = new Text(shell, SWT.BORDER | SWT.PASSWORD);
+		cnfrmPasswordText.setBounds(200, 137, 132, 19);
 		
 		lblConfirmPassword = new Label(shell, SWT.NONE);
 		lblConfirmPassword.setText("Confirm Password: ");
@@ -85,12 +94,41 @@ public class RegisterView {
 		btnBack = new Button(shell, SWT.NONE);
 		btnBack.setBounds(0, 0, 66, 28);
 		btnBack.setText("back");
+		
+		errLabel = new Label(shell, SWT.NONE);
+		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		errLabel.setAlignment(SWT.CENTER);
+		errLabel.setBounds(133, 162, 199, 28);
 		btnBack.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
 				LoginController.back(shell);
 			}
 		    });
+	}
+	
+	private void checkLogin() {
+		String username = usernameText.getText();
+		String password = passwordText.getText();
+		
+		if (usernameText.getText().isEmpty()) {
+			errorMessage("No username entered.");
+		}
+		else if (passwordText.getText().isEmpty()) {
+			errorMessage("No password entered.");
+		}
+		else if  (!password.equals(cnfrmPasswordText.getText())) {
+			errorMessage("Passwords do not match.");
+		}
+		else {
+			errorMessage("");
+			LoginController.register(username, password);
+		}
+
+	}
+	
+	public static void errorMessage(String error) {
+		errLabel.setText(error);
 	}
 
 }
