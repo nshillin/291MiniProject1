@@ -2,26 +2,18 @@ package controllers;
 
 import models.User;
 import views.LoginView;
-import views.Test;
+import views.MainView;
 
 public class LoginController {
 
-	private static LoginView loginView = new LoginView();
+	private static LoginView loginView = new LoginView(null);
 
 	public static void main(String[] args) {
-		new Test();
-	/*	loginView.clearScreen();
-		if (loginView.loginOrRegister() == loginView.LOGIN) {
-			loginScreen();
-		}
-		else {
-			registerScreen();
-		}
-		*/
+		MainView.main(args);
+		MainView.newShell(loginView);
 	}
 	
 	private static void loginScreen() {
-		loginView.clearScreen();
 		String username = loginView.getUserName();
 		User.setUser(username);
 		String password = loginView.getPassword();
@@ -29,8 +21,9 @@ public class LoginController {
 	}
 	
 	private static void registerScreen() {
-		loginView.clearScreen();
-
+		String username = loginView.getUserName();
+		String password = loginView.getPassword();
+		QueryHandler.addUser(username,password);
 	}
 
 }

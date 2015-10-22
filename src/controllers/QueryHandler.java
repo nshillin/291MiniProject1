@@ -20,4 +20,9 @@ public class QueryHandler {
 		String user = User.getUser();
 		return true;
 	}
+
+	public static void addUser(String username, String password) {
+		// TODO Auto-generated method stub
+		
+	}
 }

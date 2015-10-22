@@ -2,48 +2,63 @@ package views;
 
 import java.io.Console;
 
-public class LoginView {
-	
-	public static int NULL = 0;
-	public static int LOGIN = 1;
-	public static int REGISTER = 2;
-	
-	public int loginOrRegister() {
-		// Ask user if login or register
-		Integer request = NULL;
-		while (request == NULL) {
-			System.out.print("1:Login, 2:Register\n"
-					+ ": ");
-	        Console co = System.console();
-	        String response = co.readLine();
-	        try {
-	        	request = Integer.parseInt(response);
-	        } catch (Exception e) {
-	        	request = NULL;
-	        }
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.Button;
+
+public class LoginView extends Shell {
+
+	/**
+	 * Launch the application.
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		try {
+			Display display = Display.getDefault();
+			LoginView shell = new LoginView(display);
+			shell.open();
+			shell.layout();
+			while (!shell.isDisposed()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return request;
+	}
+
+	/**
+	 * Create the shell.
+	 * @param display
+	 */
+	public LoginView(Display display) {
+		super(display, SWT.SHELL_TRIM);
+		createContents();
+	}
+
+	/**
+	 * Create contents of the shell.
+	 */
+	protected void createContents() {
+		setText("Login");
+		setSize(450, 300);
+	}
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
 	}
 	
 	public String getUserName() {
-		System.out.print("Username: ");
-        Console co = System.console();
-        String userName = co.readLine();
+        String userName = "";
 		return userName;
 	}
 	
 	public String getPassword() {
-        Console co = System.console();
-		char[] passwordArray = co.readPassword("Password: ");
-        String password = new String(passwordArray);
+        String password = "";
         return password;
 	}
-	
-	public void clearScreen() {
-		final String ANSI_CLS = "\u001b[2J";
-        final String ANSI_HOME = "\u001b[H";
-        System.out.print(ANSI_CLS+ANSI_HOME);
-        System.out.flush();
-	} 
-	
 }
