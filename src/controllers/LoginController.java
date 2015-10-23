@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import models.User;
 import views.BookingView;
+import views.FlightResultsView;
 import views.LoginView;
 import views.MainView;
 import views.MenuView;
@@ -79,5 +80,10 @@ public class LoginController {
 		else {
 			RegisterView.errorMessage("Username already exists.");
 		}
+	}
+
+	public static void flightResultsView(Shell shell) {
+		closeShell(shell);
+		FlightResultsView.main(null);
 	}
 }

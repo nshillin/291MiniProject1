@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 
@@ -28,17 +29,6 @@ public class SearchForFlightsView {
 		try {
 			SearchForFlightsView window = new SearchForFlightsView();
 			window.open();
-			btnSearchForFlights.addSelectionListener(new SelectionListener(){
-				 public void widgetSelected(SelectionEvent event) 
-				 {
-				 
-				 }
-				 
-				 public void widgetDefaultSelected(SelectionEvent event) 
-				 {
-				        
-				 }
-			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -92,8 +82,13 @@ public class SearchForFlightsView {
 		arrivingCity.setBounds(149, 175, 164, 31);
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
+		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				LoginController.flightResultsView(shell);
+			}
+		});
 		btnSearchForFlights.setBounds(149, 215, 129, 28);
 		btnSearchForFlights.setText("Search For Flights");
-
 	}
 }
