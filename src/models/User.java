@@ -1,15 +1,15 @@
 package models;
 
 public class User {
-	private static String userName;
-	private static Boolean airlineAgent = true;
+	private static String username;
+	private static Boolean airlineAgent = false;
 	
-	public static void setUser(String userName) {
-		User.userName = userName;
+	public static void setUser(String username) {
+		User.username = username;
 	}
 	
 	public static String getUser() {
-		return userName;
+		return username;
 	}
 	
 	public static void setAirlineAgent(Boolean airlineAgent) {

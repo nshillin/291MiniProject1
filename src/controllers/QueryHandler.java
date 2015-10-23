@@ -1,7 +1,6 @@
 package controllers;
 
 import models.User;
-import views.LoginView;
 
 public class QueryHandler {
 
@@ -9,20 +8,21 @@ public class QueryHandler {
 		// Setup SQL stuff	
 	}
 	
-	public static Boolean authenticateUser(String password) {
+	public static Boolean authenticateUser(String username, String password) {
 		// Checks SQL for user
-		String user = User.getUser();
-		return true;
-	}
-	
-	public static Boolean addUser(String password) {
-		// Checks SQL for user
-		String user = User.getUser();
 		return true;
 	}
 
 	public static void addUser(String username, String password) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	public static Boolean isUsername() {
+		//Checks if username already exists
+		return true;
+	}
+	
+	public static Boolean isAirlineAgent(String username) {
+		return false;
 	}
 }

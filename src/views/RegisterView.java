@@ -1,23 +1,25 @@
 package views;
 
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 
 import controllers.LoginController;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
+import controllers.QueryHandler;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class LoginView {
+public class RegisterView {
 	private Text passwordText;
 	private Text usernameText;
-	public static Shell shell;
+
+	protected Shell shell;
+	private Text cnfrmPasswordText;
+	private Label lblConfirmPassword;
 	private Button btnBack;
 	private static Label errLabel;
 
@@ -25,16 +27,18 @@ public class LoginView {
 	 * Launch the application.
 	 * @param args
 	 */
-	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		try {
-			LoginView window = new LoginView();
+			RegisterView window = new RegisterView();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Open the window.
+	 */
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -48,31 +52,30 @@ public class LoginView {
 	}
 
 	/**
-	 * Create the shell.
-	 * @param display
+	 * Create contents of the window.
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setText("Login");
 		shell.setSize(LoginController.size);
+		shell.setText("Register");
 		shell.setLocation(LoginController.position);
 		
 		passwordText = new Text(shell, SWT.PASSWORD | SWT.BORDER);
-		passwordText.setBounds(200, 131, 132, 19);
+		passwordText.setBounds(200, 112, 132, 19);
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(88, 109, 106, 14);
+		lblNewLabel.setBounds(88, 95, 106, 14);
 		lblNewLabel.setText("Username (email):");
 		
 		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
-		lblNewLabel_1.setBounds(133, 134, 61, 14);
+		lblNewLabel_1.setBounds(133, 115, 61, 14);
 		lblNewLabel_1.setText("Password: ");
 		
 		usernameText = new Text(shell, SWT.BORDER);
-		usernameText.setBounds(200, 106, 132, 19);
+		usernameText.setBounds(200, 87, 132, 19);
 		
 		Button btnEnter = new Button(shell, SWT.NONE);
-		btnEnter.setBounds(185, 176, 94, 28);
+		btnEnter.setBounds(186, 177, 94, 28);
 		btnEnter.setText("Enter");
 		btnEnter.addListener(SWT.Selection, new Listener() {
 			@Override
@@ -81,14 +84,21 @@ public class LoginView {
 			}
 		    });
 		
+		cnfrmPasswordText = new Text(shell, SWT.BORDER | SWT.PASSWORD);
+		cnfrmPasswordText.setBounds(200, 137, 132, 19);
+		
+		lblConfirmPassword = new Label(shell, SWT.NONE);
+		lblConfirmPassword.setText("Confirm Password: ");
+		lblConfirmPassword.setBounds(88, 140, 106, 14);
+		
 		btnBack = new Button(shell, SWT.NONE);
-		btnBack.setText("back");
 		btnBack.setBounds(0, 0, 66, 28);
+		btnBack.setText("back");
 		
 		errLabel = new Label(shell, SWT.NONE);
 		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errLabel.setAlignment(SWT.CENTER);
-		errLabel.setBounds(133, 156, 199, 28);
+		errLabel.setBounds(133, 162, 199, 28);
 		btnBack.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
@@ -107,9 +117,12 @@ public class LoginView {
 		else if (passwordText.getText().isEmpty()) {
 			errorMessage("No password entered.");
 		}
+		else if  (!password.equals(cnfrmPasswordText.getText())) {
+			errorMessage("Passwords do not match.");
+		}
 		else {
 			errorMessage("");
-			LoginController.login(username, password, shell);
+			LoginController.register(username, password, shell);
 		}
 
 	}
@@ -117,4 +130,5 @@ public class LoginView {
 	public static void errorMessage(String error) {
 		errLabel.setText(error);
 	}
+
 }
