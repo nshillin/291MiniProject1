@@ -7,12 +7,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 
 public class SearchForFlightsView {
 
 	protected Shell shell;
-	private Text text;
-	private Text text_1;
+	private Text departingCity;
+	private Text arrivingCity;
+	private static Button btnSearchForFlights;
 
 	/**
 	 * Launch the application.
@@ -22,6 +25,17 @@ public class SearchForFlightsView {
 		try {
 			SearchForFlightsView window = new SearchForFlightsView();
 			window.open();
+			btnSearchForFlights.addSelectionListener(new SelectionListener(){
+				 public void widgetSelected(SelectionEvent event) 
+				 {
+				 
+				 }
+				 
+				 public void widgetDefaultSelected(SelectionEvent event) 
+				 {
+				        
+				 }
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,6 +55,8 @@ public class SearchForFlightsView {
 			}
 		}
 	}
+	
+	
 
 	/**
 	 * Create contents of the window.
@@ -50,8 +66,8 @@ public class SearchForFlightsView {
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
 		
-		text = new Text(shell, SWT.BORDER);
-		text.setBounds(149, 65, 164, 31);
+		departingCity = new Text(shell, SWT.BORDER);
+		departingCity.setBounds(149, 65, 164, 31);
 		
 		Label lblFlight = new Label(shell, SWT.NONE);
 		lblFlight.setBounds(149, 45, 60, 14);
@@ -68,10 +84,10 @@ public class SearchForFlightsView {
 		lblLeavingBy.setBounds(149, 155, 86, 14);
 		lblLeavingBy.setText("Leaving From:");
 		
-		text_1 = new Text(shell, SWT.BORDER);
-		text_1.setBounds(149, 175, 164, 31);
+		arrivingCity = new Text(shell, SWT.BORDER);
+		arrivingCity.setBounds(149, 175, 164, 31);
 		
-		Button btnSearchForFlights = new Button(shell, SWT.NONE);
+		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.setBounds(149, 215, 129, 28);
 		btnSearchForFlights.setText("Search For Flights");
 
