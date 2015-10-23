@@ -102,7 +102,7 @@ public class RegisterView {
 		btnBack.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
-				LoginController.back(shell);
+				LoginController.logout(shell);
 			}
 		    });
 	}
@@ -122,7 +122,7 @@ public class RegisterView {
 		}
 		else {
 			errorMessage("");
-			LoginController.register(username, password);
+			LoginController.register(username, password, shell);
 		}
 
 	}

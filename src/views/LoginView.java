@@ -92,7 +92,7 @@ public class LoginView {
 		btnBack.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
-				LoginController.back(shell);
+				LoginController.logout(shell);
 			}
 		    });
 	}
@@ -109,7 +109,7 @@ public class LoginView {
 		}
 		else {
 			errorMessage("");
-			LoginController.login(username, password);
+			LoginController.login(username, password, shell);
 		}
 
 	}

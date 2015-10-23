@@ -8,9 +8,8 @@ public class QueryHandler {
 		// Setup SQL stuff	
 	}
 	
-	public static Boolean authenticateUser(String password) {
+	public static Boolean authenticateUser(String username, String password) {
 		// Checks SQL for user
-		String user = User.getUser();
 		return true;
 	}
 
@@ -21,5 +20,9 @@ public class QueryHandler {
 	public static Boolean isUsername() {
 		//Checks if username already exists
 		return true;
+	}
+	
+	public static Boolean isAirlineAgent(String username) {
+		return false;
 	}
 }

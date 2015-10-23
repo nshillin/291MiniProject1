@@ -2,7 +2,7 @@ package models;
 
 public class User {
 	private static String username;
-	private static Boolean airlineAgent = true;
+	private static Boolean airlineAgent = false;
 	
 	public static void setUser(String username) {
 		User.username = username;
