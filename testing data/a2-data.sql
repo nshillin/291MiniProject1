@@ -145,11 +145,11 @@ insert into users values ('man@ggg.com','Man',to_date('15:50', 'hh24:mi'));
 insert into users values ('dude@ggg.com','Dude',to_date('15:50', 'hh24:mi'));
 insert into users values ('person@ggg.com','Person',to_date('15:50', 'hh24:mi'));
 
-insert into airline_agents('davood@ggg.com','Davood Rafiei’);
-insert into airline_agents('gandalf@wizard.com','Gandalf Grey');
-insert into airline_agents('thorin@ggg.com','Thorin Oakenshield');
-insert into airline_agents('man@ggg.com','Man Smith');
-insert into airline_agents('person@ggg.com','Person Smith');
+insert into airline_agents values (‘davood@ggg.com','Davood Rafiei’);
+insert into airline_agents values ('gandalf@wizard.com','Gandalf Grey');
+insert into airline_agents values ('thorin@ggg.com','Thorin Oakenshield');
+insert into airline_agents values ('man@ggg.com','Man Smith');
+insert into airline_agents values ('person@ggg.com','Person Smith');
 
 insert into tickets values (111, 'Davood Rafiei', 'davood@ggg.com',700);
 insert into tickets values (001, 'Davood Rafiei', 'davood@ggg.com',200);
