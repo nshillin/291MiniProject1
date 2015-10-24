@@ -53,23 +53,23 @@ public class LoginView {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setText("Login");
+		shell.setText(LoginController.currentView);
 		shell.setSize(LoginController.size);
 		shell.setLocation(LoginController.position);
+		
+		usernameText = new Text(shell, SWT.BORDER);
+		usernameText.setBounds(200, 106, 132, 19);
 		
 		passwordText = new Text(shell, SWT.PASSWORD | SWT.BORDER);
 		passwordText.setBounds(200, 131, 132, 19);
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(88, 109, 106, 14);
-		lblNewLabel.setText("Username (email):");
+		lblNewLabel.setBounds(127, 114, 67, 14);
+		lblNewLabel.setText("Username:");
 		
 		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
 		lblNewLabel_1.setBounds(133, 134, 61, 14);
 		lblNewLabel_1.setText("Password: ");
-		
-		usernameText = new Text(shell, SWT.BORDER);
-		usernameText.setBounds(200, 106, 132, 19);
 		
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(185, 176, 94, 28);
@@ -80,21 +80,23 @@ public class LoginView {
 				checkLogin();
 			}
 		    });
-		
-		btnBack = new Button(shell, SWT.NONE);
-		btnBack.setText("back");
-		btnBack.setBounds(0, 0, 66, 28);
+		if (shell.getText().equals("Login")) {
+			btnBack = new Button(shell, SWT.NONE);
+			btnBack.setText("back");
+			btnBack.setBounds(0, 0, 66, 28);
+			btnBack.addListener(SWT.Selection, new Listener() {
+				@Override
+				public void handleEvent(Event arg0) {
+					LoginController.logout(shell);
+				}
+			    });
+		}
 		
 		errLabel = new Label(shell, SWT.NONE);
 		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errLabel.setAlignment(SWT.CENTER);
-		errLabel.setBounds(133, 156, 199, 28);
-		btnBack.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				LoginController.logout(shell);
-			}
-		    });
+		errLabel.setBounds(54, 156, 364, 28);
+		
 	}
 	
 	private void checkLogin() {
@@ -109,7 +111,12 @@ public class LoginView {
 		}
 		else {
 			errorMessage("");
-			LoginController.login(username, password, shell);
+			if (shell.getText().equals("Login")) {
+				LoginController.login(username, password, shell);
+			}
+			else {
+				LoginController.sqlLogin(username, password, shell);
+			}
 		}
 
 	}

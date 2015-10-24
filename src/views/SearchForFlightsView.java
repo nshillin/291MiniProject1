@@ -1,6 +1,7 @@
 package views;
 
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -120,6 +122,16 @@ public class SearchForFlightsView {
 		errorMessage.setAlignment(SWT.CENTER);
 		errorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errorMessage.setBounds(86, 204, 277, 14);
+		
+		Button backButton = new Button(shell, SWT.NONE);
+		backButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				LoginController.menuView(shell);
+			}
+		});
+		backButton.setText("back");
+		backButton.setBounds(0, 0, 66, 28);
 	}
 	
 	private Boolean SearchCriteriaIsValid()

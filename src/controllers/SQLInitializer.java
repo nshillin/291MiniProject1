@@ -3,34 +3,30 @@ package controllers;
 import java.io.*;
 import java.sql.*;
 
-public class OurSQLInitializer {
+public class SQLInitializer {
 /*
  * This class will not be submitted,
  * but is used to allow us to login separately for sqlplus.
  */
+	// The URL we are connecting to
+    private static String m_url = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+
+    // The driver to use for connection
+    private static String m_driverName = "oracle.jdbc.driver.OracleDriver";
+    
+    private static String username;
+    private static String password;
+    
+    private static Class drvClass;
+    
+    private static Connection m_con;
+    
+    public static String SUCCESS_MESSAGE = "Success";
+	
 	public static void main(String[] args) {
-		
-		// I just filled this with the stuff from CreateToffees.java
-		// Needs cleaning up (a lot)
-		// Should call login at the end and pass queryHandler the
-		// username and password
-		
-		// get username
-        System.out.print("Username: ");
-        Console co = System.console();
-        String m_userName = co.readLine();
+        
 
-        // obtain password
-        char[] passwordArray = co.readPassword("Password: ");
-        String m_password = new String(passwordArray);
-
-        // The URL we are connecting to
-        String m_url = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-
-        // The driver to use for connection
-        String m_driverName = "oracle.jdbc.driver.OracleDriver";
-
-        Connection m_con;
+        /*
         String createString;
         
      // SQL statement to execute
@@ -43,7 +39,10 @@ public class OurSQLInitializer {
 
         // create a statement object
        // Statement stmt;
-
+     
+     
+        */
+/*
        try
        {
               Class drvClass = Class.forName(m_driverName);
@@ -120,7 +119,40 @@ public class OurSQLInitializer {
     	   	ex.getMessage());
 
        }
+       */
                   
 	}
+	
+	public static String login(String newusername, String newpassword) {
+		username = newusername;
+		password = newpassword;
+		
+		try {
+			drvClass = Class.forName(m_driverName);     
+	    } 
+		catch(Exception e) {
+			return "ClassNotFoundException: " + e.getMessage();
+		} 
+		try {
+			m_con = DriverManager.getConnection(m_url, username, password);
+		} catch(Exception e) {
+			return "SQLException: " + e.getMessage();
+		}
+		return SUCCESS_MESSAGE;
+	}
+	
+	
+	public static ResultSet executeQuery(String query) {
+		try {
+			Statement stmt = m_con.createStatement(
+	                ResultSet.TYPE_SCROLL_SENSITIVE,
+	                ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = stmt.executeQuery(query);
+			return rs;
+		}
+		catch (Exception e) {
 
+		}
+		return null;
+	}
 }

@@ -1,5 +1,7 @@
 package controllers;
 
+import java.awt.List;
+
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
@@ -17,9 +19,12 @@ public class LoginController {
 
 	public static Point position = new Point(0, 0);
 	public static Point size = new Point(450, 300);
+	public static String currentView = "";
 	
 	public static void main(String[] args) {
-		MainView.main(args);
+		currentView = "SQLPlus Login";
+		LoginView.main(args);
+		//MainView.main(args);
 	}
 	
 	public static void logout(Shell shell) {
@@ -30,6 +35,7 @@ public class LoginController {
 	}
 	
 	public static void loginView(Shell shell) {
+		currentView = "Login";
 		closeShell(shell);
 		LoginView.main(null);
 	}
@@ -60,6 +66,19 @@ public class LoginController {
 		shell.close();
 	}
 	
+	public static void sqlLogin(String username, String password, Shell shell) {
+		String error = SQLInitializer.login(username, password);
+		if (error.equals(SQLInitializer.SUCCESS_MESSAGE)) {
+			logout(shell);
+		}
+		else {
+			LoginView.errorMessage(error);
+		}
+		if (username.equals("test")) {
+			logout(shell);
+		}
+	}
+	
 	public static void login(String username, String password, Shell shell) {
 		if (QueryHandler.authenticateUser(username,password)) {
 			User.setUser(username);
@@ -67,7 +86,7 @@ public class LoginController {
 			menuView(shell);
 		}
 		else {
-			RegisterView.errorMessage("Username already exists.");
+			LoginView.errorMessage("Username already exists.");
 		}
 	}
 	
