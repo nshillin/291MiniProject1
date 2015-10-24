@@ -154,7 +154,7 @@ public class SQLInitializer {
 			return rs;
 		}
 		catch (Exception e) {
-			return null;
+
 		}
 		return null;
 	}
