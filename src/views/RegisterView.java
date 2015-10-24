@@ -60,6 +60,10 @@ public class RegisterView {
 		shell.setText("Register");
 		shell.setLocation(LoginController.position);
 		
+		
+		usernameText = new Text(shell, SWT.BORDER);
+		usernameText.setBounds(200, 87, 132, 19);
+		
 		passwordText = new Text(shell, SWT.PASSWORD | SWT.BORDER);
 		passwordText.setBounds(200, 112, 132, 19);
 		
@@ -70,9 +74,6 @@ public class RegisterView {
 		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
 		lblNewLabel_1.setBounds(133, 115, 61, 14);
 		lblNewLabel_1.setText("Password: ");
-		
-		usernameText = new Text(shell, SWT.BORDER);
-		usernameText.setBounds(200, 87, 132, 19);
 		
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(186, 177, 94, 28);
@@ -94,17 +95,17 @@ public class RegisterView {
 		btnBack = new Button(shell, SWT.NONE);
 		btnBack.setBounds(0, 0, 66, 28);
 		btnBack.setText("back");
-		
-		errLabel = new Label(shell, SWT.NONE);
-		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		errLabel.setAlignment(SWT.CENTER);
-		errLabel.setBounds(133, 162, 199, 28);
 		btnBack.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
 				LoginController.logout(shell);
 			}
 		    });
+		
+		errLabel = new Label(shell, SWT.NONE);
+		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		errLabel.setAlignment(SWT.CENTER);
+		errLabel.setBounds(133, 162, 199, 28);
 	}
 	
 	private void checkLogin() {

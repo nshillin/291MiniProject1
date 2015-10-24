@@ -57,6 +57,9 @@ public class LoginView {
 		shell.setSize(LoginController.size);
 		shell.setLocation(LoginController.position);
 		
+		usernameText = new Text(shell, SWT.BORDER);
+		usernameText.setBounds(200, 106, 132, 19);
+		
 		passwordText = new Text(shell, SWT.PASSWORD | SWT.BORDER);
 		passwordText.setBounds(200, 131, 132, 19);
 		
@@ -67,9 +70,6 @@ public class LoginView {
 		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
 		lblNewLabel_1.setBounds(133, 134, 61, 14);
 		lblNewLabel_1.setText("Password: ");
-		
-		usernameText = new Text(shell, SWT.BORDER);
-		usernameText.setBounds(200, 106, 132, 19);
 		
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(185, 176, 94, 28);

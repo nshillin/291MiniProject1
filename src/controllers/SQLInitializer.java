@@ -20,6 +20,8 @@ public class SQLInitializer {
     private static Class drvClass;
     
     private static Connection m_con;
+    
+    public static String SUCCESS_MESSAGE = "Success";
 	
 	public static void main(String[] args) {
         
@@ -136,7 +138,6 @@ public class SQLInitializer {
 		} catch(Exception e) {
 			return "SQLException: " + e.getMessage();
 		}
-		return "Success";
+		return SUCCESS_MESSAGE;
 	}
-
 }

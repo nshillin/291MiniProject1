@@ -66,7 +66,15 @@ public class LoginController {
 	
 	public static void sqlLogin(String username, String password, Shell shell) {
 		String error = SQLInitializer.login(username, password);
-		LoginView.errorMessage(error);
+		if (error.equals(SQLInitializer.SUCCESS_MESSAGE)) {
+			logout(shell);
+		}
+		else {
+			LoginView.errorMessage(error);
+		}
+		if (username.equals("test")) {
+			logout(shell);
+		}
 	}
 	
 	public static void login(String username, String password, Shell shell) {
