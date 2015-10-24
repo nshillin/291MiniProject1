@@ -105,7 +105,7 @@ public class RegisterView {
 		errLabel = new Label(shell, SWT.NONE);
 		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errLabel.setAlignment(SWT.CENTER);
-		errLabel.setBounds(133, 162, 199, 28);
+		errLabel.setBounds(88, 162, 284, 28);
 	}
 	
 	private void checkLogin() {
@@ -117,6 +117,9 @@ public class RegisterView {
 		}
 		else if (passwordText.getText().isEmpty()) {
 			errorMessage("No password entered.");
+		}
+		else if (passwordText.getText().length() > 4) {
+			errorMessage("Password too long. Must be 4 characters or less.");
 		}
 		else if  (!password.equals(cnfrmPasswordText.getText())) {
 			errorMessage("Passwords do not match.");

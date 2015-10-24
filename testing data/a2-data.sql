@@ -130,26 +130,22 @@ insert into passengers values ('man@ggg.com','Man Smith','Canada');
 insert into passengers values ('dude@ggg.com','Dude Smith','Canada');
 insert into passengers values ('person@ggg.com','Person Smith','Japan');
 
-insert into users values ('davood@ggg.com','Davood',to_date('15:50', 'hh24:mi'));
-insert into users values ('david@ggg.com','David',to_date('15:50', 'hh24:mi'));
-insert into users values ('gandalf@wizard.com','Gandalf',to_date('15:50', 'hh24:mi'));
-insert into users values ('ralph@ggg.com','Ralph’,to_date('15:50', 'hh24:mi'));
-insert into users values ('uematsu@ff.com','Nobuo’,to_date('15:50', 'hh24:mi'));
+insert into users values ('davood@ggg.com','Davo',to_date('15:50', 'hh24:mi'));
+insert into users values ('david@ggg.com','Davi',to_date('15:50', 'hh24:mi'));
+insert into users values ('gandalf@wizard.com','Gand',to_date('15:50', 'hh24:mi'));
+insert into users values ('uematsu@ff.com','Nobu',to_date('15:50', 'hh24:mi'));
 insert into users values ('bill@ggg.com','Bill',to_date('15:50', 'hh24:mi'));
-insert into users values ('jack@ggg.com','Jack’,to_date('15:50', 'hh24:mi'));
 insert into users values ('greg@ggg.com','Greg',to_date('15:50', 'hh24:mi'));
-insert into users values ('thorin@ggg.com','Thorin’,to_date('15:50', 'hh24:mi'));
-insert into users values ('elrond@ggg.com','Elrond',to_date('15:50', 'hh24:mi'));
+insert into users values ('thorin@ggg.com','Thor',to_date('15:50', 'hh24:mi'));
 insert into users values ('john@ggg.com','John',to_date('15:50', 'hh24:mi'));
 insert into users values ('man@ggg.com','Man',to_date('15:50', 'hh24:mi'));
 insert into users values ('dude@ggg.com','Dude',to_date('15:50', 'hh24:mi'));
-insert into users values ('person@ggg.com','Person',to_date('15:50', 'hh24:mi'));
+insert into users values ('person@ggg.com','Pers',to_date('15:50', 'hh24:mi'));
 
-insert into airline_agents values (‘davood@ggg.com','Davood Rafiei’);
 insert into airline_agents values ('gandalf@wizard.com','Gandalf Grey');
-insert into airline_agents values ('thorin@ggg.com','Thorin Oakenshield');
 insert into airline_agents values ('man@ggg.com','Man Smith');
 insert into airline_agents values ('person@ggg.com','Person Smith');
+insert into airline_agents values ('thorin@ggg.com','Thorin Oakenshield');
 
 insert into tickets values (111, 'Davood Rafiei', 'davood@ggg.com',700);
 insert into tickets values (001, 'Davood Rafiei', 'davood@ggg.com',200);
