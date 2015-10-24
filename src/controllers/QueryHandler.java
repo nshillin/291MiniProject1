@@ -1,7 +1,5 @@
 package controllers;
 
-import models.User;
-
 public class QueryHandler {
 
 	public static void main(String[] args) {
