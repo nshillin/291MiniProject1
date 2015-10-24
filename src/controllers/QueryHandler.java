@@ -11,7 +11,24 @@ public class QueryHandler {
 	
 	public static Boolean authenticateUser(String username, String password) {
 		// Checks SQL for user
-		return true;
+		String query = "select pass from users where email = " + username;
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		if (rs == null) {
+			return false;
+		}
+		try {
+			while (rs.next())
+			{
+				 if (rs.getString("pass").equals(password)) {
+					 return true;
+				 }
+				
+			}
+		}
+		catch (Exception e) {
+			
+		}
+		return false;
 	}
 
 	public static void addUser(String username, String password) {
