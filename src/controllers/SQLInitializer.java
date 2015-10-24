@@ -140,4 +140,22 @@ public class SQLInitializer {
 		}
 		return SUCCESS_MESSAGE;
 	}
+	
+	public static void setupTables() {
+		
+	}
+	
+	public static ResultSet executeQuery(String query) {
+		try {
+			Statement stmt = m_con.createStatement(
+	                ResultSet.TYPE_SCROLL_SENSITIVE,
+	                ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = stmt.executeQuery(query);
+			return rs;
+		}
+		catch (Exception e) {
+			return null;
+		}
+		return null;
+	}
 }

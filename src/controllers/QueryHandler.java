@@ -1,5 +1,8 @@
 package controllers;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class QueryHandler {
 
 	public static void main(String[] args) {
@@ -23,4 +26,22 @@ public class QueryHandler {
 	public static Boolean isAirlineAgent(String username) {
 		return false;
 	}
+	
+	public static void exampleQuery() {
+		ResultSet rs = SQLInitializer.executeQuery("Example");
+		try {
+			while (rs.next())
+			{
+				String s = rs.getString("T_NAME");
+				int supid = rs.getInt("SUP_ID");
+				float n = rs.getFloat("PRICE");
+				int sales = rs.getInt("SALES");
+				int total = rs.getInt("TOTAL");
+				System.out.println(s + "," + supid+"," +sales+"," +n+"," +total);
+			}
+		}
+		catch (Exception e) {
+			
+		}
+ 	}
 }
