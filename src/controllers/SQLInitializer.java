@@ -141,9 +141,6 @@ public class SQLInitializer {
 		return SUCCESS_MESSAGE;
 	}
 	
-	public static void setupTables() {
-		
-	}
 	
 	public static ResultSet executeQuery(String query) {
 		try {

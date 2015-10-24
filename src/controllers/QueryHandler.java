@@ -28,7 +28,8 @@ public class QueryHandler {
 	}
 	
 	public static void exampleQuery() {
-		ResultSet rs = SQLInitializer.executeQuery("Example");
+		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
+		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			while (rs.next())
 			{
