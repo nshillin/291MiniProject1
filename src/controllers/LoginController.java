@@ -3,6 +3,7 @@ package controllers;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
+import models.FlightSearch;
 import models.User;
 import views.BookingView;
 import views.FlightResultsView;

@@ -5,6 +5,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import controllers.LoginController;
+import models.FlightSearch;
+
+import java.util.Date;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -13,13 +16,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class SearchForFlightsView {
 
 	protected Shell shell;
 	private Text departingCity;
 	private Text arrivingCity;
-	private static Button btnSearchForFlights;
+	private Button btnSearchForFlights;
+	private Button btnRoundTrip;
+	private DateTime dateTime;
+	private Label errorMessage;
 
 	/**
 	 * Launch the application.
@@ -61,34 +68,88 @@ public class SearchForFlightsView {
 		shell.setText("Search for Flights");
 		
 		departingCity = new Text(shell, SWT.BORDER);
-		departingCity.setBounds(149, 65, 164, 31);
+		departingCity.setBounds(149, 37, 164, 31);
 		
 		Label lblFlight = new Label(shell, SWT.NONE);
-		lblFlight.setBounds(149, 45, 60, 14);
+		lblFlight.setBounds(149, 17, 60, 14);
 		lblFlight.setText("Going To:");
 		
-		DateTime dateTime = new DateTime(shell, SWT.BORDER);
-		dateTime.setBounds(149, 122, 86, 27);
+		dateTime = new DateTime(shell, SWT.BORDER);
+		dateTime.setBounds(149, 94, 164, 31);
 		
 		Label lblDepartingBy = new Label(shell, SWT.NONE);
-		lblDepartingBy.setBounds(149, 102, 86, 14);
+		lblDepartingBy.setBounds(149, 74, 86, 14);
 		lblDepartingBy.setText("Departing By:");
 		
 		Label lblLeavingBy = new Label(shell, SWT.NONE);
-		lblLeavingBy.setBounds(149, 155, 86, 14);
+		lblLeavingBy.setBounds(149, 131, 86, 14);
 		lblLeavingBy.setText("Leaving From:");
 		
 		arrivingCity = new Text(shell, SWT.BORDER);
-		arrivingCity.setBounds(149, 175, 164, 31);
+		arrivingCity.setBounds(149, 151, 164, 31);
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				LoginController.flightResultsView(shell);
+				if(SearchCriteriaIsValid()){
+					createFlightSearchCriteria();
+					LoginController.flightResultsView(shell);
+				}
 			}
 		});
-		btnSearchForFlights.setBounds(149, 215, 129, 28);
+		btnSearchForFlights.setBounds(149, 224, 164, 31);
 		btnSearchForFlights.setText("Search For Flights");
+		
+		Button btnMainMenu = new Button(shell, SWT.NONE);
+		btnMainMenu.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				LoginController.menuView(shell);
+			}
+		});
+		btnMainMenu.setBounds(10, 10, 95, 28);
+		btnMainMenu.setText("Main Menu");
+		
+		btnRoundTrip = new Button(shell, SWT.CHECK);
+		btnRoundTrip.setBounds(149, 188, 95, 18);
+		btnRoundTrip.setText("Round Trip");
+		
+		errorMessage = new Label(shell, SWT.NONE);
+		errorMessage.setAlignment(SWT.CENTER);
+		errorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		errorMessage.setBounds(86, 204, 277, 14);
+	}
+	
+	private Boolean SearchCriteriaIsValid()
+	{
+		Boolean valid = true;
+		if((departingCity.getText().isEmpty()) && (arrivingCity.getText().isEmpty())){
+			valid = false;
+			errorMessage.setText(String.format("Please enter a source and destination city."));
+		}
+		else if(departingCity.getText().isEmpty()){
+			valid = false;
+			errorMessage.setText(String.format("Please enter a departure city."));
+		} else if (arrivingCity.getText().isEmpty()){
+			valid = false;
+			errorMessage.setText(String.format("Please enter a destination."));
+		} else {
+			errorMessage.setText(String.format(""));
+		}
+		return valid;
+	}
+
+	private void createFlightSearchCriteria() {
+		String depCity = departingCity.getSelectionText();
+		String arrCity = arrivingCity.getSelectionText();
+		int depDay = dateTime.getDay();
+		int depMonth = dateTime.getMonth();
+		int depYear = dateTime.getYear();
+		Boolean roundTrip = btnRoundTrip.getEnabled();
+		Date depDate = new Date(depYear, depMonth, depDay);
+		FlightSearch currentSearch = FlightSearch.getInstance();
+		currentSearch.createFlightSearch(depDate, depCity, arrCity, roundTrip);
 	}
 }

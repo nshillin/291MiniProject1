@@ -7,6 +7,10 @@ import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+
+import controllers.LoginController;
+import models.FlightSearch;
+
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.widgets.Label;
@@ -14,12 +18,16 @@ import org.eclipse.swt.widgets.Button;
 
 import java.io.Console;
 import java.sql.*;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class FlightResultsView {
 
 	protected Shell shell;
 	private static Table table;
 	private static String url = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
+	private static FlightSearch currentFlightSearch;
+	private Button sortByConnections;
 	
 
 	/**
@@ -29,6 +37,7 @@ public class FlightResultsView {
 	public static void main(String[] args) {
 		try {
 			FlightResultsView window = new FlightResultsView();
+			currentFlightSearch = FlightSearch.getInstance();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,18 +102,33 @@ public class FlightResultsView {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
+		shell.setSize(LoginController.size);
+		shell.setLocation(LoginController.position);
 		
 		CheckboxTableViewer flightResults = CheckboxTableViewer.newCheckList(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = flightResults.getTable();
-		table.setBounds(111, 43, 250, 158);
+		table.setBounds(10, 43, 430, 158);
 		
 		Label lblFlightsFound = new Label(shell, SWT.NONE);
-		lblFlightsFound.setBounds(111, 23, 92, 14);
+		lblFlightsFound.setBounds(10, 23, 92, 14);
 		lblFlightsFound.setText("Flights Found:");
 		
 		Button btnBookFlight = new Button(shell, SWT.NONE);
-		btnBookFlight.setBounds(111, 211, 95, 28);
+		btnBookFlight.setBounds(20, 207, 140, 28);
 		btnBookFlight.setText("Book Flight");
+		
+		sortByConnections = new Button(shell, SWT.CHECK);
+		sortByConnections.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				Boolean sortBy = sortByConnections.getEnabled();
+				currentFlightSearch.setSortByConnections(sortBy);
+				String query = currentFlightSearch.getSearchQuery();
+			}
+		});
+		sortByConnections.setBounds(293, 207, 147, 28);
+		sortByConnections.setText("Sort By Connections");
 
 	}
 }
