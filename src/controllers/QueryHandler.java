@@ -83,6 +83,24 @@ public class QueryHandler {
 		return false;
 	}
 	
+	public static int newTicketNo()
+	{
+		//Generates a new unique ticket number by incrementing the current maximum by 1.
+		String query = "select max(tno) + 1 as tnonew"
+				+ "from tickets";
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			if (rs.next())
+			{
+				return rs.getInt("tnonew");
+			}
+		}
+		catch (Exception e) {
+			
+		}
+		return 0;
+	}
+	
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
 		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price"
