@@ -108,11 +108,11 @@ public class BookingView {
 	   	    }
 	    }
 		TableItem item = new TableItem(table, SWT.NONE);
-		item.setText(0, "hello");
+	/*	item.setText(0, "hello");
 		item.setText(1, "hello");
 		item.setText(2, "hello");
 		item.setText(3, "hello");
-
+*/
 	    
 	    for (int i=0; i<titles.length; i++) {
 	      table.getColumn (i).pack ();

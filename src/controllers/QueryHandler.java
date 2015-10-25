@@ -134,15 +134,18 @@ public class QueryHandler {
 	}
 	
 	public static void removeBooking(Booking booking, Shell shell) {
-		Integer tno = booking.getTicketNumber();
-		String update = "DELETE FROM Bookings "
-				+ "where tno = " + tno.toString();
-		SQLInitializer.executeUpdate(update);
-		
-		update = "DELETE FROM Tickets "
-				+ "where tno = " + tno.toString();
-		SQLInitializer.executeUpdate(update);
-		
+		try {
+			Integer tno = booking.getTicketNumber();
+			String update = "DELETE FROM Bookings "
+					+ "where tno = " + tno.toString();
+			SQLInitializer.executeUpdate(update);
+			
+			update = "DELETE FROM Tickets "
+					+ "where tno = " + tno.toString();
+			SQLInitializer.executeUpdate(update);
+		} catch (Exception e) {
+			
+		}
 		LoginController.bookingView(shell);
 	}
 	
