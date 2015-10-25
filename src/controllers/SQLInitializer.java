@@ -19,7 +19,7 @@ public class SQLInitializer {
     
     private static Class drvClass;
     
-    private static Connection m_con;
+    private static Connection connection;
     
     public static String SUCCESS_MESSAGE = "Success";
 	
@@ -134,7 +134,7 @@ public class SQLInitializer {
 			return "ClassNotFoundException: " + e.getMessage();
 		} 
 		try {
-			m_con = DriverManager.getConnection(m_url, username, password);
+			connection = DriverManager.getConnection(m_url, username, password);
 		} catch(Exception e) {
 			return "SQLException: " + e.getMessage();
 		}
@@ -144,7 +144,7 @@ public class SQLInitializer {
 	
 	public static ResultSet executeQuery(String query) {
 		try {
-			Statement stmt = m_con.createStatement(
+			Statement stmt = connection.createStatement(
 	                ResultSet.TYPE_SCROLL_SENSITIVE,
 	                ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = stmt.executeQuery(query);
@@ -154,5 +154,10 @@ public class SQLInitializer {
 
 		}
 		return null;
+	}
+	
+	public static Connection getDatabaseConnection()
+	{
+		return connection; 
 	}
 }

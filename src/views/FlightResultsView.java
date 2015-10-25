@@ -124,7 +124,7 @@ public class FlightResultsView {
 			{
 				Boolean sortBy = sortByConnections.getEnabled();
 				currentFlightSearch.setSortByConnections(sortBy);
-				String query = currentFlightSearch.getSearchQuery();
+				PreparedStatement query = currentFlightSearch.getSearchQuery();
 			}
 		});
 		sortByConnections.setBounds(293, 207, 147, 28);

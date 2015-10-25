@@ -8,7 +8,9 @@ import org.eclipse.swt.widgets.Text;
 import controllers.LoginController;
 import models.FlightSearch;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -19,6 +21,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 public class SearchForFlightsView {
 
@@ -29,6 +33,7 @@ public class SearchForFlightsView {
 	private Button btnRoundTrip;
 	private DateTime dateTime;
 	private Label errorMessage;
+	private Menu suggestDepartureCity;
 
 	/**
 	 * Launch the application.
@@ -72,6 +77,9 @@ public class SearchForFlightsView {
 		departingCity = new Text(shell, SWT.BORDER);
 		departingCity.setBounds(149, 37, 164, 31);
 		
+		Menu SuggestDepartureCity = new Menu(departingCity);
+		departingCity.setMenu(SuggestDepartureCity);
+		
 		Label lblFlight = new Label(shell, SWT.NONE);
 		lblFlight.setBounds(149, 17, 60, 14);
 		lblFlight.setText("Going To:");
@@ -89,6 +97,23 @@ public class SearchForFlightsView {
 		
 		arrivingCity = new Text(shell, SWT.BORDER);
 		arrivingCity.setBounds(149, 151, 164, 31);
+		
+		suggestDepartureCity = new Menu(arrivingCity);
+		arrivingCity.setMenu(suggestDepartureCity);
+		arrivingCity.addListener(SWT.Modify, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				String text = arrivingCity.getText();
+				if (text.length() == 0) 
+				{
+					suggestDepartureCity.setVisible(false);
+				} else {
+					suggestDepartureCity.setVisible(true);
+					//This is my code, just commented out because it won't work without database connection.
+					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity);
+				}
+			}
+		});
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
@@ -122,18 +147,12 @@ public class SearchForFlightsView {
 		errorMessage.setAlignment(SWT.CENTER);
 		errorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errorMessage.setBounds(86, 204, 277, 14);
-		
-		Button backButton = new Button(shell, SWT.NONE);
-		backButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				LoginController.menuView(shell);
-			}
-		});
-		backButton.setText("back");
-		backButton.setBounds(0, 0, 66, 28);
 	}
 	
+	/**
+	 * Checks to see if all fields have appropriate input, so that a FlightSearch will be successful.
+	 * @return
+	 */
 	private Boolean SearchCriteriaIsValid()
 	{
 		Boolean valid = true;
@@ -152,8 +171,12 @@ public class SearchForFlightsView {
 		}
 		return valid;
 	}
-
-	private void createFlightSearchCriteria() {
+	
+	/**
+	 * Extracts the FlightSearch information from the view and updates the FlightSearch object accordingly.
+	 */
+	private void createFlightSearchCriteria() 
+	{
 		String depCity = departingCity.getSelectionText();
 		String arrCity = arrivingCity.getSelectionText();
 		int depDay = dateTime.getDay();
