@@ -67,6 +67,9 @@ public class RegisterView {
 		passwordText = new Text(shell, SWT.PASSWORD | SWT.BORDER);
 		passwordText.setBounds(200, 112, 132, 19);
 		
+		cnfrmPasswordText = new Text(shell, SWT.BORDER | SWT.PASSWORD);
+		cnfrmPasswordText.setBounds(200, 137, 132, 19);
+		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(88, 95, 106, 14);
 		lblNewLabel.setText("Username (email):");
@@ -74,6 +77,10 @@ public class RegisterView {
 		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
 		lblNewLabel_1.setBounds(133, 115, 61, 14);
 		lblNewLabel_1.setText("Password: ");
+		
+		lblConfirmPassword = new Label(shell, SWT.NONE);
+		lblConfirmPassword.setText("Confirm Password: ");
+		lblConfirmPassword.setBounds(88, 140, 106, 14);
 		
 		Button btnEnter = new Button(shell, SWT.NONE);
 		btnEnter.setBounds(186, 177, 94, 28);
@@ -84,13 +91,6 @@ public class RegisterView {
 				checkLogin();
 			}
 		    });
-		
-		cnfrmPasswordText = new Text(shell, SWT.BORDER | SWT.PASSWORD);
-		cnfrmPasswordText.setBounds(200, 137, 132, 19);
-		
-		lblConfirmPassword = new Label(shell, SWT.NONE);
-		lblConfirmPassword.setText("Confirm Password: ");
-		lblConfirmPassword.setBounds(88, 140, 106, 14);
 		
 		btnBack = new Button(shell, SWT.NONE);
 		btnBack.setBounds(0, 0, 66, 28);
