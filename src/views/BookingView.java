@@ -20,6 +20,7 @@ import java.util.LinkedList;
 
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.widgets.Label;
 
 public class BookingView {
 
@@ -84,24 +85,30 @@ public class BookingView {
 	    }
 	    
 	    LinkedList<Booking> bookings = QueryHandler.getBookings();
-
-	    for (int i = 0; i < bookings.size(); i++) {
-	      TableItem item = new TableItem(table, SWT.NONE);
-	      Booking booking = bookings.get(i);
-	      Integer ticketNumber = booking.getTicketNumber();	      
-	      Float price = (float) booking.getTicketNumber();
-	      
-	      item.setText(0, ticketNumber.toString());
-	      item.setText(1, booking.getpName());
-	      item.setText(2, booking.getDepDate().toString());
-	      item.setText(3, "$"+price.toString());
+	    if (bookings == null || bookings.size() == 0) {
+	    	Label lblNewLabel = new Label(shell, SWT.NONE);
+		    lblNewLabel.setAlignment(SWT.CENTER);
+		    lblNewLabel.setBounds(105, 0, 229, 14);
+		    lblNewLabel.setText("You have no bookings");
 	    }
-
+	    else {
+	    	 for (int i = 0; i < bookings.size(); i++) {
+	   	      TableItem item = new TableItem(table, SWT.NONE);
+	   	      Booking booking = bookings.get(i);
+	   	      Integer ticketNumber = booking.getTicketNumber();	      
+	   	      Float price = (float) booking.getTicketNumber();
+	   	      
+	   	      item.setText(0, ticketNumber.toString());
+	   	      item.setText(1, booking.getpName());
+	   	      item.setText(2, booking.getDepDate().toString());
+	   	      item.setText(3, "$"+price.toString());
+	   	    }
+	    }
+	  
 	    for (int i=0; i<titles.length; i++) {
 	      table.getColumn (i).pack ();
 	    }     
 	    	    
 	    table.setSize(table.computeSize(SWT.DEFAULT, 330));
-
 	}
 }

@@ -80,7 +80,10 @@ public class QueryHandler {
 	
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
-		String query = "select email from airline_agents where email = " + username;
+		String query = "select bookings.tno, name, dep_date, paid_price price "
+				+ "from bookings, tickets"
+				+ "where bookings.tno = tickets.tno"
+				+ "and email = " + username;
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		LinkedList<Booking> bookingList = new LinkedList<Booking>();
 		try {
