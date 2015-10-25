@@ -143,7 +143,7 @@ public class SQLInitializer {
 	
 	public static void logout() {
 		try {
-            m_con.close();
+			connection.close();
 		}
 		catch (Exception e) {
 
