@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import controllers.LoginController;
+import models.User;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
@@ -58,7 +59,7 @@ public class MenuView {
 				LoginController.searchForFlightsView(shell);
 			}
 		});
-		searchButton.setBounds(128, 64, 192, 28);
+		searchButton.setBounds(127, 93, 192, 28);
 		searchButton.setText("Search Flights");
 		
 		Button bookingsButton = new Button(shell, SWT.NONE);
@@ -68,7 +69,7 @@ public class MenuView {
 				LoginController.bookingView(shell);
 			}
 		});
-		bookingsButton.setBounds(128, 98, 192, 28);
+		bookingsButton.setBounds(127, 127, 192, 28);
 		bookingsButton.setText("My Bookings");
 		
 		Button logoutButton = new Button(shell, SWT.NONE);
@@ -81,13 +82,16 @@ public class MenuView {
 		logoutButton.setText("Logout");
 		logoutButton.setBounds(0, 0, 77, 28);
 		
-		Button recDepartureButton = new Button(shell, SWT.NONE);
-		recDepartureButton.setText("Record Departure");
-		recDepartureButton.setBounds(128, 132, 192, 28);
-		
-		Button recordArrivalButton = new Button(shell, SWT.NONE);
-		recordArrivalButton.setText("Record Arrival");
-		recordArrivalButton.setBounds(128, 167, 192, 28);
-
+		if (User.isAirlineAgent()) {
+			Button recDepartureButton = new Button(shell, SWT.NONE);
+			recDepartureButton.setText("Record Arrival or Departure");
+			recDepartureButton.setBounds(110, 161, 224, 28);
+			recDepartureButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					LoginController.arrDepView(shell);
+				}
+			});
+		}
 	}
 }
