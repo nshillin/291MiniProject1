@@ -2,15 +2,21 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+
+import models.Booking;
+import models.User;
 
 public class QueryHandler {
+	
 
 	public static void main(String[] args) {
 		// Setup SQL stuff	
 	}
 	
-	public static Boolean authenticateUser(String username, String password) {
+	public static Boolean authenticateUser(String password) {
 		// Checks SQL for user
+		String username = User.getUser();
 		String query = "select pass from users where email = " + username;
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
@@ -28,12 +34,14 @@ public class QueryHandler {
 		return false;
 	}
 
-	public static void addUser(String username, String password) {
+	public static void addUser(String password) {
+		String username = User.getUser();
 		
 	}
 	
-	public static Boolean isUsername(String username) {
+	public static Boolean isUsername() {
 		//Checks if username already exists
+		String username = User.getUser();
 		String query = "select email from users where email = " + username;
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
@@ -51,7 +59,8 @@ public class QueryHandler {
 		return true;
 	}
 	
-	public static Boolean isAirlineAgent(String username) {
+	public static Boolean isAirlineAgent() {
+		String username = User.getUser();
 		String query = "select email from airline_agents where email = " + username;
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
@@ -67,6 +76,31 @@ public class QueryHandler {
 			
 		}
 		return false;
+	}
+	
+	public static LinkedList<Booking> getBooking() {
+		String username = User.getUser();
+		String query = "select email from airline_agents where email = " + username;
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		LinkedList<Booking> bookingList = new LinkedList<Booking>();
+		try {
+			while (rs.next())
+			{
+				//tno, flightno, fare, dep_date, seat
+				//ticket number, the passenger name, the departure date and the price
+				Booking booking = new Booking();
+				rs.getString("tno");
+				rs.getString("name");
+				rs.getString("dep_date");
+				rs.getFloat("price");
+				bookingList.add(booking);
+			}
+				
+		}
+		catch (Exception e) {
+			
+		}
+		return bookingList;
 	}
 	
 	public static void exampleQuery() {

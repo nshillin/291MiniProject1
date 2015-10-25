@@ -87,9 +87,9 @@ public class LoginController {
 	}
 	
 	public static void login(String username, String password, Shell shell) {
-		if (QueryHandler.authenticateUser(username,password)) {
-			User.setUser(username);
-			User.setAirlineAgent(QueryHandler.isAirlineAgent(username));
+		User.setUser(username);
+		if (QueryHandler.authenticateUser(password)) {
+			User.setAirlineAgent(QueryHandler.isAirlineAgent());
 			menuView(shell);
 		}
 		else {
@@ -98,10 +98,10 @@ public class LoginController {
 	}
 	
 	public static void register(String username, String password, Shell shell) {
-		if (QueryHandler.isUsername(username)) {
-			QueryHandler.addUser(username, password);
-			User.setUser(username);
-			User.setAirlineAgent(QueryHandler.isAirlineAgent(username));
+		User.setUser(username);
+		if (QueryHandler.isUsername()) {
+			QueryHandler.addUser(password);
+			User.setAirlineAgent(QueryHandler.isAirlineAgent());
 			menuView(shell);
 		}
 		else {
