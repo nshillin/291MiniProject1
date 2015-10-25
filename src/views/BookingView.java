@@ -19,6 +19,9 @@ import java.sql.Date;
 import java.util.LinkedList;
 
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Label;
 
@@ -93,22 +96,37 @@ public class BookingView {
 	    }
 	    else {
 	    	 for (int i = 0; i < bookings.size(); i++) {
-	   	      TableItem item = new TableItem(table, SWT.NONE);
-	   	      Booking booking = bookings.get(i);
-	   	      Integer ticketNumber = booking.getTicketNumber();	      
-	   	      Float price = (float) booking.getTicketNumber();
+	    		 TableItem item = new TableItem(table, SWT.NONE);
+	    		 Booking booking = bookings.get(i);
+	    		 Integer ticketNumber = booking.getTicketNumber();	      
+	    		 Float price = (float) booking.getTicketNumber();
 	   	      
-	   	      item.setText(0, ticketNumber.toString());
-	   	      item.setText(1, booking.getpName());
-	   	      item.setText(2, booking.getDepDate().toString());
-	   	      item.setText(3, "$"+price.toString());
+	    		item.setText(0, ticketNumber.toString());
+	   	      	item.setText(1, booking.getpName());
+	   	      	item.setText(2, booking.getDepDate().toString());
+	   	      	item.setText(3, "$"+price.toString());
 	   	    }
 	    }
-	  
+		TableItem item = new TableItem(table, SWT.NONE);
+		item.setText(0, "hello");
+		item.setText(1, "hello");
+		item.setText(2, "hello");
+		item.setText(3, "hello");
+
+	    
 	    for (int i=0; i<titles.length; i++) {
 	      table.getColumn (i).pack ();
 	    }     
-	    	    
+	    
+	    tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				// TODO Auto-generated method stub
+				Integer position = table.getSelectionIndex();
+			}
+	    });
+	    
 	    table.setSize(table.computeSize(SWT.DEFAULT, 330));
 	}
 }

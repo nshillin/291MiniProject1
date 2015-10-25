@@ -5,11 +5,13 @@ import java.awt.List;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
+import models.Booking;
 import models.FlightSearch;
 import models.User;
 import views.ArrDepView;
 import views.BookingView;
 import views.FlightResultsView;
+import views.IndividualBookingView;
 import views.LoginView;
 import views.MainView;
 import views.MenuView;
@@ -65,6 +67,12 @@ public class LoginController {
 	public static void arrDepView(Shell shell) {
 		closeShell(shell);
 		ArrDepView.main(null);
+	}
+	
+	public static void indBookingView(Shell shell, Booking booking) {
+		closeShell(shell);
+		IndividualBookingView.booking = booking;
+		IndividualBookingView.main(null);
 	}
 	
 	private static void closeShell(Shell shell) {

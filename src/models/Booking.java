@@ -5,9 +5,31 @@ import java.sql.Date;
 public class Booking {
 	//ticket number, the passenger name, the departure date and the price
 	private Integer ticketNumber;
+	private String flightNumber;
+	private String fare;
+	private String seat;
 	private String pName;
 	private Date depDate;
 	private Float price;
+	
+	public String getFlightNumber() {
+		return flightNumber;
+	}
+	public void setFlightNumber(String flightNumber) {
+		this.flightNumber = flightNumber;
+	}
+	public String getFare() {
+		return fare;
+	}
+	public void setFare(String fare) {
+		this.fare = fare;
+	}
+	public String getSeat() {
+		return seat;
+	}
+	public void setSeat(String seat) {
+		this.seat = seat;
+	}
 	
 	public int getTicketNumber() {
 		return ticketNumber;

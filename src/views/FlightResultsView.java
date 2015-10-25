@@ -101,7 +101,7 @@ public class FlightResultsView {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(450, 300);
-		shell.setText("SWT Application");
+		shell.setText("Flights");
 		shell.setSize(LoginController.size);
 		shell.setLocation(LoginController.position);
 		

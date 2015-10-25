@@ -80,7 +80,7 @@ public class QueryHandler {
 	
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
-		String query = "select bookings.tno, name, dep_date, paid_price price "
+		String query = "select * "
 				+ "from bookings, tickets"
 				+ "where bookings.tno = tickets.tno"
 				+ "and email = " + username;
