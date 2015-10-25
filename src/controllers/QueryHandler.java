@@ -32,13 +32,41 @@ public class QueryHandler {
 		
 	}
 	
-	public static Boolean isUsername() {
+	public static Boolean isUsername(String username) {
 		//Checks if username already exists
+		String query = "select email from users where email = " + username;
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			while (rs.next())
+			{
+				 if (rs.getString("email").equals(username)) {
+					 return true;
+				 }
+				
+			}
+		}
+		catch (Exception e) {
+			
+		}
 		return true;
 	}
 	
 	public static Boolean isAirlineAgent(String username) {
-		return true;
+		String query = "select email from airline_agents where email = " + username;
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			while (rs.next())
+			{
+				 if (rs.getString("email").equals(username)) {
+					 return true;
+				 }
+				
+			}
+		}
+		catch (Exception e) {
+			
+		}
+		return false;
 	}
 	
 	public static void exampleQuery() {

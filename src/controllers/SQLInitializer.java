@@ -141,6 +141,15 @@ public class SQLInitializer {
 		return SUCCESS_MESSAGE;
 	}
 	
+	public static void logout() {
+		try {
+            m_con.close();
+		}
+		catch (Exception e) {
+
+		}
+	}
+	
 	
 	public static ResultSet executeQuery(String query) {
 		try {
@@ -148,6 +157,7 @@ public class SQLInitializer {
 	                ResultSet.TYPE_SCROLL_SENSITIVE,
 	                ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = stmt.executeQuery(query);
+			stmt.close();
 			return rs;
 		}
 		catch (Exception e) {

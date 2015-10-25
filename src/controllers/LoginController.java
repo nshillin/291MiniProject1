@@ -31,6 +31,7 @@ public class LoginController {
 	public static void logout(Shell shell) {
 		User.setUser(null);
 		User.setAirlineAgent(false);
+		SQLInitializer.logout();
 		closeShell(shell);
 		MainView.main(null);
 	}
@@ -97,7 +98,7 @@ public class LoginController {
 	}
 	
 	public static void register(String username, String password, Shell shell) {
-		if (QueryHandler.isUsername()) {
+		if (QueryHandler.isUsername(username)) {
 			QueryHandler.addUser(username, password);
 			User.setUser(username);
 			User.setAirlineAgent(QueryHandler.isAirlineAgent(username));

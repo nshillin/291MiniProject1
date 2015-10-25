@@ -9,10 +9,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.TableViewer;
 
 public class BookingView {
 
 	protected Shell shell;
+	private Table table;
 
 	/**
 	 * Launch the application.
@@ -60,7 +64,10 @@ public class BookingView {
 		});
 		backButton.setText("back");
 		backButton.setBounds(0, 0, 66, 28);
+		
+		TableViewer tableViewer = new TableViewer(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		table = tableViewer.getTable();
+		table.setBounds(72, 21, 330, 227);
 
 	}
-
 }
