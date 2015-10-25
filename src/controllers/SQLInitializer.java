@@ -152,14 +152,16 @@ public class SQLInitializer {
 	
 	public static ResultSet executeQuery(String query) {
 		try {
+			connection = DriverManager.getConnection(m_url, username, password);
 			Statement stmt = connection.createStatement(
-	                ResultSet.TYPE_SCROLL_SENSITIVE,
-	                ResultSet.CONCUR_UPDATABLE);
+					ResultSet.TYPE_SCROLL_SENSITIVE, 
+					ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = stmt.executeQuery(query);
 			return rs;
 		}
-		catch (Exception e) {
-
+		catch (Exception e) 
+		{
+			String exception = e.getMessage();
 		}
 		return null;
 	}
