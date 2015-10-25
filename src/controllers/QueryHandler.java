@@ -89,9 +89,9 @@ public class QueryHandler {
 				//tno, flightno, fare, dep_date, seat
 				//ticket number, the passenger name, the departure date and the price
 				Booking booking = new Booking();
-				rs.getString("tno");
+				rs.getInt("tno");
 				rs.getString("name");
-				rs.getString("dep_date");
+				rs.getDate("dep_date");
 				rs.getFloat("price");
 				bookingList.add(booking);
 			}
