@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
+import org.eclipse.swt.widgets.Shell;
 import models.Booking;
 import models.User;
+import views.BookingView;
 
 public class QueryHandler {
 	
@@ -27,6 +29,7 @@ public class QueryHandler {
 				 }
 				
 			}
+			rs.close();
 		}
 		catch (Exception e) {
 			
@@ -52,6 +55,7 @@ public class QueryHandler {
 				 }
 				
 			}
+			rs.close();
 		}
 		catch (Exception e) {
 			
@@ -71,6 +75,7 @@ public class QueryHandler {
 				 }
 				
 			}
+			rs.close();
 		}
 		catch (Exception e) {
 			
@@ -80,7 +85,7 @@ public class QueryHandler {
 	
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
-		String query = "select * "
+		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price"
 				+ "from bookings, tickets"
 				+ "where bookings.tno = tickets.tno"
 				+ "and email = " + username;
@@ -94,10 +99,14 @@ public class QueryHandler {
 				Booking booking = new Booking();
 				booking.setTicketNumber(rs.getInt("tno"));
 				booking.setpName(rs.getString("name"));
+				booking.setFare(rs.getString("fare"));
+				booking.setFlightNumber(rs.getString("flightno"));
+				booking.setSeat(rs.getString("seat"));
 				booking.setDepDate(rs.getDate("dep_date"));
-				booking.setPrice(rs.getFloat("price"));
+				booking.setPrice(rs.getFloat("paid_price"));
 				bookingList.add(booking);
 			}
+			rs.close();
 				
 		}
 		catch (Exception e) {
@@ -105,6 +114,20 @@ public class QueryHandler {
 		}
 		return bookingList;
 	}
+	
+	public static void removeBooking(Booking booking, Shell shell) {
+		Integer tno = booking.getTicketNumber();
+		String update = "DELETE FROM Bookings "
+				+ "where tno = " + tno.toString();
+		SQLInitializer.executeUpdate(update);
+		
+		update = "DELETE FROM Tickets "
+				+ "where tno = " + tno.toString();
+		SQLInitializer.executeUpdate(update);
+		
+		LoginController.bookingView(shell);
+	}
+	
 	
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
@@ -119,6 +142,7 @@ public class QueryHandler {
 				int total = rs.getInt("TOTAL");
 				System.out.println(s + "," + supid+"," +sales+"," +n+"," +total);
 			}
+			rs.close();
 		}
 		catch (Exception e) {
 			

@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.*;
 import java.sql.*;
 
 public class SQLInitializer {
@@ -157,13 +156,23 @@ public class SQLInitializer {
 	                ResultSet.TYPE_SCROLL_SENSITIVE,
 	                ResultSet.CONCUR_UPDATABLE);
 			ResultSet rs = stmt.executeQuery(query);
-			stmt.close();
 			return rs;
 		}
 		catch (Exception e) {
 
 		}
 		return null;
+	}
+	
+	public static void executeUpdate(String update) {
+		try {
+			Statement stmt = connection.createStatement();
+		    stmt.executeUpdate(update);
+		    stmt.close();
+		}
+		catch (Exception e) {
+
+		}
 	}
 	
 	public static Connection getDatabaseConnection()

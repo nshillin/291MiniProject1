@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import controllers.LoginController;
+import controllers.QueryHandler;
 import models.Booking;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
@@ -68,6 +69,12 @@ public class IndividualBookingView {
 		Button btnCancelBooking = new Button(shell, SWT.NONE);
 		btnCancelBooking.setBounds(143, 240, 163, 28);
 		btnCancelBooking.setText("Cancel Booking");
+		btnCancelBooking.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				QueryHandler.removeBooking(booking, shell);
+			}
+		});
 		
 		Label lblTicketNumber = new Label(shell, SWT.NONE);
 		lblTicketNumber.setAlignment(SWT.RIGHT);
