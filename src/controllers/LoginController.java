@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import models.FlightSearch;
 import models.User;
+import views.ArrDepView;
 import views.BookingView;
 import views.FlightResultsView;
 import views.LoginView;
@@ -60,6 +61,11 @@ public class LoginController {
 		BookingView.main(null);
 	}
 	
+	public static void arrDepView(Shell shell) {
+		closeShell(shell);
+		ArrDepView.main(null);
+	}
+	
 	private static void closeShell(Shell shell) {
 		position = shell.getLocation();
 		size = shell.getSize();
@@ -86,7 +92,7 @@ public class LoginController {
 			menuView(shell);
 		}
 		else {
-			LoginView.errorMessage("Username already exists.");
+			LoginView.errorMessage("Invalid username.");
 		}
 	}
 	

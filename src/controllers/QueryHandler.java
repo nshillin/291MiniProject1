@@ -13,9 +13,6 @@ public class QueryHandler {
 		// Checks SQL for user
 		String query = "select pass from users where email = " + username;
 		ResultSet rs = SQLInitializer.executeQuery(query);
-		if (rs == null) {
-			return false;
-		}
 		try {
 			while (rs.next())
 			{
@@ -41,7 +38,7 @@ public class QueryHandler {
 	}
 	
 	public static Boolean isAirlineAgent(String username) {
-		return false;
+		return true;
 	}
 	
 	public static void exampleQuery() {
