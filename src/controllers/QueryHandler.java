@@ -78,7 +78,7 @@ public class QueryHandler {
 		return false;
 	}
 	
-	public static LinkedList<Booking> getBooking() {
+	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
 		String query = "select email from airline_agents where email = " + username;
 		ResultSet rs = SQLInitializer.executeQuery(query);
@@ -89,10 +89,10 @@ public class QueryHandler {
 				//tno, flightno, fare, dep_date, seat
 				//ticket number, the passenger name, the departure date and the price
 				Booking booking = new Booking();
-				rs.getInt("tno");
-				rs.getString("name");
-				rs.getDate("dep_date");
-				rs.getFloat("price");
+				booking.setTicketNumber(rs.getInt("tno"));
+				booking.setpName(rs.getString("name"));
+				booking.setDepDate(rs.getDate("dep_date"));
+				booking.setPrice(rs.getFloat("price"));
 				bookingList.add(booking);
 			}
 				

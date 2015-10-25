@@ -4,15 +4,15 @@ import java.sql.Date;
 
 public class Booking {
 	//ticket number, the passenger name, the departure date and the price
-	private int ticketNumber;
+	private Integer ticketNumber;
 	private String pName;
 	private Date depDate;
-	private float price;
+	private Float price;
 	
 	public int getTicketNumber() {
 		return ticketNumber;
 	}
-	public void setTicketNumber(int ticketNumber) {
+	public void setTicketNumber(Integer ticketNumber) {
 		this.ticketNumber = ticketNumber;
 	}
 	public String getpName() {
@@ -30,7 +30,7 @@ public class Booking {
 	public float getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 }

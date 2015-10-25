@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import controllers.LoginController;
+import controllers.QueryHandler;
+import models.Booking;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
@@ -12,6 +14,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+
+import java.sql.Date;
+import java.util.LinkedList;
+
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.TableViewer;
 
@@ -76,13 +82,19 @@ public class BookingView {
 	      TableColumn column = new TableColumn(table, SWT.NONE);
 	      column.setText(titles[i]);
 	    }
+	    
+	    LinkedList<Booking> bookings = QueryHandler.getBookings();
 
-	    for (int i = 0; i < 100; i++) {
+	    for (int i = 0; i < bookings.size(); i++) {
 	      TableItem item = new TableItem(table, SWT.NONE);
-	      item.setText(0, "12324");
-	      item.setText(1, "Joe");
-	      item.setText(2, "01/01/15");
-	      item.setText(3, "$2.00");
+	      Booking booking = bookings.get(i);
+	      Integer ticketNumber = booking.getTicketNumber();	      
+	      Float price = (float) booking.getTicketNumber();
+	      
+	      item.setText(0, ticketNumber.toString());
+	      item.setText(1, booking.getpName());
+	      item.setText(2, booking.getDepDate().toString());
+	      item.setText(3, "$"+price.toString());
 	    }
 
 	    for (int i=0; i<titles.length; i++) {
