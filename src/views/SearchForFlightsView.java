@@ -91,8 +91,8 @@ public class SearchForFlightsView {
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
-					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
-					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
+					MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), departingCity);
+					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
@@ -109,9 +109,9 @@ public class SearchForFlightsView {
 		lblDepartingBy.setBounds(149, 74, 86, 14);
 		lblDepartingBy.setText("Departing By:");
 		
-		Label lblLeavingBy = new Label(shell, SWT.NONE);
-		lblLeavingBy.setBounds(149, 131, 86, 14);
-		lblLeavingBy.setText("Leaving From:");
+		Label SuggestArrivalCity = new Label(shell, SWT.NONE);
+		SuggestArrivalCity.setBounds(149, 131, 86, 14);
+		SuggestArrivalCity.setText("Leaving From:");
 		
 		arrivingCity = new Text(shell, SWT.BORDER);
 		arrivingCity.setBounds(149, 151, 164, 31);
@@ -126,8 +126,8 @@ public class SearchForFlightsView {
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
-					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
-					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
+					MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
+					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
@@ -166,6 +166,23 @@ public class SearchForFlightsView {
 		errorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errorMessage.setBounds(86, 204, 277, 14);
 	}
+	
+	private MenuItem[] createMenuItems(Menu menuToAddTo, int length, final Text text){
+			for(int i = 0; i < length; i++){
+				final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH, i);
+				newItem.setText(String.format("%d", i));
+				newItem.addListener(SWT.Selection, new Listener()
+				{
+					@Override
+					public void handleEvent(Event arg0)
+					{
+						text.setText(newItem.getText());
+					}
+				});
+			}
+			return menuToAddTo.getItems();
+		}
+
 	
 	private void disposeOfAutoCompleteItems(Menu popUpMenu)
 	{

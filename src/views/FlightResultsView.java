@@ -109,7 +109,7 @@ public class FlightResultsView {
 		CheckboxTableViewer flightResults = CheckboxTableViewer.newCheckList(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = flightResults.getTable();
 		table.setBounds(10, 43, 430, 158);
-		Flight.FindSearchedFlights();
+		FlightSearch.FindSearchedFlights(table);
 		
 		Label lblFlightsFound = new Label(shell, SWT.NONE);
 		lblFlightsFound.setBounds(10, 23, 92, 14);

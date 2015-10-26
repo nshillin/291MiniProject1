@@ -3,6 +3,7 @@ package models;
 import java.sql.Connection;
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 import controllers.SQLInitializer;
 
@@ -13,19 +14,19 @@ public class Flight
 	private Date flightDepartureTime;
 	private Date flightArrivalTime;
 	private Integer numberOfConnections;
-	private String flightNumber;
+	private List<String> flightNumber;
 	private Time layoverTime;
 	
 	private enum seatPrices{}; //need to double check if there are even different fare types
 	private enum numberOfSeatsAtPrice{};
 	
-	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, String flightNum, Time layover)
+	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, Time layover)
 	{
 		String flightSource = src;
 		String flightDestination = dst;
 		Date flightDepartureTime = depTime;
 		Date flightArrivalTime = arrTime;
-		String flightNumber = flightNum;
+		List<String> flightNumber = flightNum;
 		Integer numberOfConnections = numOfConnections;
 		Time layoverTime = layover;
 	}
@@ -55,7 +56,9 @@ public class Flight
 		}
 		else if(columnNumber == 5)
 		{
-			returnColumnValue = flightNumber;
+			for (int i= 0; i < flightNumber.size(); i++){
+				returnColumnValue += flightNumber.get(i) + " ";
+			}
 		}
 		else if(columnNumber == 6)
 		{
