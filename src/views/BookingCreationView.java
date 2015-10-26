@@ -1,11 +1,16 @@
 package views;
 
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class BookingCreationView {
 
@@ -13,6 +18,7 @@ public class BookingCreationView {
 	private Text nameText;
 	private Text countryText;
 	private Label lblNewLabel_1;
+	private Label errLabel;
 
 	/**
 	 * Launch the application.
@@ -65,8 +71,26 @@ public class BookingCreationView {
 		lblNewLabel_1.setText("Country");
 		
 		Button bookButton = new Button(shlBookingInfo, SWT.NONE);
+		bookButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event arg0) {
+				checkInfo();
+			}
+		    });
 		bookButton.setBounds(178, 212, 75, 25);
 		bookButton.setText("Book");
+		
+		errLabel = new Label(shlBookingInfo, SWT.NONE);
+		errLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		errLabel.setBounds(324, 66, 88, 15);
 
+	}
+	
+	private void checkInfo()
+	{
+		//TODO: Finish coding this
+		if (nameText.getText().isEmpty()) {
+			errLabel.setText("Required.");
+		}
 	}
 }
