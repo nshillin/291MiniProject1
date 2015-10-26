@@ -20,7 +20,7 @@ public class Flight
 	private enum seatPrices{}; //need to double check if there are even different fare types
 	private enum numberOfSeatsAtPrice{};
 	
-	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, Time layover, Integer price)
+	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, Time layover)
 	{
 		String flightSource = src;
 		String flightDestination = dst;
