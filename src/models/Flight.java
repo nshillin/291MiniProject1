@@ -89,7 +89,7 @@ public class Flight
 	private static String findDirectFlightsQuery(FlightSearch search)
 	{
 		String query = new StringBuilder()
-				  .append("select f.flightno, sf.dep_date, f.src, f.dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time" )
+				  .append("select f.flightno, sf.dep_date, f.src, f.dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time," )
 					.append(" f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time))+(f.est_dur/60+a2.tzone-a1.tzone)/24 as arr_time,") 
 				    .append(" fa.fare, fa.limit-count(tno) as available_seats, fa.price")
 				 .append(" from flights f, flight_fares fa, sch_flights sf, bookings b, airports a1, airports a2")
