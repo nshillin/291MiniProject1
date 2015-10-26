@@ -98,7 +98,6 @@ public class BookingCreationView {
 		if (nameText.getText().isEmpty()) {
 			errLabel.setText("Required.");
 		}
-		//Placeholder. Flight availability check goes here
 		else if (QueryHandler.isFlightAvailable(flightToBook)) {
 			QueryHandler.setPassenger(nameText.getText(), countryText.getText());
 			Integer ticketNo = QueryHandler.setTicket(nameText.getText(), flightToBook.getPrice());
