@@ -86,6 +86,7 @@ public class QueryHandler {
 	
 	public static int newTicketNo()
 	{
+		//TODO: Fix this method. FlightNo is a string for some reason, so it needs to be generated some other way.
 		//Generates a new unique ticket number by incrementing the current maximum by 1.
 		String query = "select max(tno) + 1 as tnonew "
 				+ "from tickets";
@@ -135,7 +136,7 @@ public class QueryHandler {
 		return bookingList;
 	}
 	
-	public static Boolean isSeatAvailable(int flightno, Date depDate, String seat)
+	public static Boolean isSeatAvailable(String flightno, Date depDate, String seat)
 	{
 		String query = "SELECT COUNT(tno) AS num FROM bookings "
 				+ "WHERE flightno = " + flightno
@@ -153,6 +154,36 @@ public class QueryHandler {
 			
 		}
 		return false;
+	}
+	
+	public static Boolean isFareAvailable(String flightno, String fare)
+	{
+		int limit = 0;
+		int numBookings = 0;
+		String query = "SELECT limit FROM flight_fares "
+				+ "WHERE flightno = " + flightno
+				+ " AND fare = " + fare;
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			if (rs.next())
+			{
+				limit = rs.getInt("limit");
+			}
+			rs.close();
+		}
+		catch (Exception e) { }
+		query = "SELECT COUNT(tno) AS numBookings FROM bookings "
+				+ "WHERE flightno = " + flightno
+				+ " AND fare = " + fare;
+		try {
+			if (rs.next())
+			{
+				numBookings = rs.getInt("numBookings");
+			}
+			rs.close();
+		}
+		catch (Exception e) { }
+		return (limit - numBookings > 0);
 	}
 	
 	public static void removeBooking(Booking booking, Shell shell) {
