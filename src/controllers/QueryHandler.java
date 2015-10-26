@@ -45,7 +45,10 @@ public class QueryHandler {
 
 	public static void addUser(String password) {
 		String username = User.getUser();
-		
+        String query = "insert into users values ('" + username +  "', '" + password + "' , SYSDATE)";
+		SQLInitializer.executeQuery(query);
+        query = "commit";
+		SQLInitializer.executeQuery(query);
 	}
 	
 	public static Boolean isUsername() {
@@ -139,26 +142,6 @@ public class QueryHandler {
 		return bookingList;
 	}
 	
-	public static Boolean isSeatAvailable(String flightno, Date depDate, String seat)
-	{
-		String query = "SELECT COUNT(tno) AS num FROM bookings "
-				+ "WHERE flightno = " + flightno
-				+ " AND dep_date = " + depDate
-				+ " AND seat = " + seat;
-		ResultSet rs = SQLInitializer.executeQuery(query);
-		try {
-			if (rs.next())
-			{
-				return (rs.getInt("num") == 0);
-			}
-			rs.close();
-		}
-		catch (Exception e) {
-			
-		}
-		return false;
-	}
-	
 	public static Boolean isFareAvailable(String flightno, String fare)
 	{
 		int limit = 0;
@@ -205,6 +188,15 @@ public class QueryHandler {
 		LoginController.bookingView(shell);
 	}
 	
+	public static void removeBooking() {
+		try {
+			
+		}
+		catch (Exception e) {
+			
+		}
+		
+	}
 	
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
