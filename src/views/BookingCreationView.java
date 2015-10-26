@@ -12,6 +12,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import controllers.QueryHandler;
+import models.User;
+
 public class BookingCreationView {
 
 	protected Shell shlBookingInfo;
@@ -19,6 +22,8 @@ public class BookingCreationView {
 	private Text countryText;
 	private Label lblNewLabel_1;
 	private Label errLabel;
+	
+	private float paid_price;
 
 	/**
 	 * Launch the application.
@@ -91,6 +96,11 @@ public class BookingCreationView {
 		//TODO: Finish coding this
 		if (nameText.getText().isEmpty()) {
 			errLabel.setText("Required.");
+		}
+		//Placeholder. Flight availability check goes here
+		else if (false) {
+			QueryHandler.setPassenger(User.getUser(), nameText.getText(), countryText.getText());
+			String ticketNo = QueryHandler.setTicket(nameText.getText(), User.getUser(), paid_price);
 		}
 	}
 }

@@ -192,6 +192,15 @@ public class QueryHandler {
 		SQLInitializer.executeQuery(update);
 	}
 	
+	public static void setPassenger(String email, String name, String country) {
+		//TODO: Write this
+	}
+	
+	public static String setTicket(String name, String email, float paid_price) {
+		//TODO: Write this
+		return "";
+	}
+	
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
 		ResultSet rs = SQLInitializer.executeQuery(query);
