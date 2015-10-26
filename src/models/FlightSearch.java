@@ -353,13 +353,27 @@ public class FlightSearch {
 		  .append(" order by fa.price").toString();
 		
 		String getRoundTripFlights = new StringBuilder()
-				.append("select a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time-a1.arr_time, ")
+				.append("select a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time-a1.arr_time as layover, ")
 				.append("min(a1.price+a2.price) as price")
 			  .append("from available_flights a1, available_flights a2 ")
 			  .append("where a1.dst=a2.src and a1.arr_time +1.5/24 <=a2.dep_time and a1.arr_time +5/24 >=a2.dep_time ")
-			  .append("and a1.src = ? and a2.dst = ? and extract(day from a1.dep_date) = ? and extract(month from a1.dep_date) = ? and extract(year from a1.dep_date) = ? ")
+			  .append("and a1.src = '" + search.getDepartureCity() + "' and a2.dst = '" + search.getArrivalCity() + "'  and extract(day from a1.dep_date) = " + search.getDepartureDate().getDay() + " and extract(month from a1.dep_date) = " + search.getDepartureDate().getMonth() + " and extract(year from a1.dep_date) = " + search.getDepartureDate().getYear() + " ")
 			  .append("group by a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time, a1.arr_time ")
 			  .append("order by min(a1.price+a2.price)").toString();
+		try{
+			ResultSet resultSet = SQLInitializer.executeQuery(getRoundTripFlights);
+			List<Flight> flights = new ArrayList<Flight>();
+			while(resultSet.next())
+			{
+				List<String> flightNo = new ArrayList<String>();
+				flightNo.add(resultSet.getString("flightno"));
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, resultSet.getTime("arr_time"));
+				flights.add(newFlight);
+			}
+		} catch (SQLException e){
+			
+		}
+		
 		
 			SQLInitializer.executeQuery("drop table available_flights");
 			
