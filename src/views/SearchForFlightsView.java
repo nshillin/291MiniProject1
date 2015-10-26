@@ -115,7 +115,6 @@ public class SearchForFlightsView {
 		
 		arrivingCity = new Text(shell, SWT.BORDER);
 		arrivingCity.setBounds(149, 151, 164, 31);
-		final Tree tree = new Tree(shell, SWT.BORDER| SWT.MULTI);
 		suggestDepartureCity = new Menu(arrivingCity);
 		arrivingCity.setMenu(suggestDepartureCity);
 		arrivingCity.addListener(SWT.Modify, new Listener() {
@@ -133,45 +132,6 @@ public class SearchForFlightsView {
 				}
 			}
 		});
-		
-		/**final Table table = new Table(suggestDepartureCity.getShell(), SWT.SINGLE);
-		arrivingCity.addListener(SWT.KeyDown, new Listener() {
-			@Override
-			public void handleEvent(Event event) 
-			{
-				//disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
-				switch (event.keyCode) {
-				case SWT.ARROW_DOWN:
-					int index = (table.getSelectionIndex() + 1) % table.getItemCount();
-					table.setSelection(index);
-					event.doit = false;
-					break;
-				case SWT.ARROW_UP:
-					index = table.getSelectionIndex() - 1;
-					if (index < 0) index = table.getItemCount() - 1;
-					table.setSelection(index);
-					event.doit = false;
-					break;
-				case SWT.CR:
-					if (suggestDepartureCity.isVisible() && table.getSelectionIndex() != -1) {
-						arrivingCity.setText(table.getSelection()[0].getText());
-						suggestDepartureCity.setVisible(false);
-					}
-					break;
-				case SWT.ESC:
-					suggestDepartureCity.setVisible(false);
-					break;
-				}
-			}
-		});
-		
-		arrivingCity.addListener(SWT.CR, new Listener() {
-			@Override
-			public void handleEvent(Event event) 
-			{
-				disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
-			}
-		});**/
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
@@ -207,22 +167,6 @@ public class SearchForFlightsView {
 		errorMessage.setBounds(86, 204, 277, 14);
 	}
 	
-	private MenuItem[] createMenuItems(Menu menuToAddTo, int length, final Text text){
-		for(int i = 0; i < length; i++){
-			final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH, i);
-			newItem.setText(String.format("%d", i));
-			newItem.addListener(SWT.Selection, new Listener()
-			{
-				@Override
-				public void handleEvent(Event arg0)
-				{
-					text.setText(newItem.getText());
-				}
-			});
-		}
-		return menuToAddTo.getItems();
-	}
-	
 	private void disposeOfAutoCompleteItems(Menu popUpMenu)
 	{
 		MenuItem[] list = popUpMenu.getItems();
@@ -230,32 +174,6 @@ public class SearchForFlightsView {
 		{
 			list[i].dispose();
 		}
-	}
-	
-	private void disposeOfSubMenu(Menu popupShell, Event event, Table table, Text text)
-	{
-		switch (event.keyCode) {
-		case SWT.ARROW_DOWN:
-			int index = (table.getSelectionIndex() + 1) % table.getItemCount();
-			table.setSelection(index);
-			event.doit = false;
-			break;
-		case SWT.ARROW_UP:
-			index = table.getSelectionIndex() - 1;
-			if (index < 0) index = table.getItemCount() - 1;
-			table.setSelection(index);
-			event.doit = false;
-			break;
-		case SWT.CR:
-			if (popupShell.isVisible() && table.getSelectionIndex() != -1) {
-				text.setText(table.getSelection()[0].getText());
-				popupShell.setVisible(false);
-			}
-			break;
-		case SWT.ESC:
-			popupShell.setVisible(false);
-			break;
-	}
 	}
 	
 	/**

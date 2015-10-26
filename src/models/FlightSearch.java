@@ -172,14 +172,14 @@ public class FlightSearch {
 	private static String getPotentialAirportMatchesQuery(Connection connection, String textToFind)
 	{
 		String selectStatement = null;
-		/*if(isPotentialAirportCode(textToFind))
+		if(isPotentialAirportCode(textToFind))
 		{
 			selectStatement = "SELECT acode, name FROM airports WHERE UPPER(acode) = " + textToFind.toUpperCase();
 		} 
 		else 
-		{ **/
-		selectStatement = "SELECT acode, name, city FROM airports WHERE UPPER(name) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(city) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(acode) LIKE '" + textToFind.toUpperCase() + "%'";
-		//}
+		{ 
+			selectStatement = "SELECT acode, name, city FROM airports WHERE UPPER(name) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(city) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(acode) LIKE '" + textToFind.toUpperCase() + "%'";
+		}
 		return selectStatement;
 	}
 
@@ -200,13 +200,14 @@ public class FlightSearch {
 			while(resultSet.next())
 			{
 				final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH);
-				newItem.setText(String.format("%s , %s , %s", resultSet.getString("acode"), resultSet.getString("name"), resultSet.getString("city")));
+				newItem.setText(String.format("%s, %s , %s", resultSet.getString("acode"), resultSet.getString("name"), resultSet.getString("city")));
 				newItem.addListener(SWT.Selection, new Listener()
 				{
 					@Override
 					public void handleEvent(Event arg0)
 					{
-						mainTextBox.setText(newItem.getText());
+						int index = newItem.getText().indexOf(",");
+						mainTextBox.setText(newItem.getText().substring(0, index));
 					}
 				});
 			}
