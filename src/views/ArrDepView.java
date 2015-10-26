@@ -69,16 +69,17 @@ public class ArrDepView {
 		lblNewLabel.setBounds(100, 87, 59, 14);
 		lblNewLabel.setText("Flight:");
 		
-		DateTime dateTime = new DateTime(shell, SWT.BORDER | SWT.TIME);
-		dateTime.setBounds(165, 146, 125, 27);
+		DateTime flightTime = new DateTime(shell, SWT.BORDER | SWT.TIME);
+		flightTime.setBounds(165, 146, 125, 27);
 		
-		Combo combo = new Combo(shell, SWT.NONE);
-		combo.setBounds(165, 83, 250, 22);
+		Combo flightCombo = new Combo(shell, SWT.NONE);
+		flightCombo.setBounds(165, 83, 250, 22);
 		
 		Button btnRecord = new Button(shell, SWT.NONE);
 		btnRecord.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				LoginController.recordArrDep(shell);
 			}
 		});
 		btnRecord.setBounds(175, 179, 94, 28);
@@ -89,8 +90,8 @@ public class ArrDepView {
 		lblNewLabel_1.setBounds(100, 149, 59, 14);
 		lblNewLabel_1.setText("Time:");
 		
-		Combo combo_1 = new Combo(shell, SWT.NONE);
-		combo_1.setBounds(165, 111, 125, 22);
+		Combo arrdepCombo = new Combo(shell, SWT.NONE);
+		arrdepCombo.setBounds(165, 111, 125, 22);
 		
 		Label lblDepartureOrArrival = new Label(shell, SWT.NONE);
 		lblDepartureOrArrival.setAlignment(SWT.RIGHT);

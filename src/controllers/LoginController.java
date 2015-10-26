@@ -56,6 +56,11 @@ public class LoginController {
 		MenuView.main(null);
 	}
 	
+	public static void recordArrDep(Shell shell) {
+		closeShell(shell);
+		MenuView.main(null);
+	}
+	
 	public static void searchForFlightsView(Shell shell) {
 		closeShell(shell);
 		SearchForFlightsView.main(null);
