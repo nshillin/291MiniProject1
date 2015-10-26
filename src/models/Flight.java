@@ -34,6 +34,39 @@ public class Flight
 	{
 		return 7;
 	}
+	
+	public String getColumnItem(int columnNumber)
+	{
+		String returnColumnValue = "";
+		if(columnNumber == 1){
+			returnColumnValue = flightSource;
+		} 
+		else if(columnNumber == 2)
+		{
+			returnColumnValue = flightDestination;
+		}
+		else if(columnNumber == 3)
+		{
+			returnColumnValue = flightDepartureTime.toString();
+		}
+		else if(columnNumber == 4)
+		{
+			returnColumnValue = flightArrivalTime.toString();
+		}
+		else if(columnNumber == 5)
+		{
+			returnColumnValue = flightNumber;
+		}
+		else if(columnNumber == 6)
+		{
+			returnColumnValue = numberOfConnections.toString();
+		}
+		else if(columnNumber == 7)
+		{
+			returnColumnValue = layoverTime.toString();
+		}
+		return returnColumnValue;
+	}
 
 	public static void FindSearchedFlights() 
 	{
