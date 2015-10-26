@@ -77,9 +77,7 @@ public class QueryHandler {
 		try {
 			while (rs.next())
 			{
-				 if (rs.getString("email").equals(username)) {
-					 return true;
-				 }
+				 return true;
 				
 			}
 			rs.close();
