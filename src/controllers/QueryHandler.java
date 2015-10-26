@@ -86,7 +86,6 @@ public class QueryHandler {
 	
 	public static int newTicketNo()
 	{
-		//TODO: Fix this method. FlightNo is a string for some reason, so it needs to be generated some other way.
 		//Generates a new unique ticket number by incrementing the current maximum by 1.
 		String query = "select max(tno) + 1 as tnonew "
 				+ "from tickets";
