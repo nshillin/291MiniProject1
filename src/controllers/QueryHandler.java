@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Shell;
 import models.Booking;
+import models.Flight;
+import models.Sch_Flight;
 import models.User;
 import views.BookingView;
 import views.LoginView;
@@ -46,8 +48,6 @@ public class QueryHandler {
 	public static void addUser(String password) {
 		String username = User.getUser();
         String query = "insert into users values ('" + username +  "', '" + password + "' , SYSDATE)";
-		SQLInitializer.executeQuery(query);
-        query = "commit";
 		SQLInitializer.executeQuery(query);
 	}
 	
@@ -112,9 +112,9 @@ public class QueryHandler {
 	
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
-		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price"
-				+ "from bookings, tickets"
-				+ "where bookings.tno = tickets.tno"
+		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price "
+				+ "from bookings, tickets "
+				+ "where bookings.tno = tickets.tno "
 				+ "and email = '" + username + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		LinkedList<Booking> bookingList = new LinkedList<Booking>();
@@ -147,8 +147,8 @@ public class QueryHandler {
 		int limit = 0;
 		int numBookings = 0;
 		String query = "SELECT limit FROM flight_fares "
-				+ "WHERE flightno = " + flightno
-				+ " AND fare = " + fare;
+				+ "WHERE flightno = '" + flightno
+				+ "' AND fare = '" + fare + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			if (rs.next())
@@ -159,8 +159,8 @@ public class QueryHandler {
 		}
 		catch (Exception e) { }
 		query = "SELECT COUNT(tno) AS numBookings FROM bookings "
-				+ "WHERE flightno = " + flightno
-				+ " AND fare = " + fare;
+				+ "WHERE flightno = '" + flightno
+				+ "' AND fare = '" + fare + "'";
 		try {
 			if (rs.next())
 			{
@@ -188,14 +188,44 @@ public class QueryHandler {
 		LoginController.bookingView(shell);
 	}
 	
-	public static void removeBooking() {
+	public static void updateLastLogin() {
+		String update = "UPDATE users SET last_login = SYSDATE "
+				+ "WHERE email = '" + User.getUser() + "'";
+		SQLInitializer.executeQuery(update);
+	}
+	
+	public static void setPassenger(String email, String name, String country) {
+		//TODO: Write this
+	}
+	
+	public static String setTicket(String name, String email, float paid_price) {
+		//TODO: Write this
+		return "";
+	}
+	
+	public static LinkedList<Sch_Flight> getSingleFlights() {
+		String username = User.getUser();
+		String query = "select * from sch_flights";
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		LinkedList<Sch_Flight> flightList = new LinkedList<Sch_Flight>();
 		try {
-			
+			while (rs.next())
+			{
+				// flightno, dep_date, act_dep_time, act_arr_time
+				Sch_Flight flight = new Sch_Flight();
+				flight.setFlightNumber(rs.getString("flightno"));
+				flight.setDepartureDate(rs.getDate("dep_date"));
+				flight.setAct_arr_time(rs.getDate("act_arr_time"));
+				flight.setAct_dep_time(rs.getDate("act_dep_time"));
+				flightList.add(flight);
+			}
+			rs.close();
+				
 		}
 		catch (Exception e) {
 			
 		}
-		
+		return flightList;
 	}
 	
 	public static void exampleQuery() {
@@ -217,4 +247,9 @@ public class QueryHandler {
 			
 		}
  	}
+
+	public static void updateFlight(Sch_Flight flight) {
+		// TODO Auto-generated method stub
+		
+	}
 }

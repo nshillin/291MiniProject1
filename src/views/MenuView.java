@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Label;
 
 public class MenuView {
 
@@ -81,6 +82,17 @@ public class MenuView {
 		});
 		logoutButton.setText("Logout");
 		logoutButton.setBounds(0, 0, 77, 28);
+		
+		Label lblWelcome = new Label(shell, SWT.NONE);
+		lblWelcome.setBounds(155, 10, 59, 28);
+		lblWelcome.setText("Welcome");
+		
+		Label userLabel = new Label(shell, SWT.NONE);
+		userLabel.setBounds(207, 10, 208, 28);
+		try {
+			userLabel.setText(User.getUser());
+		}
+		catch (Exception e) {}
 		
 		if (User.isAirlineAgent()) {
 			Button recDepartureButton = new Button(shell, SWT.NONE);
