@@ -139,26 +139,6 @@ public class QueryHandler {
 		return bookingList;
 	}
 	
-	public static Boolean isSeatAvailable(String flightno, Date depDate, String seat)
-	{
-		String query = "SELECT COUNT(tno) AS num FROM bookings "
-				+ "WHERE flightno = " + flightno
-				+ " AND dep_date = " + depDate
-				+ " AND seat = " + seat;
-		ResultSet rs = SQLInitializer.executeQuery(query);
-		try {
-			if (rs.next())
-			{
-				return (rs.getInt("num") == 0);
-			}
-			rs.close();
-		}
-		catch (Exception e) {
-			
-		}
-		return false;
-	}
-	
 	public static Boolean isFareAvailable(String flightno, String fare)
 	{
 		int limit = 0;
