@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import models.Booking;
 import models.FlightSearch;
+import models.Sch_Flight;
 import models.User;
 import views.ArrDepView;
 import views.BookingView;
@@ -56,7 +57,8 @@ public class LoginController {
 		MenuView.main(null);
 	}
 	
-	public static void recordArrDep(Shell shell) {
+	public static void recordArrDep(Shell shell, Sch_Flight flight) {
+		QueryHandler.updateFlight(flight);
 		closeShell(shell);
 		MenuView.main(null);
 	}

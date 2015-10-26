@@ -1,5 +1,7 @@
 package views;
 
+import java.util.LinkedList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -8,6 +10,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import controllers.LoginController;
+import controllers.QueryHandler;
+import models.Sch_Flight;
+
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Combo;
@@ -69,17 +74,38 @@ public class ArrDepView {
 		lblNewLabel.setBounds(100, 87, 59, 14);
 		lblNewLabel.setText("Flight:");
 		
+		LinkedList<Sch_Flight> flightList = QueryHandler.getSingleFlights();
+		Combo flightCombo = new Combo(shell, SWT.READ_ONLY);
+		for (int i = 0; i < flightList.size(); i++) {
+			flightCombo.add(flightList.get(i).getFlightNumber() + " on " + flightList.get(i).getDepartureDate().toString());
+		}
+		flightCombo.select(0);
+		flightCombo.setBounds(165, 83, 250, 22);
+		
+		Combo arrdepCombo = new Combo(shell, SWT.READ_ONLY);
+		arrdepCombo.add("Arrival");
+		arrdepCombo.add("Departure");
+		arrdepCombo.select(0);
+		arrdepCombo.setBounds(165, 111, 125, 22);
+		
 		DateTime flightTime = new DateTime(shell, SWT.BORDER | SWT.TIME);
 		flightTime.setBounds(165, 146, 125, 27);
-		
-		Combo flightCombo = new Combo(shell, SWT.NONE);
-		flightCombo.setBounds(165, 83, 250, 22);
 		
 		Button btnRecord = new Button(shell, SWT.NONE);
 		btnRecord.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				LoginController.recordArrDep(shell);
+				Sch_Flight flight = flightList.get(flightCombo.getSelectionIndex());
+				if (arrdepCombo.getText().equals("Arrival")) {
+					flight.getAct_arr_time().setHours(flightTime.getHours());
+					flight.getAct_arr_time().setMinutes(flightTime.getMinutes());
+					flight.getAct_arr_time().setSeconds(flightTime.getSeconds());
+				} else {
+					flight.getAct_dep_time().setHours(flightTime.getHours());
+					flight.getAct_dep_time().setMinutes(flightTime.getMinutes());
+					flight.getAct_dep_time().setSeconds(flightTime.getSeconds());
+				}
+				LoginController.recordArrDep(shell, flight);
 			}
 		});
 		btnRecord.setBounds(175, 179, 94, 28);
@@ -89,9 +115,6 @@ public class ArrDepView {
 		lblNewLabel_1.setAlignment(SWT.RIGHT);
 		lblNewLabel_1.setBounds(100, 149, 59, 14);
 		lblNewLabel_1.setText("Time:");
-		
-		Combo arrdepCombo = new Combo(shell, SWT.NONE);
-		arrdepCombo.setBounds(165, 111, 125, 22);
 		
 		Label lblDepartureOrArrival = new Label(shell, SWT.NONE);
 		lblDepartureOrArrival.setAlignment(SWT.RIGHT);

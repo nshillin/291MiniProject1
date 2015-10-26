@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Shell;
 import models.Booking;
+import models.Flight;
+import models.Sch_Flight;
 import models.User;
 import views.BookingView;
 import views.LoginView;
@@ -201,6 +203,31 @@ public class QueryHandler {
 		return "";
 	}
 	
+	public static LinkedList<Sch_Flight> getSingleFlights() {
+		String username = User.getUser();
+		String query = "select * from sch_flights";
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		LinkedList<Sch_Flight> flightList = new LinkedList<Sch_Flight>();
+		try {
+			while (rs.next())
+			{
+				// flightno, dep_date, act_dep_time, act_arr_time
+				Sch_Flight flight = new Sch_Flight();
+				flight.setFlightNumber(rs.getString("flightno"));
+				flight.setDepartureDate(rs.getDate("dep_date"));
+				flight.setAct_arr_time(rs.getDate("act_arr_time"));
+				flight.setAct_dep_time(rs.getDate("act_dep_time"));
+				flightList.add(flight);
+			}
+			rs.close();
+				
+		}
+		catch (Exception e) {
+			
+		}
+		return flightList;
+	}
+	
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
 		ResultSet rs = SQLInitializer.executeQuery(query);
@@ -220,4 +247,9 @@ public class QueryHandler {
 			
 		}
  	}
+
+	public static void updateFlight(Sch_Flight flight) {
+		// TODO Auto-generated method stub
+		
+	}
 }
