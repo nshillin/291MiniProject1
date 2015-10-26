@@ -47,8 +47,6 @@ public class QueryHandler {
 		String username = User.getUser();
         String query = "insert into users values ('" + username +  "', '" + password + "' , SYSDATE)";
 		SQLInitializer.executeQuery(query);
-        query = "commit";
-		SQLInitializer.executeQuery(query);
 	}
 	
 	public static Boolean isUsername() {
