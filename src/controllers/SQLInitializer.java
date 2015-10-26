@@ -168,7 +168,10 @@ public class SQLInitializer {
 	}
 	
 	public static void executeUpdate(String update) {
-		try {
+		try 
+		{
+			//Must re-establish the connection for every query otherwise a ConnectionClosed exception is thrown when creating a statement.
+			connection = DriverManager.getConnection(m_url, username, password);
 			Statement stmt = connection.createStatement();
 		    stmt.executeUpdate(update);
 		    stmt.close();
@@ -180,6 +183,13 @@ public class SQLInitializer {
 	
 	public static Connection getDatabaseConnection()
 	{
-		return connection; 
+		try
+		{
+			return DriverManager.getConnection(m_url, username, password); 
+		} 
+		catch (SQLException ex)
+		{
+			return null;
+		}
 	}
 }

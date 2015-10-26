@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import controllers.SQLInitializer;
@@ -45,6 +47,11 @@ public class FlightSearch {
 			instance = new FlightSearch();
 		}
 		return instance;
+	}
+	
+	public Boolean getSortByConnections()
+	{
+		return sortByConnections;
 	}
 	
 	/**
@@ -218,5 +225,100 @@ public class FlightSearch {
 		}
 		return possibleMatches;
 	}
+	
+	public static void FindSearchedFlights(Table table) 
+	{
+		// TODO Auto-generated method stub
+		String query = formatSearchIntoQuery(table);
+		
+	}
+
+	private static String formatSearchIntoQuery(Table table) 
+	{
+		// TODO Auto-generated method stub
+		String directFlightQuery = findDirectFlightsQuery(FlightSearch.getInstance());
+		List<Flight> directFlightResults = getDirectFlightResults(directFlightQuery, FlightSearch.getInstance());
+		PopulateTableWithResults(directFlightResults, null, null, table);
+		return "";
+	}
+	
+	private static void PopulateTableWithResults(List<Flight> directFlightResults, List<Flight> oneConnectionFlightResults, List<Flight> twoConnectionFlightResults, Table table) 
+	{
+		// TODO Auto-generated method stub
+		if(FlightSearch.getInstance().getSortByConnections())
+		{
+			for (int i = 0; i < directFlightResults.size(); i++)
+			{
+				Flight flight = directFlightResults.get(i);
+				TableItem tableItem = new TableItem(table, SWT.NONE);
+				
+			}
+		}
+	}
+
+	private static List<Flight> getDirectFlightResults(String directFlightQuery, FlightSearch search) {
+		// TODO Auto-generated method stub
+		Connection connection = SQLInitializer.getDatabaseConnection();
+		List<Flight> flights = new ArrayList<Flight>();
+		try
+		{
+			flights = new ArrayList<Flight>();
+			PreparedStatement statement = connection.prepareStatement(directFlightQuery);
+			statement.setString(1, search.getDepartureCity());
+			statement.setString(2, search.getArrivalCity());
+			statement.setInt(3, search.getDepartureDate().getDay());
+			statement.setInt(4, search.getDepartureDate().getMonth());
+			statement.setInt(5, search.getDepartureDate().getYear());
+			ResultSet resultSet = statement.executeQuery();
+			while(resultSet.next())
+			{
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, resultSet.getString("flightno"), null);
+				flights.add(newFlight);
+			}
+		} 
+		catch (SQLException ex)
+		{
+			
+		}
+		return flights;
+	}
+	
+	private PreparedStatement createBasicFlightSearchPreparedStatement(String flightsQuery, Connection connection, FlightSearch search)
+	{
+		PreparedStatement statement = null;
+		try	
+		{
+			statement = connection.prepareStatement(flightsQuery);
+			statement.setString(1, search.getDepartureCity());
+			statement.setString(2, search.getArrivalCity());
+			statement.setInt(3, search.getDepartureDate().getDay());
+			statement.setInt(4, search.getDepartureDate().getMonth());
+			statement.setInt(5, search.getDepartureDate().getYear());
+		} 
+		catch (SQLException ex)
+		{
+			
+		}
+		return statement;
+	}
+
+	private static String findDirectFlightsQuery(FlightSearch search)
+	{
+		String query = new StringBuilder()
+				  .append("select f.flightno as flightno, sf.dep_date as dep_date, f.src as src, f.dst as dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time" )
+					.append(" f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time))+(f.est_dur/60+a2.tzone-a1.tzone)/24 as arr_time,") 
+				    .append(" fa.fare as fare_type, fa.limit-count(tno) as available_seats, fa.price as price")
+				 .append(" from flights f, flight_fares fa, sch_flights sf, bookings b, airports a1, airports a2")
+				 .append(" where f.flightno=sf.flightno and f.flightno=fa.flightno and f.src=a1.acode and")
+					.append(" f.dst=a2.acode and fa.flightno=b.flightno(+) and fa.fare=b.fare(+) and")
+					.append(" sf.dep_date=b.dep_date(+)")
+				  .append(" group by f.flightno, sf.dep_date, f.src, f.dst, f.dep_time, f.est_dur,a2.tzone,")
+					.append(" a1.tzone, fa.fare, fa.limit, fa.price")
+				  .append(" having fa.limit-count(tno) > 0")
+				  .append(" and f.src = ? and f.dst = ? and extract(day from sf.dep_date) = ? and extract(month from sf.dep_date) = ? and extract(year from sf.dep_date) = ?").toString();
+		//connection.prepareStatement("select f.flightno, sf.dep_date, f.src, f.dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time))+(f.est_dur/60+a2.tzone-a1.tzone)/24 as arr_time, fa.fare as fare, fa.limit-count(tno) as available_seats, fa.price as price from flights f, flight_fares fa, sch_flights sf, bookings b, airports a1, airports a2 where f.flightno=sf.flightno and f.flightno=fa.flightno and f.src=a1.acode and f.dst=a2.acode and fa.flightno=b.flightno(+) and fa.fare=b.fare(+) and sf.dep_date=b.dep_date(+)group by f.flightno, sf.dep_date, f.src, f.dst, f.dep_time, f.est_dur,a2.tzone, a1.tzone, fa.fare, fa.limit, fa.price HAVING fa.limit-count(tno) > 0 and f.src = 'YEG' and f.dst = 'YYZ';)"
+		return query;
+	}
+	
 	
 }
