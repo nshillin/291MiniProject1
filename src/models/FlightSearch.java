@@ -361,8 +361,6 @@ public class FlightSearch {
 			  .append("group by a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time, a1.arr_time ")
 			  .append("order by min(a1.price+a2.price)").toString();
 		
-		
-		  
 			SQLInitializer.executeQuery("drop table available_flights");
 			
 			return "";

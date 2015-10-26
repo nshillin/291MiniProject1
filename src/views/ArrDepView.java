@@ -74,21 +74,21 @@ public class ArrDepView {
 		lblNewLabel.setBounds(100, 87, 59, 14);
 		lblNewLabel.setText("Flight:");
 		
-		LinkedList<Sch_Flight> flightList = QueryHandler.getSingleFlights();
-		Combo flightCombo = new Combo(shell, SWT.READ_ONLY);
+		final LinkedList<Sch_Flight> flightList = QueryHandler.getSingleFlights();
+		final Combo flightCombo = new Combo(shell, SWT.READ_ONLY);
 		for (int i = 0; i < flightList.size(); i++) {
 			flightCombo.add(flightList.get(i).getFlightNumber() + " on " + flightList.get(i).getDepartureDate().toString());
 		}
 		flightCombo.select(0);
 		flightCombo.setBounds(165, 83, 250, 22);
 		
-		Combo arrdepCombo = new Combo(shell, SWT.READ_ONLY);
+		final Combo arrdepCombo = new Combo(shell, SWT.READ_ONLY);
 		arrdepCombo.add("Arrival");
 		arrdepCombo.add("Departure");
 		arrdepCombo.select(0);
 		arrdepCombo.setBounds(165, 111, 125, 22);
 		
-		DateTime flightTime = new DateTime(shell, SWT.BORDER | SWT.TIME);
+		final DateTime flightTime = new DateTime(shell, SWT.BORDER | SWT.TIME);
 		flightTime.setBounds(165, 146, 125, 27);
 		
 		Button btnRecord = new Button(shell, SWT.NONE);
