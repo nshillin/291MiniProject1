@@ -45,7 +45,10 @@ public class QueryHandler {
 
 	public static void addUser(String password) {
 		String username = User.getUser();
-		
+        String query = "insert into users values ('" + username +  "', '" + password + "' , SYSDATE)";
+		SQLInitializer.executeQuery(query);
+        query = "commit";
+		SQLInitializer.executeQuery(query);
 	}
 	
 	public static Boolean isUsername() {
@@ -185,6 +188,15 @@ public class QueryHandler {
 		LoginController.bookingView(shell);
 	}
 	
+	public static void removeBooking() {
+		try {
+			
+		}
+		catch (Exception e) {
+			
+		}
+		
+	}
 	
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
