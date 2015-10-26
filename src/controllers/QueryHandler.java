@@ -160,12 +160,17 @@ public class QueryHandler {
 		SQLInitializer.executeQuery(update);
 	}
 	
-	public static void setPassenger(String email, String name, String country) {
-		//TODO: Write this
+	public static void setPassenger(String name, String country) {
+        String query = "insert into passengers values ('" + User.getUser() +  "', '" + name + "' , '" + country + "')";
+		SQLInitializer.executeQuery(query);
 	}
 	
-	public static String setTicket(String name, String email, float paid_price) {
+	public static Integer setTicket(String name, float paid_price) {
 		//TODO: Write this
+		Integer newTicketNo = newTicketNo();
+
+        String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + country + "')";
+		SQLInitializer.executeQuery(query);
 		return "";
 	}
 	

@@ -100,8 +100,8 @@ public class BookingCreationView {
 		}
 		//Placeholder. Flight availability check goes here
 		else if (QueryHandler.isFlightAvailable(flightToBook)) {
-			QueryHandler.setPassenger(User.getUser(), nameText.getText(), countryText.getText());
-			String ticketNo = QueryHandler.setTicket(nameText.getText(), User.getUser(), paid_price);
+			QueryHandler.setPassenger(nameText.getText(), countryText.getText());
+			Integer ticketNo = QueryHandler.setTicket(nameText.getText(), flightToBook.getPrice());
 		}
 	}
 }
