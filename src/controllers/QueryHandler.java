@@ -9,6 +9,10 @@ import org.eclipse.swt.widgets.Shell;
 import models.Booking;
 import models.User;
 import views.BookingView;
+import views.LoginView;
+import views.MainView;
+
+import static java.lang.System.*;
 
 public class QueryHandler {
 	
@@ -20,11 +24,12 @@ public class QueryHandler {
 	public static Boolean authenticateUser(String password) {
 		// Checks SQL for user
 		String username = User.getUser();
-		String query = "select pass from users where email = " + username;
+		String query = "select pass from users where email = '"+ username + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			while (rs.next())
 			{
+				LoginView.errorMessage(rs.getString("pass"));
 				 if (rs.getString("pass").equals(password)) {
 					 return true;
 				 }
@@ -52,6 +57,7 @@ public class QueryHandler {
 			while (rs.next())
 			{
 				 if (rs.getString("email").equals(username)) {
+					 
 					 return true;
 				 }
 				
