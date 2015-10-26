@@ -179,14 +179,14 @@ public class FlightSearch {
 	private static String getPotentialAirportMatchesQuery(Connection connection, String textToFind)
 	{
 		String selectStatement = null;
-		if(isPotentialAirportCode(textToFind))
+		/**if(isPotentialAirportCode(textToFind))
 		{
 			selectStatement = "SELECT acode, name FROM airports WHERE UPPER(acode) = " + textToFind.toUpperCase();
 		} 
 		else 
-		{ 
+		{ **/
 			selectStatement = "SELECT acode, name, city FROM airports WHERE UPPER(name) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(city) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(acode) LIKE '" + textToFind.toUpperCase() + "%'";
-		}
+		//}
 		return selectStatement;
 	}
 
@@ -204,19 +204,21 @@ public class FlightSearch {
 		try
 		{
 			ResultSet resultSet = SQLInitializer.executeQuery(statement);
-			while(resultSet.next())
-			{
-				final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH);
-				newItem.setText(String.format("%s, %s , %s", resultSet.getString("acode"), resultSet.getString("name"), resultSet.getString("city")));
-				newItem.addListener(SWT.Selection, new Listener()
+			if(resultSet != null){
+				while(resultSet.next())
 				{
-					@Override
-					public void handleEvent(Event arg0)
+					final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH);
+					newItem.setText(String.format("%s, %s , %s", resultSet.getString("acode"), resultSet.getString("name"), resultSet.getString("city")));
+					newItem.addListener(SWT.Selection, new Listener()
 					{
-						int index = newItem.getText().indexOf(",");
-						mainTextBox.setText(newItem.getText().substring(0, index));
-					}
-				});
+						@Override
+						public void handleEvent(Event arg0)
+						{
+							int index = newItem.getText().indexOf(",");
+							mainTextBox.setText(newItem.getText().substring(0, index));
+						}
+					});
+				}
 			}
 		} 
 		catch (SQLException ex)
@@ -251,7 +253,10 @@ public class FlightSearch {
 			{
 				Flight flight = directFlightResults.get(i);
 				TableItem tableItem = new TableItem(table, SWT.NONE);
-				
+				for (int j = 1; j <= flight.getColumnNumber(); j++) {
+	                // Populate the item
+	                tableItem.setText(i - 1, flight.getColumnItem(i));
+	            }
 			}
 		}
 	}
