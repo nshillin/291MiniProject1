@@ -106,17 +106,18 @@ public class SearchForFlightsView {
 			@Override
 			public void handleEvent(Event event) {
 				String text = arrivingCity.getText();
-				//disposeOfSubMenu(suggestDepartureCity);
+				disposeOfAutoCompleteItems(suggestDepartureCity);
 				if (text.length() == 0) 
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
-					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity);
+					createMenuItems(suggestDepartureCity, text.length());
+					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
 		});
-		/*
+		
 		final Table table = new Table(suggestDepartureCity.getShell(), SWT.SINGLE);
 		arrivingCity.addListener(SWT.KeyDown, new Listener() {
 			@Override
@@ -124,7 +125,15 @@ public class SearchForFlightsView {
 			{
 				disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
 			}
-		});**/
+		});
+		
+		arrivingCity.addListener(SWT.CR, new Listener() {
+			@Override
+			public void handleEvent(Event event) 
+			{
+				disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
+			}
+		});
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
@@ -158,6 +167,28 @@ public class SearchForFlightsView {
 		errorMessage.setAlignment(SWT.CENTER);
 		errorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errorMessage.setBounds(86, 204, 277, 14);
+	}
+	
+	private void createMenuItems(Menu menuToAddTo, int length){
+		for(int i = 0; i < length; i++){
+			final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH, i);
+			newItem.setText(String.format("%d", i));
+			newItem.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					//what to do when menu is subsequently selected.
+					
+				}
+			});
+		}
+	}
+	
+	private void disposeOfAutoCompleteItems(Menu popUpMenu)
+	{
+		MenuItem[] list = popUpMenu.getItems();
+		for(int i = 0; i < list.length; i++)
+		{
+			list[i].dispose();
+		}
 	}
 	
 	private void disposeOfSubMenu(Menu popupShell, Event event, Table table, Text text)
