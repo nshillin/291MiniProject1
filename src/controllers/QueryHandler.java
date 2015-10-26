@@ -51,7 +51,7 @@ public class QueryHandler {
 	public static Boolean isUsername() {
 		//Checks if username already exists
 		String username = User.getUser();
-		String query = "select email from users where email = " + username;
+		String query = "select email from users where email = '" + username + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			while (rs.next())
@@ -72,7 +72,7 @@ public class QueryHandler {
 	
 	public static Boolean isAirlineAgent() {
 		String username = User.getUser();
-		String query = "select email from airline_agents where email = " + username;
+		String query = "select email from airline_agents where email = '" + username + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			while (rs.next())
@@ -114,7 +114,7 @@ public class QueryHandler {
 		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price"
 				+ "from bookings, tickets"
 				+ "where bookings.tno = tickets.tno"
-				+ "and email = " + username;
+				+ "and email = '" + username + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		LinkedList<Booking> bookingList = new LinkedList<Booking>();
 		try {
@@ -195,7 +195,7 @@ public class QueryHandler {
 		try {
 			Integer tno = booking.getTicketNumber();
 			String update = "DELETE FROM Bookings "
-					+ "where tno = " + tno.toString();
+					+ "where tno = '" + tno.toString() + "'";
 			SQLInitializer.executeUpdate(update);
 			
 			update = "DELETE FROM Tickets "
