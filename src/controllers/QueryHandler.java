@@ -95,6 +95,7 @@ public class QueryHandler {
 			{
 				return rs.getInt("tnonew");
 			}
+			rs.close();
 		}
 		catch (Exception e) {
 			
@@ -134,10 +135,23 @@ public class QueryHandler {
 		return bookingList;
 	}
 	
-	public static Boolean isSeatTaken(int flightno, Date depDate, String seat)
+	public static Boolean isSeatAvailable(int flightno, Date depDate, String seat)
 	{
-		//TODO: Write this
-		//Assumptions made: seat is 3 characters or less
+		String query = "SELECT COUNT(tno) AS num FROM bookings "
+				+ "WHERE flightno = " + flightno
+				+ " AND dep_date = " + depDate
+				+ " AND seat = " + seat;
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			if (rs.next())
+			{
+				return (rs.getInt("num") == 0);
+			}
+			rs.close();
+		}
+		catch (Exception e) {
+			
+		}
 		return false;
 	}
 	
