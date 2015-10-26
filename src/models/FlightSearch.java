@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
@@ -166,34 +168,18 @@ public class FlightSearch {
 	 * @param textToFind : Text that the user entered which we're searching for in the database
 	 * @return the query that should return airports that match the entered text
 	 */
-	private static PreparedStatement getPotentialAirportMatchesQuery(Connection connection, String textToFind)
+	private static String getPotentialAirportMatchesQuery(Connection connection, String textToFind)
 	{
-		PreparedStatement statement = null;
-		if(isPotentialAirportCode(textToFind))
+		String selectStatement = null;
+		/*if(isPotentialAirportCode(textToFind))
 		{
-			try
-			{
-				statement = connection.prepareStatement(String.format("SELECT acode, name FROM airports WHERE acode = ? "));
-				statement.setString(1, textToFind);
-			} catch (SQLException ex) {
-				
-			}
+			selectStatement = "SELECT acode, name FROM airports WHERE UPPER(acode) = " + textToFind.toUpperCase();
 		} 
 		else 
-		{
-			try
-			{
-				statement = connection.prepareStatement(String.format("SELECT acode, name FROM airports WHERE name LIKE '%'?'%' OR city LIKE '%'?'%'"));
-				statement.setString(1, textToFind);
-				statement.setString(2, textToFind);
-			} 
-			catch (SQLException ex) 
-			{
-				
-			}
-		}
-		
-		return statement;
+		{ **/
+		selectStatement = "SELECT acode, name, city FROM airports WHERE UPPER(name) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(city) LIKE '" + textToFind.toUpperCase() + "%' OR UPPER(acode) LIKE '" + textToFind.toUpperCase() + "%'";
+		//}
+		return selectStatement;
 	}
 
 /**
@@ -206,15 +192,22 @@ public class FlightSearch {
 		// TODO Auto-generated method stub
 		List<MenuItem> possibleMatches = new ArrayList<MenuItem>();
 		Connection connection = SQLInitializer.getDatabaseConnection();
-		PreparedStatement statement = getPotentialAirportMatchesQuery(connection, text);
+		String statement = getPotentialAirportMatchesQuery(connection, text);
 		try
 		{
-			ResultSet resultSet = statement.executeQuery();
+			ResultSet resultSet = SQLInitializer.executeQuery(statement);
 			while(resultSet.next())
 			{
-				MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH);
-				newItem.setText(String.format("%s , %s", resultSet.getString("acode"), resultSet.getString("name")));
-				possibleMatches.add(newItem);
+				final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH);
+				newItem.setText(String.format("%s , %s , %s", resultSet.getString("acode"), resultSet.getString("name"), resultSet.getString("city")));
+				newItem.addListener(SWT.Selection, new Listener()
+				{
+					@Override
+					public void handleEvent(Event arg0)
+					{
+						newItem.dispose();
+					}
+				});
 			}
 		} 
 		catch (SQLException ex)

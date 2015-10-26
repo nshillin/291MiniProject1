@@ -152,6 +152,7 @@ public class SQLInitializer {
 	
 	public static ResultSet executeQuery(String query) {
 		try {
+			//Must re-establish the connection for every query otherwise a ConnectionClosed exception is thrown when creating a statement.
 			connection = DriverManager.getConnection(m_url, username, password);
 			Statement stmt = connection.createStatement(
 					ResultSet.TYPE_SCROLL_SENSITIVE, 

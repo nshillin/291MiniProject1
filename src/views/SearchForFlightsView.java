@@ -3,11 +3,13 @@ package views;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import controllers.LoginController;
 import models.FlightSearch;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,16 +106,25 @@ public class SearchForFlightsView {
 			@Override
 			public void handleEvent(Event event) {
 				String text = arrivingCity.getText();
+				//disposeOfSubMenu(suggestDepartureCity);
 				if (text.length() == 0) 
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity);
 					suggestDepartureCity.setVisible(true);
-					//This is my code, just commented out because it won't work without database connection.
-					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity);
 				}
 			}
 		});
+		/*
+		final Table table = new Table(suggestDepartureCity.getShell(), SWT.SINGLE);
+		arrivingCity.addListener(SWT.KeyDown, new Listener() {
+			@Override
+			public void handleEvent(Event event) 
+			{
+				disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
+			}
+		});**/
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
@@ -147,6 +158,32 @@ public class SearchForFlightsView {
 		errorMessage.setAlignment(SWT.CENTER);
 		errorMessage.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		errorMessage.setBounds(86, 204, 277, 14);
+	}
+	
+	private void disposeOfSubMenu(Menu popupShell, Event event, Table table, Text text)
+	{
+		switch (event.keyCode) {
+		case SWT.ARROW_DOWN:
+			int index = (table.getSelectionIndex() + 1) % table.getItemCount();
+			table.setSelection(index);
+			event.doit = false;
+			break;
+		case SWT.ARROW_UP:
+			index = table.getSelectionIndex() - 1;
+			if (index < 0) index = table.getItemCount() - 1;
+			table.setSelection(index);
+			event.doit = false;
+			break;
+		case SWT.CR:
+			if (popupShell.isVisible() && table.getSelectionIndex() != -1) {
+				text.setText(table.getSelection()[0].getText());
+				popupShell.setVisible(false);
+			}
+			break;
+		case SWT.ESC:
+			popupShell.setVisible(false);
+			break;
+	}
 	}
 	
 	/**
