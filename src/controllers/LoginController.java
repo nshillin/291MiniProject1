@@ -116,7 +116,7 @@ public class LoginController {
 	
 	public static void register(String username, String password, Shell shell) {
 		User.setUser(username);
-		if (QueryHandler.isUsername()) {
+		if (!QueryHandler.isUsername()) {
 			QueryHandler.addUser(password);
 			User.setAirlineAgent(QueryHandler.isAirlineAgent());
 			menuView(shell);

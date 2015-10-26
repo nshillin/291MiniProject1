@@ -96,7 +96,7 @@ public class ArrDepView {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Sch_Flight flight = flightList.get(flightCombo.getSelectionIndex());
-				if (arrdepCombo.getText().equals("Arrival")) {
+			/*	if (arrdepCombo.getText().equals("Arrival")) {
 					flight.getAct_arr_time().setHours(flightTime.getHours());
 					flight.getAct_arr_time().setMinutes(flightTime.getMinutes());
 					flight.getAct_arr_time().setSeconds(flightTime.getSeconds());
@@ -104,7 +104,7 @@ public class ArrDepView {
 					flight.getAct_dep_time().setHours(flightTime.getHours());
 					flight.getAct_dep_time().setMinutes(flightTime.getMinutes());
 					flight.getAct_dep_time().setSeconds(flightTime.getSeconds());
-				}
+				} */
 				LoginController.recordArrDep(shell, flight);
 			}
 		});

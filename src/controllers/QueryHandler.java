@@ -59,18 +59,14 @@ public class QueryHandler {
 		try {
 			while (rs.next())
 			{
-				 if (rs.getString("email").equals(username)) {
-					 
-					 return true;
-				 }
-				
+				return true;	
 			}
 			rs.close();
 		}
 		catch (Exception e) {
 			
 		}
-		return true;
+		return false;
 	}
 	
 	public static Boolean isAirlineAgent() {

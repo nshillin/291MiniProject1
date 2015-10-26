@@ -6,8 +6,10 @@ import org.eclipse.swt.widgets.Shell;
 import controllers.LoginController;
 import controllers.QueryHandler;
 import models.Booking;
+import models.Sch_Flight;
 
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -77,6 +79,16 @@ public class BookingView {
 		backButton.setText("back");
 		backButton.setBounds(0, 0, 66, 28);
 		
+		
+		final LinkedList<Booking> bookings = QueryHandler.getBookings();
+		final Combo bookingCombo = new Combo(shell, SWT.READ_ONLY);
+		for (int i = 0; i < bookings.size(); i++) {
+			bookingCombo.add(bookings.get(i).getFlightNumber() + " on " + bookings.get(i).getDepDate().toString());
+		}
+		bookingCombo.select(0);
+		bookingCombo.setBounds(165, 83, 250, 22);
+		
+		/*
 		TableViewer tableViewer = new TableViewer(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
 		table.setHeaderVisible(true);
@@ -112,7 +124,7 @@ public class BookingView {
 		item.setText(1, "hello");
 		item.setText(2, "hello");
 		item.setText(3, "hello");
-*/
+
 	    
 	    for (int i=0; i<titles.length; i++) {
 	      table.getColumn (i).pack ();
@@ -128,5 +140,6 @@ public class BookingView {
 	    });
 	    
 	    table.setSize(table.computeSize(SWT.DEFAULT, 330));
+	    */
 	}
 }
