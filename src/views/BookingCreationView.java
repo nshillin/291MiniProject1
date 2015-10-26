@@ -14,6 +14,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import controllers.QueryHandler;
 import models.User;
+import models.Flight;
 
 public class BookingCreationView {
 
@@ -23,7 +24,7 @@ public class BookingCreationView {
 	private Label lblNewLabel_1;
 	private Label errLabel;
 	
-	private float paid_price;
+	private Flight flightToBook;
 
 	/**
 	 * Launch the application.
@@ -98,7 +99,7 @@ public class BookingCreationView {
 			errLabel.setText("Required.");
 		}
 		//Placeholder. Flight availability check goes here
-		else if (false) {
+		else if (QueryHandler.isFlightAvailable(flightToBook)) {
 			QueryHandler.setPassenger(User.getUser(), nameText.getText(), countryText.getText());
 			String ticketNo = QueryHandler.setTicket(nameText.getText(), User.getUser(), paid_price);
 		}
