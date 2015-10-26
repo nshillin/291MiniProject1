@@ -16,24 +16,31 @@ public class Flight
 	private Integer numberOfConnections;
 	private List<String> flightNumber;
 	private Time layoverTime;
+	private Float paid_price;
 	
 	private enum seatPrices{}; //need to double check if there are even different fare types
 	private enum numberOfSeatsAtPrice{};
 	
-	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, Time layover)
+	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, Time layover, Float price)
 	{
-		String flightSource = src;
-		String flightDestination = dst;
-		Date flightDepartureTime = depTime;
-		Date flightArrivalTime = arrTime;
-		List<String> flightNumber = flightNum;
-		Integer numberOfConnections = numOfConnections;
-		Time layoverTime = layover;
+		this.flightSource = src;
+		this.flightDestination = dst;
+		this.flightDepartureTime = depTime;
+		this.flightArrivalTime = arrTime;
+		this.flightNumber = flightNum;
+		this.numberOfConnections = numOfConnections;
+		this.layoverTime = layover;
+		this.paid_price = price;
 	}
 	
 	public Integer getColumnNumber()
 	{
-		return 7;
+		return 8;
+	}
+	
+	public Float getPrice()
+	{
+		return this.paid_price;
 	}
 	
 	public float getPrice()

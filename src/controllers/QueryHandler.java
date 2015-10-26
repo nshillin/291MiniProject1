@@ -168,10 +168,9 @@ public class QueryHandler {
 	public static Integer setTicket(String name, float paid_price) {
 		//TODO: Write this
 		Integer newTicketNo = newTicketNo();
-
-        //String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + country + "')";
-		//SQLInitializer.executeQuery(query);
-		return 1;
+        String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + User.getUser() + "' , '" + paid_price + "')";
+		SQLInitializer.executeQuery(query);
+		return newTicketNo;
 	}
 	
 	public static Boolean isFlightAvailable(Flight f)

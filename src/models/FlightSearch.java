@@ -289,7 +289,7 @@ public class FlightSearch {
 			{
 				List<String> flightNo = new ArrayList<String>();
 				flightNo.add(resultSet.getString("flightno"));
-				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, null);
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, null, resultSet.getFloat("price"));
 				flights.add(newFlight);
 			}
 		} 
@@ -369,7 +369,7 @@ public class FlightSearch {
 			{
 				List<String> flightNo = new ArrayList<String>();
 				flightNo.add(resultSet.getString("flightno"));
-				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, resultSet.getTime("arr_time"));
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, resultSet.getTime("arr_time"), resultSet.getFloat("price"));
 				flights.add(newFlight);
 			}
 		} catch (SQLException e){
