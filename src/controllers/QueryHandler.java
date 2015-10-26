@@ -1,5 +1,6 @@
 package controllers;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -86,7 +87,7 @@ public class QueryHandler {
 	public static int newTicketNo()
 	{
 		//Generates a new unique ticket number by incrementing the current maximum by 1.
-		String query = "select max(tno) + 1 as tnonew"
+		String query = "select max(tno) + 1 as tnonew "
 				+ "from tickets";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
@@ -131,6 +132,13 @@ public class QueryHandler {
 			
 		}
 		return bookingList;
+	}
+	
+	public static Boolean isSeatTaken(int flightno, Date depDate, String seat)
+	{
+		//TODO: Write this
+		//Assumptions made: seat is 3 characters or less
+		return false;
 	}
 	
 	public static void removeBooking(Booking booking, Shell shell) {
