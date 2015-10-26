@@ -188,16 +188,6 @@ public class QueryHandler {
 		LoginController.bookingView(shell);
 	}
 	
-	public static void removeBooking() {
-		try {
-			
-		}
-		catch (Exception e) {
-			
-		}
-		
-	}
-	
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
 		ResultSet rs = SQLInitializer.executeQuery(query);
