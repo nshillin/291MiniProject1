@@ -187,8 +187,9 @@ public class QueryHandler {
 	}
 	
 	public static void updateLastLogin() {
-		String update = "UPDATE users SET last_login = CURDATE() "
+		String update = "UPDATE users SET last_login = SYSDATE "
 				+ "WHERE email = '" + User.getUser() + "'";
+		SQLInitializer.executeQuery(update);
 	}
 	
 	public static void exampleQuery() {
