@@ -11,7 +11,9 @@ import controllers.LoginController;
 import models.FlightSearch;
 
 import java.awt.Rectangle;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -91,8 +93,8 @@ public class SearchForFlightsView {
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
-					MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), departingCity);
-					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
+					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), departingCity);
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
@@ -126,8 +128,8 @@ public class SearchForFlightsView {
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
-					MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
-					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
+					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
@@ -221,13 +223,14 @@ public class SearchForFlightsView {
 	 */
 	private void createFlightSearchCriteria() 
 	{
-		String depCity = departingCity.getSelectionText();
-		String arrCity = arrivingCity.getSelectionText();
+		String depCity = departingCity.getText().toUpperCase();
+		String arrCity = arrivingCity.getText().toUpperCase();
 		int depDay = dateTime.getDay();
 		int depMonth = dateTime.getMonth();
 		int depYear = dateTime.getYear();
 		Boolean roundTrip = btnRoundTrip.getEnabled();
-		Date depDate = new Date(depYear, depMonth, depDay);
+		Calendar depDate = Calendar.getInstance();
+		depDate.set(depYear, depMonth, depDay);
 		FlightSearch currentSearch = FlightSearch.getInstance();
 		currentSearch.createFlightSearch(depDate, depCity, arrCity, roundTrip);
 	}

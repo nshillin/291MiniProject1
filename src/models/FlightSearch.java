@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class FlightSearch {
 	
 	private static FlightSearch instance = null;
 	private String airportCode;
-	private Date departureDate;
+	private Calendar departureDate;
 	private String departureCity;
 	private String arrivalCity;
 	private Boolean roundTrip;
@@ -106,7 +107,7 @@ public class FlightSearch {
 	 * @param arrCity
 	 * @param rndTrip
 	 */
-	public void createFlightSearch(Date depDate, String depCity, String arrCity, Boolean rndTrip)
+	public void createFlightSearch(Calendar depDate, String depCity, String arrCity, Boolean rndTrip)
 	{
 		departureDate = depDate;
 		departureCity = depCity;
@@ -118,7 +119,7 @@ public class FlightSearch {
 	 * Return the desired departure date of the flight search.
 	 * @return
 	 */
-	public Date getDepartureDate()
+	public Calendar getDepartureDate()
 	{
 		return departureDate;
 	}
@@ -239,7 +240,8 @@ public class FlightSearch {
 	{
 		// TODO Auto-generated method stub
 		String directFlightQuery = "";
-		if(FlightSearch.getInstance().getSortByConnections())
+		FlightSearch search = FlightSearch.getInstance();
+		if(search.getSortByConnections())
 		{
 			directFlightQuery = findDirectFlightsQuery(FlightSearch.getInstance());
 		} 
@@ -279,9 +281,9 @@ public class FlightSearch {
 			PreparedStatement statement = connection.prepareStatement(directFlightQuery);
 			statement.setString(1, search.getDepartureCity());
 			statement.setString(2, search.getArrivalCity());
-			statement.setInt(3, search.getDepartureDate().getDay());
-			statement.setInt(4, search.getDepartureDate().getMonth());
-			statement.setInt(5, search.getDepartureDate().getYear());
+			statement.setInt(3, search.getDepartureDate().get(Calendar.DAY_OF_MONTH));
+			statement.setInt(4, search.getDepartureDate().get(Calendar.MONTH));
+			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));
 			ResultSet resultSet = statement.executeQuery();
 			while(resultSet.next())
 			{
@@ -306,9 +308,9 @@ public class FlightSearch {
 			statement = connection.prepareStatement(flightsQuery);
 			statement.setString(1, search.getDepartureCity());
 			statement.setString(2, search.getArrivalCity());
-			statement.setInt(3, search.getDepartureDate().getDay());
-			statement.setInt(4, search.getDepartureDate().getMonth());
-			statement.setInt(5, search.getDepartureDate().getYear());
+			statement.setInt(3, search.getDepartureDate().get(Calendar.DAY_OF_MONTH));
+			statement.setInt(4, search.getDepartureDate().get(Calendar.MONTH));
+			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));
 		} 
 		catch (SQLException ex)
 		{
@@ -357,7 +359,7 @@ public class FlightSearch {
 				.append("min(a1.price+a2.price) as price")
 			  .append("from available_flights a1, available_flights a2 ")
 			  .append("where a1.dst=a2.src and a1.arr_time +1.5/24 <=a2.dep_time and a1.arr_time +5/24 >=a2.dep_time ")
-			  .append("and a1.src = '" + search.getDepartureCity() + "' and a2.dst = '" + search.getArrivalCity() + "'  and extract(day from a1.dep_date) = " + search.getDepartureDate().getDay() + " and extract(month from a1.dep_date) = " + search.getDepartureDate().getMonth() + " and extract(year from a1.dep_date) = " + search.getDepartureDate().getYear() + " ")
+			  .append("and a1.src = '" + search.getDepartureCity() + "' and a2.dst = '" + search.getArrivalCity() + "'  and extract(day from a1.dep_date) = " + search.getDepartureDate().get(Calendar.DAY_OF_MONTH) + " and extract(month from a1.dep_date) = " + search.getDepartureDate().get(Calendar.MONTH) + " and extract(year from a1.dep_date) = " + search.getDepartureDate().get(Calendar.YEAR) + " ")
 			  .append("group by a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time, a1.arr_time ")
 			  .append("order by min(a1.price+a2.price)").toString();
 		try{

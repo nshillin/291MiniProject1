@@ -36,6 +36,11 @@ public class Flight
 		return 7;
 	}
 	
+	public float getPrice()
+	{
+		return 1.0f;
+	}
+	
 	public String getColumnItem(int columnNumber)
 	{
 		String returnColumnValue = "";
