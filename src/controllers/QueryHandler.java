@@ -109,9 +109,9 @@ public class QueryHandler {
 	
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
-		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price"
-				+ "from bookings, tickets"
-				+ "where bookings.tno = tickets.tno"
+		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price "
+				+ "from bookings, tickets "
+				+ "where bookings.tno = tickets.tno "
 				+ "and email = '" + username + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		LinkedList<Booking> bookingList = new LinkedList<Booking>();
@@ -144,8 +144,8 @@ public class QueryHandler {
 		int limit = 0;
 		int numBookings = 0;
 		String query = "SELECT limit FROM flight_fares "
-				+ "WHERE flightno = " + flightno
-				+ " AND fare = " + fare;
+				+ "WHERE flightno = '" + flightno
+				+ "' AND fare = '" + fare + "'";
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			if (rs.next())
@@ -156,8 +156,8 @@ public class QueryHandler {
 		}
 		catch (Exception e) { }
 		query = "SELECT COUNT(tno) AS numBookings FROM bookings "
-				+ "WHERE flightno = " + flightno
-				+ " AND fare = " + fare;
+				+ "WHERE flightno = '" + flightno
+				+ "' AND fare = '" + fare + "'";
 		try {
 			if (rs.next())
 			{
@@ -183,6 +183,11 @@ public class QueryHandler {
 			
 		}
 		LoginController.bookingView(shell);
+	}
+	
+	public static void updateLastLogin() {
+		String update = "UPDATE users SET last_login = CURDATE() "
+				+ "WHERE email = '" + User.getUser() + "'";
 	}
 	
 	

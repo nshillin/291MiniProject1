@@ -31,6 +31,8 @@ public class LoginController {
 	}
 	
 	public static void logout(Shell shell) {
+		QueryHandler.updateLastLogin();
+		
 		User.setUser(null);
 		User.setAirlineAgent(false);
 		SQLInitializer.logout();
