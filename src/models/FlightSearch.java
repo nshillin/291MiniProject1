@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Text;
 
 import controllers.SQLInitializer;
 
@@ -188,7 +189,7 @@ public class FlightSearch {
  * @param menuToAddTo : The menu we are adding items to
  * @return the results from the database of potential city matches to the entered text
  */
-	public static List<MenuItem> findPossibleAirportDatabaseMatches(String text, Menu menuToAddTo) {
+	public static List<MenuItem> findPossibleAirportDatabaseMatches(String text, Menu menuToAddTo, final Text mainTextBox) {
 		// TODO Auto-generated method stub
 		List<MenuItem> possibleMatches = new ArrayList<MenuItem>();
 		Connection connection = SQLInitializer.getDatabaseConnection();
@@ -205,7 +206,7 @@ public class FlightSearch {
 					@Override
 					public void handleEvent(Event arg0)
 					{
-						newItem.dispose();
+						mainTextBox.setText(newItem.getText());
 					}
 				});
 			}

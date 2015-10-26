@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 
 import controllers.LoginController;
 import models.FlightSearch;
@@ -81,6 +82,21 @@ public class SearchForFlightsView {
 		
 		Menu SuggestDepartureCity = new Menu(departingCity);
 		departingCity.setMenu(SuggestDepartureCity);
+		departingCity.addListener(SWT.Modify, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				String text = departingCity.getText();
+				disposeOfAutoCompleteItems(suggestDepartureCity);
+				if (text.length() == 0) 
+				{
+					suggestDepartureCity.setVisible(false);
+				} else {
+					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
+					suggestDepartureCity.setVisible(true);
+				}
+			}
+		});
 		
 		Label lblFlight = new Label(shell, SWT.NONE);
 		lblFlight.setBounds(149, 17, 60, 14);
@@ -99,7 +115,7 @@ public class SearchForFlightsView {
 		
 		arrivingCity = new Text(shell, SWT.BORDER);
 		arrivingCity.setBounds(149, 151, 164, 31);
-		
+		final Tree tree = new Tree(shell, SWT.BORDER| SWT.MULTI);
 		suggestDepartureCity = new Menu(arrivingCity);
 		arrivingCity.setMenu(suggestDepartureCity);
 		arrivingCity.addListener(SWT.Modify, new Listener() {
@@ -111,19 +127,41 @@ public class SearchForFlightsView {
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
-					createMenuItems(suggestDepartureCity, text.length());
-					//List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity);
+					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
 		});
 		
-		final Table table = new Table(suggestDepartureCity.getShell(), SWT.SINGLE);
+		/**final Table table = new Table(suggestDepartureCity.getShell(), SWT.SINGLE);
 		arrivingCity.addListener(SWT.KeyDown, new Listener() {
 			@Override
 			public void handleEvent(Event event) 
 			{
-				disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
+				//disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
+				switch (event.keyCode) {
+				case SWT.ARROW_DOWN:
+					int index = (table.getSelectionIndex() + 1) % table.getItemCount();
+					table.setSelection(index);
+					event.doit = false;
+					break;
+				case SWT.ARROW_UP:
+					index = table.getSelectionIndex() - 1;
+					if (index < 0) index = table.getItemCount() - 1;
+					table.setSelection(index);
+					event.doit = false;
+					break;
+				case SWT.CR:
+					if (suggestDepartureCity.isVisible() && table.getSelectionIndex() != -1) {
+						arrivingCity.setText(table.getSelection()[0].getText());
+						suggestDepartureCity.setVisible(false);
+					}
+					break;
+				case SWT.ESC:
+					suggestDepartureCity.setVisible(false);
+					break;
+				}
 			}
 		});
 		
@@ -133,7 +171,7 @@ public class SearchForFlightsView {
 			{
 				disposeOfSubMenu(suggestDepartureCity, event, table, arrivingCity);
 			}
-		});
+		});**/
 		
 		btnSearchForFlights = new Button(shell, SWT.NONE);
 		btnSearchForFlights.addSelectionListener(new SelectionAdapter() {
@@ -169,17 +207,20 @@ public class SearchForFlightsView {
 		errorMessage.setBounds(86, 204, 277, 14);
 	}
 	
-	private void createMenuItems(Menu menuToAddTo, int length){
+	private MenuItem[] createMenuItems(Menu menuToAddTo, int length, final Text text){
 		for(int i = 0; i < length; i++){
 			final MenuItem newItem = new MenuItem(menuToAddTo, SWT.PUSH, i);
 			newItem.setText(String.format("%d", i));
-			newItem.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					//what to do when menu is subsequently selected.
-					
+			newItem.addListener(SWT.Selection, new Listener()
+			{
+				@Override
+				public void handleEvent(Event arg0)
+				{
+					text.setText(newItem.getText());
 				}
 			});
 		}
+		return menuToAddTo.getItems();
 	}
 	
 	private void disposeOfAutoCompleteItems(Menu popUpMenu)
