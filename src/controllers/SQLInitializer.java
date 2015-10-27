@@ -18,7 +18,7 @@ public class SQLInitializer {
     
     private static Class drvClass;
     
-    private static Connection connection;
+    public static Connection connection;
     
     public static String SUCCESS_MESSAGE = "Success";
 
