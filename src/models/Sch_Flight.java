@@ -3,6 +3,7 @@ package models;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+// Stores info about individual scheduled flights
 public class Sch_Flight {
 	private String flightNumber;
 	private Date departureDate;

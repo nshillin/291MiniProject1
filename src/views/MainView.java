@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Button;
 
 import org.eclipse.swt.SWT;
 
+// View with options to login or register
 public class MainView {
 
 	public static Shell shell;

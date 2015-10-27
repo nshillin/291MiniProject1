@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+// View used to login to SQL and flight system
 public class LoginView {
 	private Text passwordText;
 	private Text usernameText;

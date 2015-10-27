@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Label;
 
+// View to give users all of their options including search for flights and view bookings
 public class MenuView {
 
 	protected Shell shell;

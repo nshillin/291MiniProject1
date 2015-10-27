@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Text;
 
+// View to change arr and dep times
 public class ArrDepView {
 
 	protected Shell shell;

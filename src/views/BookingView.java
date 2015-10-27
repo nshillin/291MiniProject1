@@ -14,19 +14,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 
-import java.sql.Date;
+
 import java.util.LinkedList;
 
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Label;
 
+// Displays all of user's bookings
 public class BookingView {
 
 	protected Shell shell;
@@ -115,59 +109,5 @@ public class BookingView {
 			lblBookings.setText("You have no bookings");
 			btnMoreInfo.setEnabled(false);
 		}
-		
-		/*
-		TableViewer tableViewer = new TableViewer(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
-		table = tableViewer.getTable();
-		table.setHeaderVisible(true);
-		table.setBounds(72, 21, 330, 227);
-		String[] titles = { "Ticket #", "Passenger", "Dep Date", "Price" };
-	    for (int i = 0; i < titles.length; i++) {
-	      TableColumn column = new TableColumn(table, SWT.NONE);
-	      column.setText(titles[i]);
-	    }
-	    
-	    LinkedList<Booking> bookings = QueryHandler.getBookings();
-	    if (bookings == null || bookings.size() == 0) {
-	    	Label lblNewLabel = new Label(shell, SWT.NONE);
-		    lblNewLabel.setAlignment(SWT.CENTER);
-		    lblNewLabel.setBounds(105, 0, 229, 14);
-		    lblNewLabel.setText("You have no bookings");
-	    }
-	    else {
-	    	 for (int i = 0; i < bookings.size(); i++) {
-	    		 TableItem item = new TableItem(table, SWT.NONE);
-	    		 Booking booking = bookings.get(i);
-	    		 Integer ticketNumber = booking.getTicketNumber();	      
-	    		 Float price = (float) booking.getTicketNumber();
-	   	      
-	    		item.setText(0, ticketNumber.toString());
-	   	      	item.setText(1, booking.getpName());
-	   	      	item.setText(2, booking.getDepDate().toString());
-	   	      	item.setText(3, "$"+price.toString());
-	   	    }
-	    }
-		TableItem item = new TableItem(table, SWT.NONE);
-	/*	item.setText(0, "hello");
-		item.setText(1, "hello");
-		item.setText(2, "hello");
-		item.setText(3, "hello");
-
-	    
-	    for (int i=0; i<titles.length; i++) {
-	      table.getColumn (i).pack ();
-	    }     
-	    
-	    tableViewer.addDoubleClickListener(new IDoubleClickListener() {
-
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				// TODO Auto-generated method stub
-				Integer position = table.getSelectionIndex();
-			}
-	    });
-	    
-	    table.setSize(table.computeSize(SWT.DEFAULT, 330));
-	    */
 	}
 }

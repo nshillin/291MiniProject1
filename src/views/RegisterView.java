@@ -13,6 +13,7 @@ import controllers.LoginController;
 import controllers.QueryHandler;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+// View used to register new user
 public class RegisterView {
 	private Text passwordText;
 	private Text usernameText;

@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Shell;
 import controllers.LoginController;
 import controllers.QueryHandler;
 import models.Booking;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 
+//Displays info about specific booking
 public class IndividualBookingView {
 
 	protected Shell shell;

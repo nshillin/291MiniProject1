@@ -2,8 +2,8 @@ package models;
 
 import java.sql.Date;
 
+// Stores booking information
 public class Booking {
-	//ticket number, the passenger name, the departure date and the price
 	private Integer ticketNumber;
 	private String flightNumber;
 	private String fare;

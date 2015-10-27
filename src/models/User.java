@@ -1,5 +1,6 @@
 package models;
 
+// Stores basic user info
 public class User {
 	private static String username;
 	private static Boolean airlineAgent = false;
