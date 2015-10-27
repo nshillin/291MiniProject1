@@ -97,8 +97,7 @@ public class BookingView {
 		btnMoreInfo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Integer position = table.getSelectionIndex();
-				Booking booking  = bookings.get(position);
+				Booking booking  = bookings.get(bookingCombo.getSelectionIndex());
 				LoginController.indBookingView(shell, booking);
 			}
 		});
