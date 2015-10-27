@@ -119,8 +119,8 @@ public class RegisterView {
 		else if (passwordText.getText().isEmpty()) {
 			errorMessage("No password entered.");
 		}
-		else if (passwordText.getText().length() > 4) {
-			errorMessage("Password too long. Must be 4 characters or less.");
+		else if (passwordText.getText().length() != 4) {
+			errorMessage("Password must exactly be 4 characters.");
 		}
 		else if  (!password.equals(cnfrmPasswordText.getText())) {
 			errorMessage("Passwords do not match.");
