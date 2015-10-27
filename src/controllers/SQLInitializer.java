@@ -35,7 +35,7 @@ public class SQLInitializer {
 		} 
 		try {
 			connection = DriverManager.getConnection(m_url, username, password);
-			connection.close();
+			//connection.close();
 		} catch(Exception e) {
 			return "SQLException: " + e.getMessage();
 		}
@@ -43,7 +43,8 @@ public class SQLInitializer {
 	}
 	
 	public static void logout() {
-		try {
+		try 
+		{
 			connection.close();
 		}
 		catch (Exception e) {
@@ -55,7 +56,7 @@ public class SQLInitializer {
 	public static ResultSet executeQuery(String query) {
 		try {
 			//Must re-establish the connection for every query otherwise a ConnectionClosed exception is thrown when creating a statement.
-			connection = DriverManager.getConnection(m_url, username, password);
+			//connection = DriverManager.getConnection(m_url, username, password);
 			Statement stmt = connection.createStatement(
 					ResultSet.TYPE_SCROLL_SENSITIVE, 
 					ResultSet.CONCUR_UPDATABLE);
@@ -73,7 +74,7 @@ public class SQLInitializer {
 	public static void closeConnection()
 	{
 		try{
-			connection.close();
+			//connection.close();
 		} catch (Exception e){
 			String mess = e.getMessage();
 		}
@@ -84,7 +85,7 @@ public class SQLInitializer {
 		try 
 		{
 			//Must re-establish the connection for every query otherwise a ConnectionClosed exception is thrown when creating a statement.
-			connection = DriverManager.getConnection(m_url, username, password);
+			//connection = DriverManager.getConnection(m_url, username, password);
 			Statement stmt = connection.createStatement();
 		    stmt.executeUpdate(update);
 		    stmt.close();

@@ -34,11 +34,9 @@ public class LoginController {
 	
 	// Logs user out, updates last login, returns to mainview
 	public static void logout(Shell shell) {
-		QueryHandler.updateLastLogin();
-		
+		QueryHandler.updateLastLogin();		
 		User.setUser(null);
 		User.setAirlineAgent(false);
-		SQLInitializer.logout();
 		closeShell(shell);
 		MainView.main(null);
 	}
