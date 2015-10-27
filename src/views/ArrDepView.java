@@ -86,12 +86,12 @@ public class ArrDepView {
 		flightCombo.setBounds(165, 83, 250, 22);
 		
 		final Combo arrdepCombo = new Combo(shell, SWT.READ_ONLY);
-		arrdepCombo.add("Arrival");
 		arrdepCombo.add("Departure");
+		arrdepCombo.add("Arrival");
 		arrdepCombo.select(0);
 		arrdepCombo.setBounds(165, 111, 125, 22);
 		
-		final DateTime flightTime = new DateTime(shell, SWT.BORDER | SWT.TIME);
+		final DateTime flightTime = new DateTime(shell, SWT.BORDER | SWT.DATE);
 		flightTime.setBounds(165, 146, 125, 27);
 		
 		Button btnRecord = new Button(shell, SWT.NONE);
@@ -99,17 +99,13 @@ public class ArrDepView {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Sch_Flight flight = flightList.get(flightCombo.getSelectionIndex());
-				if (arrdepCombo.getText().equals("Arrival")) {
-					Timestamp arr = flight.getAct_arr_time();
-					@SuppressWarnings("deprecation")
-					Timestamp new_arr_time = new Timestamp(arr.getYear(), arr.getMonth(), 
-							arr.getDate(), flightTime.getHours(), flightTime.getMinutes(), flightTime.getSeconds(), 0);
+				if (arrdepCombo.getSelectionIndex() == 1) {
+					Date arr = flight.getAct_arr_time();
+					Date new_arr_time = new Date(flightTime.getYear(), flightTime.getMonth(), flightTime.getDay());
 					flight.setAct_arr_time(new_arr_time);
 				} else {
-					Timestamp dep = flight.getAct_dep_time();
-					@SuppressWarnings("deprecation")
-					Timestamp new_dep_time = new Timestamp(dep.getYear(), dep.getMonth(), 
-							dep.getDate(), flightTime.getHours(), flightTime.getMinutes(), flightTime.getSeconds(), 0);
+					Date dep = flight.getAct_dep_time();
+					Date new_dep_time = new Date(flightTime.getYear(), flightTime.getMonth(), flightTime.getDay());
 					flight.setAct_dep_time(new_dep_time);
 				} 
 				LoginController.recordArrDep(shell, flight);

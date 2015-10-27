@@ -231,8 +231,8 @@ public class QueryHandler {
 				Sch_Flight flight = new Sch_Flight();
 				flight.setFlightNumber(rs.getString("flightno"));
 				flight.setDepartureDate(rs.getDate("dep_date"));
-				flight.setAct_arr_time(rs.getTimestamp("act_arr_time"));
-				flight.setAct_dep_time(rs.getTimestamp("act_dep_time"));
+				flight.setAct_arr_time(rs.getDate("act_arr_time"));
+				flight.setAct_dep_time(rs.getDate("act_dep_time"));
 				flightList.add(flight);
 			}
 			rs.close();
@@ -289,13 +289,21 @@ public class QueryHandler {
 
 	// Updates a flight's act_arr_time and act_dep_time
 	public static void updateFlight(Sch_Flight flight) {
-		Integer newTicketNo = newTicketNo();
-        String query = "update sch_flights "
-        		+ "set act_dep_time = " + flight.getAct_dep_time().toString() 
-        		+", act_arr_time = " + flight.getAct_arr_time().toString() +" "
-        		+ "where flightno = '"+ flight.getFlightNumber() + "' "
-        		+ "and dep_date = " + flight.getDepartureDate().toString();
-		SQLInitializer.executeQuery(query);
-		
+		String query = "INSERT INTO sch_flights"
+				+ " SET "
+				+ "act_dep_time = to_date('"
+				+ flight.getAct_dep_time().toString()
+				+ "', 'yyyy-mm-dd) ,"
+				+ "act_arr_time = to_date('"
+				+ flight.getAct_arr_time().toString()
+				+ "', 'yyyy-mm-dd) "
+				+ "where flightno = '" + flight.getFlightNumber() + "' ";
+		try {
+			PreparedStatement preparedStatement = SQLInitializer.connection.prepareStatement(query);
+			preparedStatement.setDate(1, flight.getAct_dep_time());
+			preparedStatement.setDate(2, flight.getAct_arr_time());
+			SQLInitializer.executeQuery(query);
+		}
+		catch (Exception e) {}
 	}
 }
