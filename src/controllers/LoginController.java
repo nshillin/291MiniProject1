@@ -6,10 +6,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
 import models.Booking;
+import models.Flight;
 import models.FlightSearch;
 import models.Sch_Flight;
 import models.User;
 import views.ArrDepView;
+import views.BookingCreationView;
 import views.BookingConfirmationView;
 import views.BookingView;
 import views.FlightResultsView;
@@ -86,6 +88,11 @@ public class LoginController {
 		ArrDepView.main(null);
 	}
 	
+	public static void bookingCreationView(Shell shell, Flight flightToBook)
+	{
+		closeShell(shell);
+		BookingCreationView.main(flightToBook, null);
+	}
 	
 	public static void bookingConfirmationView(Shell shell, Integer ticketNo, Boolean success) {
 		closeShell(shell);

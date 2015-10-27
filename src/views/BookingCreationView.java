@@ -31,9 +31,10 @@ public class BookingCreationView {
 	 * Launch the application.
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(Flight flightToBook, String[] args) {
 		try {
 			BookingCreationView window = new BookingCreationView();
+			window.flightToBook = flightToBook;
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();

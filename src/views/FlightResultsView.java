@@ -1,8 +1,10 @@
 package views;
 
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
@@ -11,6 +13,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 import controllers.LoginController;
 import models.Flight;
+import models.FlightResult;
 import models.FlightSearch;
 
 import org.eclipse.jface.viewers.TableViewer;
@@ -92,6 +95,16 @@ public class FlightResultsView {
 		Button btnBookFlight = new Button(shell, SWT.NONE);
 		btnBookFlight.setBounds(20, 207, 140, 28);
 		btnBookFlight.setText("Book Flight");
+		btnBookFlight.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event arg0) {
+				int[] indices = table.getSelectionIndices();
+				if (indices.length == 1) {
+					Flight flightToBook = FlightResult.getInstance().getFlightResults().get(indices[0]);
+					LoginController.bookingCreationView(shell, flightToBook);
+				}
+			}
+		    });
 		
 		sortByConnections = new Button(shell, SWT.CHECK);
 		sortByConnections.addSelectionListener(new SelectionAdapter() {
