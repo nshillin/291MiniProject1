@@ -2,6 +2,7 @@ package models;
 
 import java.sql.Connection;
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,22 +13,28 @@ public class Flight
 	private String flightSource;
 	private String flightDestination;
 	private Date flightDepartureTime;
-	private Date flightArrivalTime;
+	private Calendar flightDepartureTimeCal;
+	private Calendar flightArrivalTime;
 	private Integer numberOfConnections;
 	private List<String> flightNumber;
+	private List<String> fare;
 	private Time layoverTime;
 	private Float paid_price;
 	
 	private enum seatPrices{}; //need to double check if there are even different fare types
 	private enum numberOfSeatsAtPrice{};
 	
-	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, Time layover, Float price)
+	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, List<String> fare, Time layover, Float price)
 	{
 		this.flightSource = src;
 		this.flightDestination = dst;
 		this.flightDepartureTime = depTime;
-		this.flightArrivalTime = arrTime;
+		this.flightDepartureTimeCal = Calendar.getInstance();
+		flightDepartureTimeCal.setTime(depTime);
+		this.flightArrivalTime = Calendar.getInstance();
+		flightArrivalTime.setTime(arrTime);
 		this.flightNumber = flightNum;
+		this.fare = fare;
 		this.numberOfConnections = numOfConnections;
 		this.layoverTime = layover;
 		this.paid_price = price;
@@ -41,6 +48,23 @@ public class Flight
 	public Float getPrice()
 	{
 		return this.paid_price;
+	}
+	
+	public List<String> getFlightNums()
+	{
+		return this.flightNumber;
+	}
+	
+	public Date getDepDate() {
+		return this.flightDepartureTime;
+	}
+
+	public Calendar getDepDate_Cal() {
+		return this.flightDepartureTimeCal;
+	}
+	
+	public List<String> getFare() {
+		return this.fare;
 	}
 	
 	public String getColumnItem(int columnNumber)
@@ -59,7 +83,7 @@ public class Flight
 		}
 		else if(columnNumber == 4)
 		{
-			returnColumnValue = flightArrivalTime.toString();
+			returnColumnValue = flightArrivalTime.getTime().toString();
 		}
 		else if(columnNumber == 5)
 		{
@@ -81,6 +105,10 @@ public class Flight
 			{
 				returnColumnValue = "Direct";
 			}
+		}
+		else if(columnNumber == 8)
+		{
+			returnColumnValue = paid_price.toString();
 		}
 		return returnColumnValue;
 	}

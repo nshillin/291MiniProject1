@@ -3,6 +3,7 @@ package controllers;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Shell;
@@ -166,7 +167,6 @@ public class QueryHandler {
 	}
 	
 	public static Integer setTicket(String name, float paid_price) {
-		//TODO: Write this
 		Integer newTicketNo = newTicketNo();
         String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + User.getUser() + "' , '" + paid_price + "')";
 		SQLInitializer.executeQuery(query);
@@ -175,8 +175,27 @@ public class QueryHandler {
 	
 	public static Boolean isFlightAvailable(Flight f)
 	{
-		//TODO: Write this
-		return false;
+		String queryPart1 = "select ff.limit-count(tno) as available_seats from flight_fares ff, sch_flights sf, bookings b"
+				+ " where sf.flightno = ff.flightno and sf.flightno = b.flightno and sf.flightno = '";
+		String queryPart2 = "' and ff.fare = b.fare and sf.dep_date = b.dep_date"
+				+ " and extract(day from sf.dep_date) = " + f.getDepDate_Cal().get(Calendar.DAY_OF_MONTH)
+				+ " and extract(month from sf.dep_date) = " + (f.getDepDate_Cal().get(Calendar.MONTH) + 1)
+				+ " and extract(year from sf.dep_date) = " + f.getDepDate_Cal().get(Calendar.YEAR)
+				+ " group by ff.limit having ff.limit-count(tno) > 0";
+		String finalquery;
+		for (String flightno : f.getFlightNums())
+		{
+			finalquery = queryPart1 + flightno + queryPart2;
+			ResultSet rs = SQLInitializer.executeQuery(finalquery);
+			try {
+				if (!rs.next())
+				{
+					return false;
+				}
+			}
+			catch(Exception e) { }
+		}
+		return true;
 	}
 	
 	public static LinkedList<Sch_Flight> getSingleFlights() {
@@ -202,6 +221,17 @@ public class QueryHandler {
 			
 		}
 		return flightList;
+	}
+	
+	public static void setBooking(Integer ticketNo, Flight f) {
+		for (int i = 0; i < f.getFlightNums().size(); i++)
+		{
+			String query = "INSERT INTO bookings ADD VALUES (" + ticketNo
+					+ ", '" + f.getFlightNums().get(i)
+					+ "', '" + f.getFare().get(i)
+					+ ", " + f.getDepDate()
+					+ ", NULL)";
+		}
 	}
 	
 	public static void exampleQuery() {

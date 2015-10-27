@@ -318,9 +318,10 @@ public class FlightSearch {
 			statement.setString(2, search.getArrivalCity());
 			statement.setInt(3, search.getDepartureDate().get(Calendar.DAY_OF_MONTH));
 			statement.setInt(4, search.getDepartureDate().get(Calendar.MONTH));
+<<<<<<< HEAD
 			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));**/
 			ResultSet resultSet = SQLInitializer.executeQuery(directFlightQuery);
-			if(resultSet != null){
+			/**if(resultSet != null){
 				while(resultSet.next())
 				{
 					List<String> flightNo = new ArrayList<String>();
@@ -328,6 +329,17 @@ public class FlightSearch {
 					Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, null, resultSet.getFloat("price"));
 					flights.add(newFlight);
 				}
+=======
+			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));
+			ResultSet resultSet = statement.executeQuery();**/
+			while(resultSet.next())
+			{
+				List<String> flightNo = new ArrayList<String>();
+				List<String> fare = new ArrayList<String>();
+				flightNo.add(resultSet.getString("flightno"));
+				fare.add(resultSet.getString("fare_type"));
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, fare, null, resultSet.getFloat("price"));
+				flights.add(newFlight);
 			}
 			SQLInitializer.closeConnection();
 		} 
@@ -406,8 +418,10 @@ public class FlightSearch {
 			while(resultSet.next())
 			{
 				List<String> flightNo = new ArrayList<String>();
+				List<String> fare = new ArrayList<String>();
 				flightNo.add(resultSet.getString("flightno"));
-				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, resultSet.getTime("arr_time"), resultSet.getFloat("price"));
+				fare.add(resultSet.getString("fare_type"));
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, fare, resultSet.getTime("arr_time"), resultSet.getFloat("price"));
 				flights.add(newFlight);
 			}
 		} catch (SQLException e){

@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import controllers.LoginController;
 import controllers.QueryHandler;
 import models.User;
 import models.Flight;
@@ -59,7 +60,8 @@ public class BookingCreationView {
 	 */
 	protected void createContents() {
 		shlBookingInfo = new Shell();
-		shlBookingInfo.setSize(450, 300);
+		shlBookingInfo.setSize(LoginController.size);
+		shlBookingInfo.setLocation(LoginController.position);
 		shlBookingInfo.setText("Passenger Info");
 		
 		nameText = new Text(shlBookingInfo, SWT.BORDER);
@@ -83,7 +85,7 @@ public class BookingCreationView {
 				checkInfo();
 			}
 		    });
-		bookButton.setBounds(178, 212, 75, 25);
+		bookButton.setBounds(178, 151, 75, 25);
 		bookButton.setText("Book");
 		
 		errLabel = new Label(shlBookingInfo, SWT.NONE);
@@ -95,12 +97,15 @@ public class BookingCreationView {
 	private void checkInfo()
 	{
 		//TODO: Finish coding this
-		if (nameText.getText().isEmpty()) {
-			errLabel.setText("Required.");
-		}
-		else if (QueryHandler.isFlightAvailable(flightToBook)) {
+		if (nameText.getText().isEmpty()) { errLabel.setText("Required."); }
+		else {
 			QueryHandler.setPassenger(nameText.getText(), countryText.getText());
-			Integer ticketNo = QueryHandler.setTicket(nameText.getText(), flightToBook.getPrice());
+			if (QueryHandler.isFlightAvailable(flightToBook)) {
+				Integer ticketNo = QueryHandler.setTicket(nameText.getText(), flightToBook.getPrice());
+				QueryHandler.setBooking(ticketNo, flightToBook);
+				LoginController.bookingConfirmationView(shlBookingInfo, ticketNo, true);
+			}
+			LoginController.bookingConfirmationView(shlBookingInfo, 0, false);
 		}
 	}
 }
