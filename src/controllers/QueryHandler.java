@@ -31,9 +31,10 @@ public class QueryHandler {
 		ResultSet rs = SQLInitializer.executeQuery(query);
 		try {
 			while (rs.next())
-			{
-				LoginView.errorMessage(rs.getString("pass"));
-				 if (rs.getString("pass").equals(password)) {
+			{	
+				// Requires testing
+				String sqlpassword = rs.getString("pass").replaceAll("[\uFEFF-\uFFFF]", ""); 
+				 if (sqlpassword.equals(password)) {
 					 return true;
 				 }
 				
@@ -143,7 +144,7 @@ public class QueryHandler {
 		try {
 			Integer tno = booking.getTicketNumber();
 			String update = "DELETE FROM Bookings "
-					+ "where tno = '" + tno.toString() + "'";
+					+ "where tno = " + tno.toString();
 			SQLInitializer.executeUpdate(update);
 			
 			update = "DELETE FROM Tickets "
