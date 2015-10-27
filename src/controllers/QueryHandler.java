@@ -231,8 +231,8 @@ public class QueryHandler {
 				Sch_Flight flight = new Sch_Flight();
 				flight.setFlightNumber(rs.getString("flightno"));
 				flight.setDepartureDate(rs.getDate("dep_date"));
-				flight.setAct_arr_time(rs.getTimestamp("act_arr_time"));
-				flight.setAct_dep_time(rs.getTimestamp("act_dep_time"));
+				flight.setAct_arr_time(rs.getDate("act_arr_time"));
+				flight.setAct_dep_time(rs.getDate("act_dep_time"));
 				flightList.add(flight);
 			}
 			rs.close();
@@ -290,8 +290,8 @@ public class QueryHandler {
 				+ "where flightno = ?"+ flight.getFlightNumber() + "' ";
 		try {
 			PreparedStatement preparedStatement = SQLInitializer.connection.prepareStatement(insertTableSQL);
-			preparedStatement.setTimestamp(1, flight.getAct_dep_time());
-			preparedStatement.setTimestamp(2, flight.getAct_arr_time());
+			preparedStatement.setDate(1, flight.getAct_dep_time());
+			preparedStatement.setDate(2, flight.getAct_arr_time());
 			preparedStatement.setString(3,flight.getAct_arr_time().toString());
 		}
 		catch (Exception e) {}
