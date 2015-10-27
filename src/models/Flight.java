@@ -3,7 +3,7 @@ package models;
 import java.sql.Connection;
 import java.sql.Time;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import controllers.SQLInitializer;

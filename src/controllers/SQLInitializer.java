@@ -96,6 +96,15 @@ public class SQLInitializer {
 		}
 	}
 	
+	public static PreparedStatement prepareStatement(String query) {
+		//returns a prepared statement, but the parameters must still be set
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
+			return ps;
+		} catch (SQLException e) { }
+		return null;
+	}
+	
 	// Sets up connection to database
 	public static Connection getDatabaseConnection()
 	{

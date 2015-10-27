@@ -1,6 +1,7 @@
 package controllers;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -179,10 +180,16 @@ public class QueryHandler {
 		SQLInitializer.closeConnection();
 	}
 	
-	// Creates a new passenger
+	// Creates a new passenger, provided they do not already exist
 	public static void setPassenger(String name, String country) {
-        String query = "insert into passengers values ('" + User.getUser() +  "', '" + name + "' , '" + country + "')";
-		SQLInitializer.executeQuery(query);
+		String query = "select * from passengers where name = '" + name + "' and email = '" + User.getUser() + "'";
+		String update = "insert into passengers values ('" + User.getUser() +  "', '" + name + "' , '" + country + "')";
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			if (!rs.next()) {
+				SQLInitializer.executeQuery(update);
+			}
+		} catch (Exception e) { }
 		SQLInitializer.closeConnection();
 	}
 	
@@ -253,11 +260,15 @@ public class QueryHandler {
 	public static void setBooking(Integer ticketNo, Flight f) {
 		for (int i = 0; i < f.getFlightNums().size(); i++)
 		{
-			String query = "INSERT INTO bookings ADD VALUES (" + ticketNo
-					+ ", '" + f.getFlightNums().get(i)
-					+ "', '" + f.getFare().get(i)
-					+ ", " + f.getDepDate()
-					+ ", NULL)";
+			String query = "INSERT INTO bookings ADD VALUES (?, ?, ?, ?, NULL)";
+			try {
+				PreparedStatement ps = SQLInitializer.prepareStatement(query);
+				ps.setInt(1, ticketNo);
+				ps.setString(2, f.getFlightNums().get(i));
+				ps.setString(3, f.getFare().get(i));
+				ps.setDate(4, f.getDepDate());
+				ps.executeUpdate();
+			} catch (Exception e) { }
 		}
 	}
 	
