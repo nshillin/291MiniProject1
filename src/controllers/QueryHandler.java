@@ -159,6 +159,7 @@ public class QueryHandler {
 		String update = "UPDATE users SET last_login = SYSDATE "
 				+ "WHERE email = '" + User.getUser() + "'";
 		SQLInitializer.executeQuery(update);
+		SQLInitializer.closeConnection();
 	}
 	
 	public static void setPassenger(String name, String country) {

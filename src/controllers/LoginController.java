@@ -43,6 +43,7 @@ public class LoginController {
 	}
 	
 	public static void loginView(Shell shell) {
+		SQLInitializer.closeConnection();
 		currentView = "Login";
 		closeShell(shell);
 		LoginView.main(null);

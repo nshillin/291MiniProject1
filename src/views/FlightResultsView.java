@@ -97,9 +97,10 @@ public class FlightResultsView {
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
+				table.clearAll();
 				Boolean sortBy = sortByConnections.getEnabled();
 				currentFlightSearch.setSortByConnections(sortBy);
-				PreparedStatement query = currentFlightSearch.getSearchQuery();
+				FlightSearch.FindSearchedFlights(table);
 			}
 		});
 		sortByConnections.setBounds(293, 207, 147, 28);

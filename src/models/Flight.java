@@ -18,13 +18,13 @@ public class Flight
 	private Integer numberOfConnections;
 	private List<String> flightNumber;
 	private List<String> fare;
-	private Time layoverTime;
+	private Float layoverTime;
 	private Float paid_price;
 	
 	private enum seatPrices{}; //need to double check if there are even different fare types
 	private enum numberOfSeatsAtPrice{};
 	
-	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, List<String> fare, Time layover, Float price)
+	public Flight(String src, String dst, Date depTime, Date arrTime, Integer numOfConnections, List<String> flightNum, List<String> fare, Float layover, Float price)
 	{
 		this.flightSource = src;
 		this.flightDestination = dst;

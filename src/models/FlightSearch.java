@@ -107,6 +107,7 @@ public class FlightSearch {
 			{
 				findAirportCode = true;
 			}
+			SQLInitializer.closeConnection();
 		} 
 		catch (SQLException ex)
 		{
@@ -257,20 +258,19 @@ public class FlightSearch {
 		// TODO Auto-generated method stub
 		String directFlightQuery = "";
 		FlightSearch search = FlightSearch.getInstance();
-		if(search == null)
-		{
-			
-		}
+		List<Flight> oneConnectionFlightResults = new ArrayList<Flight>();
 		if(search.getSortByConnections())
 		{
 			directFlightQuery = findDirectFlightsQuery(FlightSearch.getInstance());
+			oneConnectionFlightResults = findOneConnectionFlightsByPrice(FlightSearch.getInstance());
 		} 
 		else 
 		{
 			directFlightQuery = findDirectFlightsQueryByPrice(FlightSearch.getInstance());
+			oneConnectionFlightResults = findOneConnectionFlightsByPrice(FlightSearch.getInstance());
 		}
 		List<Flight> directFlightResults = getDirectFlightResults(directFlightQuery, FlightSearch.getInstance());
-		PopulateTableWithResults(directFlightResults, null, null, table);
+		PopulateTableWithResults(directFlightResults, oneConnectionFlightResults, null, table);
 		return "";
 	}
 	
@@ -279,21 +279,27 @@ public class FlightSearch {
 		// TODO Auto-generated method stub
 		if(FlightSearch.getInstance().getSortByConnections())
 		{
-			for (int i = 0; i < directFlightResults.size(); i++)
+			List<Flight> combinedResults = new ArrayList<Flight>();
+			combinedResults.addAll(directFlightResults);
+			combinedResults.addAll(oneConnectionFlightResults);
+			for (int i = 0; i < combinedResults.size(); i++)
 			{
-				Flight flight = directFlightResults.get(i);
+				Flight flight = combinedResults.get(i);
 				TableItem tableItem = new TableItem(table, SWT.NONE);
+				String tableLabel = "";
 				for (int j = 1; j <= flight.getColumnNumber(); j++) {
 	                // Populate the item
-	                tableItem.setText(i - 1, flight.getColumnItem(i));
+					tableLabel = tableLabel + flight.getColumnItem(j) + " ";
 	            }
+				tableItem.setText(0, tableLabel);
 			}
 		} 
 		else 
 		{
-			for (int i = 0; i < directFlightResults.size(); i++)
+			List<Flight> combinedResults = combineFlightsForLowestPrice(directFlightResults, oneConnectionFlightResults);
+			for (int i = 0; i < combinedResults.size(); i++)
 			{
-				Flight flight = directFlightResults.get(i);
+				Flight flight = combinedResults.get(i);
 				TableItem tableItem = new TableItem(table, SWT.NONE);
 				String tableLabel = "";
 				for (int j = 1; j <= flight.getColumnNumber(); j++) {
@@ -305,33 +311,46 @@ public class FlightSearch {
 			}
 		}
 	}
+	
+	private static List<Flight> combineFlightsForLowestPrice(List<Flight> directFlightResults, List<Flight> oneConnectionFlightResults)
+	{
+		List<Flight> combined = new ArrayList<Flight>();
+		int i = 0;
+		int j = 0;
+		while(j < oneConnectionFlightResults.size() && i < directFlightResults.size())
+		{
+			if(directFlightResults.get(i).getPrice() <= oneConnectionFlightResults.get(j).getPrice())
+			{
+				combined.add(directFlightResults.get(i));
+				i++;
+			} 
+			else if (directFlightResults.get(i).getPrice() >= oneConnectionFlightResults.get(j).getPrice())
+			{
+				combined.add(oneConnectionFlightResults.get(j));
+				j++;
+			}
+		}
+		while(j < oneConnectionFlightResults.size() - 1)
+		{
+			combined.add(oneConnectionFlightResults.get(j));
+			j++;
+		}
+		while(i < directFlightResults.size() - 1)
+		{
+			combined.add(directFlightResults.get(i));
+			i++;
+		}
+		return combined;
+	}
 
 	private static List<Flight> getDirectFlightResults(String directFlightQuery, FlightSearch search) {
 		// TODO Auto-generated method stub
-		Connection connection = SQLInitializer.getDatabaseConnection();
+		SQLInitializer.closeConnection();
 		List<Flight> flights = new ArrayList<Flight>();
 		try
 		{
 			flights = new ArrayList<Flight>();
-			/**PreparedStatement statement = connection.prepareStatement(directFlightQuery);
-			statement.setString(1, search.getDepartureCity());
-			statement.setString(2, search.getArrivalCity());
-			statement.setInt(3, search.getDepartureDate().get(Calendar.DAY_OF_MONTH));
-			statement.setInt(4, search.getDepartureDate().get(Calendar.MONTH));
-<<<<<<< HEAD
-			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));**/
 			ResultSet resultSet = SQLInitializer.executeQuery(directFlightQuery);
-			/**if(resultSet != null){
-				while(resultSet.next())
-				{
-					List<String> flightNo = new ArrayList<String>();
-					flightNo.add(resultSet.getString("flightno"));
-					Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, null, resultSet.getFloat("price"));
-					flights.add(newFlight);
-				}
-=======
-			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));
-			ResultSet resultSet = statement.executeQuery();**/
 			while(resultSet.next())
 			{
 				List<String> flightNo = new ArrayList<String>();
@@ -387,11 +406,12 @@ public class FlightSearch {
 		return query;
 	}
 	
-	private static String findOneConnectionFlightsByPrice(FlightSearch search)
+	private static List<Flight> findOneConnectionFlightsByPrice(FlightSearch search)
 	{
+		SQLInitializer.closeConnection();
 		String createAvailableFlightsView = new StringBuilder()
 		  .append("create view available_flights(flightno,dep_date, src,dst,dep_time,arr_time,fare,seats, price) as ")
-		  .append("select f.flightno as flightno, sf.dep_date as dep_date, f.src as src, f.dst as dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time" )
+		  .append("select f.flightno as flightno, sf.dep_date as dep_date, f.src as src, f.dst as dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time," )
 			.append(" f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time))+(f.est_dur/60+a2.tzone-a1.tzone)/24 as arr_time,") 
 		    .append(" fa.fare as fare_type, fa.limit-count(tno) as available_seats, fa.price as price")
 		 .append(" from flights f, flight_fares fa, sch_flights sf, bookings b, airports a1, airports a2")
@@ -401,37 +421,49 @@ public class FlightSearch {
 		  .append(" group by f.flightno, sf.dep_date, f.src, f.dst, f.dep_time, f.est_dur,a2.tzone,")
 			.append(" a1.tzone, fa.fare, fa.limit, fa.price")
 		  .append(" having fa.limit-count(tno) > 0")
-		  .append(" and f.src = ? and f.dst = ? and extract(day from sf.dep_date) = ? and extract(month from sf.dep_date) = ? and extract(year from sf.dep_date) = ?")
 		  .append(" order by fa.price").toString();
 		
 		String getRoundTripFlights = new StringBuilder()
-				.append("select a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time-a1.arr_time as layover, ")
-				.append("min(a1.price+a2.price) as price")
+				.append("select a1.src, a2.dst, a1.dep_time, a2.arr_time, a1.flightno, a2.flightno, a2.dep_time-a1.arr_time as layover, ")
+				.append("min(a1.price+a2.price) as price, a1.fare as fare_type ")
 			  .append("from available_flights a1, available_flights a2 ")
 			  .append("where a1.dst=a2.src and a1.arr_time +1.5/24 <=a2.dep_time and a1.arr_time +5/24 >=a2.dep_time ")
 			  .append("and a1.src = '" + search.getDepartureCity() + "' and a2.dst = '" + search.getArrivalCity() + "'  and extract(day from a1.dep_date) = " + search.getDepartureDay() + " and extract(month from a1.dep_date) = " + search.getDepartureMonth() + " and extract(year from a1.dep_date) = " + search.getDepartureYear() + " ")
-			  .append("group by a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time, a1.arr_time ")
+			  .append("group by a1.src, a2.dst, a1.dep_date, a1.flightno, a2.flightno, a2.dep_time, a1.arr_time, a1.fare, a2.fare ")
 			  .append("order by min(a1.price+a2.price)").toString();
+		List<Flight> flights = new ArrayList<Flight>();
 		try{
+			SQLInitializer.executeQuery(createAvailableFlightsView);
 			ResultSet resultSet = SQLInitializer.executeQuery(getRoundTripFlights);
-			List<Flight> flights = new ArrayList<Flight>();
-			while(resultSet.next())
+			if(resultSet != null)
 			{
-				List<String> flightNo = new ArrayList<String>();
-				List<String> fare = new ArrayList<String>();
-				flightNo.add(resultSet.getString("flightno"));
-				fare.add(resultSet.getString("fare_type"));
-				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, fare, resultSet.getTime("arr_time"), resultSet.getFloat("price"));
-				flights.add(newFlight);
+				while(resultSet.next())
+				{
+					List<String> flightNo = new ArrayList<String>();
+					List<String> fare = new ArrayList<String>();
+					flightNo.add(resultSet.getString("flightno"));
+					
+					fare.add(resultSet.getString("fare_type"));
+					Float layover = resultSet.getFloat("layover");
+					Float price = resultSet.getFloat("price");
+					try{
+						Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 1, flightNo, fare, layover, price);
+						flights.add(newFlight);
+					} catch (Exception e)
+					{
+						String error = e.getMessage();
+					}
+
+				}
 			}
 		} catch (SQLException e){
 			
 		}
 		
 		
-			SQLInitializer.executeQuery("drop table available_flights");
-			
-			return "";
+		SQLInitializer.executeQuery("drop view available_flights");
+		SQLInitializer.closeConnection();
+		return flights;
 	}
 	
 	private static String findDirectFlightsQueryByPrice(FlightSearch search)
