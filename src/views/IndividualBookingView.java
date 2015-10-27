@@ -116,28 +116,30 @@ public class IndividualBookingView {
 			nameLabel.setText(booking.getpName());
 			nameLabel.setBounds(231, 27, 108, 20);
 			
+			Integer ticket = booking.getTicketNumber();
 			Label ticketnumberLabel = new Label(shell, SWT.NONE);
-			ticketnumberLabel.setText(booking.getpName());
+			ticketnumberLabel.setText(ticket.toString());
 			ticketnumberLabel.setBounds(231, 55, 108, 20);
 			
 			Label flighnumberLabel = new Label(shell, SWT.NONE);
-			flighnumberLabel.setText(booking.getpName());
+			flighnumberLabel.setText(booking.getFlightNumber());
 			flighnumberLabel.setBounds(231, 81, 108, 20);
 			
 			Label fareLabel = new Label(shell, SWT.NONE);
-			fareLabel.setText(booking.getpName());
+			fareLabel.setText(booking.getFare());
 			fareLabel.setBounds(231, 133, 108, 20);
 			
 			Label seatLabel = new Label(shell, SWT.NONE);
-			seatLabel.setText(booking.getpName());
+			seatLabel.setText(booking.getSeat());
 			seatLabel.setBounds(231, 159, 108, 20);
 			
+			Float price = booking.getPrice();
 			Label priceLabel = new Label(shell, SWT.NONE);
-			priceLabel.setText(booking.getpName());
+			priceLabel.setText(price.toString());
 			priceLabel.setBounds(231, 185, 108, 20);
 			
 			Label dateLabel = new Label(shell, SWT.NONE);
-			dateLabel.setText(booking.getpName());
+			dateLabel.setText(booking.getDepDate().toString());
 			dateLabel.setBounds(231, 107, 108, 20);
 		} 
 		catch (Exception e) {

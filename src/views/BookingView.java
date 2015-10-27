@@ -81,12 +81,35 @@ public class BookingView {
 		
 		
 		final LinkedList<Booking> bookings = QueryHandler.getBookings();
+		
 		final Combo bookingCombo = new Combo(shell, SWT.READ_ONLY);
 		for (int i = 0; i < bookings.size(); i++) {
 			bookingCombo.add(bookings.get(i).getFlightNumber() + " on " + bookings.get(i).getDepDate().toString());
 		}
 		bookingCombo.select(0);
-		bookingCombo.setBounds(165, 83, 250, 22);
+		bookingCombo.setBounds(58, 106, 355, 22);
+		
+		Label lblBookings = new Label(shell, SWT.NONE);
+		lblBookings.setAlignment(SWT.CENTER);
+		lblBookings.setBounds(58, 78, 355, 22);
+		lblBookings.setText("Bookings:");
+		
+		Button btnMoreInfo = new Button(shell, SWT.NONE);
+		btnMoreInfo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Integer position = table.getSelectionIndex();
+				Booking booking  = bookings.get(position);
+				LoginController.indBookingView(shell, booking);
+			}
+		});
+		btnMoreInfo.setBounds(58, 134, 355, 28);
+		btnMoreInfo.setText("More Info");
+		
+		if (bookings == null || bookings.size() == 0) {
+			lblBookings.setText("You have no bookings");
+			btnMoreInfo.setEnabled(false);
+		}
 		
 		/*
 		TableViewer tableViewer = new TableViewer(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);

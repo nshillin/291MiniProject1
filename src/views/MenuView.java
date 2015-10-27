@@ -84,7 +84,8 @@ public class MenuView {
 		logoutButton.setBounds(0, 0, 77, 28);
 		
 		Label lblWelcome = new Label(shell, SWT.NONE);
-		lblWelcome.setBounds(155, 10, 59, 28);
+		lblWelcome.setAlignment(SWT.RIGHT);
+		lblWelcome.setBounds(105, 7, 96, 28);
 		lblWelcome.setText("Welcome");
 		
 		Label userLabel = new Label(shell, SWT.NONE);

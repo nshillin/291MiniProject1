@@ -1,5 +1,6 @@
 package views;
 
+import java.sql.Date;
 import java.util.LinkedList;
 
 import org.eclipse.swt.SWT;
@@ -95,7 +96,7 @@ public class ArrDepView {
 		btnRecord.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Sch_Flight flight = flightList.get(flightCombo.getSelectionIndex());
+			//	Sch_Flight flight = flightList.get(flightCombo.getSelectionIndex());
 			/*	if (arrdepCombo.getText().equals("Arrival")) {
 					flight.getAct_arr_time().setHours(flightTime.getHours());
 					flight.getAct_arr_time().setMinutes(flightTime.getMinutes());
@@ -105,6 +106,8 @@ public class ArrDepView {
 					flight.getAct_dep_time().setMinutes(flightTime.getMinutes());
 					flight.getAct_dep_time().setSeconds(flightTime.getSeconds());
 				} */
+				Sch_Flight flight = new Sch_Flight();
+				flight.setAct_arr_time(new Date(100));
 				LoginController.recordArrDep(shell, flight);
 			}
 		});
