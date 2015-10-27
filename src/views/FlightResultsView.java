@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import controllers.LoginController;
@@ -19,6 +20,8 @@ import org.eclipse.swt.widgets.Button;
 
 import java.io.Console;
 import java.sql.*;
+import java.util.Date;
+
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
@@ -29,6 +32,7 @@ public class FlightResultsView {
 	private static String url = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 	private static FlightSearch currentFlightSearch;
 	private Button sortByConnections;
+	private String[] tableColumns = {"flightSource","flightDestination","flightDepartureTime","flightArrivalTime","numberOfConnections","flightNumbers","layoverTime", "paid_price"};
 	
 
 	/**
@@ -59,42 +63,6 @@ public class FlightResultsView {
 			}
 		}
 	}
-	
-	public static void fetchDatafromDB(String startIndex, String finalIndex) {
-	    try {
-	    	//This code is just for easy testing purposes, will remove and use our object once I confirm functionality.
-	    	System.out.print("Username: ");
-	    	Console co = System.console();
-	    	String m_userName = co.readLine();
-	    	
-	    	// obtain password
-	    	char[] passwordArray = co.readPassword("Password: ");
-	    	String m_password = new String(passwordArray);
-	    	String m_driverName = String.format("oracle.jdbc.driver.OracleDriver");
-	    	
-	    	Class drvClass = Class.forName (m_driverName);
-	    	DriverManager.registerDriver((Driver)	
-	    	drvClass.newInstance());	
-	        Connection conn = DriverManager.getConnection(url, m_userName, m_password);
-	        Statement st = conn.createStatement();
-	        String query = "SELECT  flightno, src, dst, dep_time, est_dur from flights";
-	        ResultSet rs = st.executeQuery(query);
-	        java.sql.ResultSetMetaData rsmd = rs.getMetaData();
-	        int columnsNumber = rsmd.getColumnCount();
-
-	        TableItem item;
-	        while (rs.next()) {
-	            // Create a new TableItem for each entry in the result set (each row)
-	            item = new TableItem(table, SWT.NONE);
-	            for (int i = 1; i <= columnsNumber; i++) {
-	                // Populate the item
-	                item.setText(i - 1, rs.getString(i));
-	            }
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
 
 	/**
 	 * Create contents of the window.
@@ -109,6 +77,11 @@ public class FlightResultsView {
 		CheckboxTableViewer flightResults = CheckboxTableViewer.newCheckList(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = flightResults.getTable();
 		table.setBounds(10, 43, 430, 158);
+		//for (int i = 0; i < tableColumns.length; i++) 
+		//{
+		//      TableColumn column = new TableColumn(table, SWT.NONE);
+		//      column.setText(tableColumns[i]);
+		//}
 		FlightSearch.FindSearchedFlights(table);
 		
 		Label lblFlightsFound = new Label(shell, SWT.NONE);

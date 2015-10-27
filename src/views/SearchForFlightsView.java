@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.MenuItem;
 public class SearchForFlightsView {
 
 	protected Shell shell;
-	private Text departingCity;
 	private Text arrivingCity;
+	private Text departingCity;
 	private Button btnSearchForFlights;
 	private Button btnRoundTrip;
 	private DateTime dateTime;
@@ -79,22 +79,22 @@ public class SearchForFlightsView {
 		shell.setLocation(LoginController.position);
 		shell.setText("Search for Flights");
 		
-		departingCity = new Text(shell, SWT.BORDER);
-		departingCity.setBounds(149, 37, 164, 31);
+		arrivingCity = new Text(shell, SWT.BORDER);
+		arrivingCity.setBounds(149, 37, 164, 31);
 		
-		Menu SuggestDepartureCity = new Menu(departingCity);
-		departingCity.setMenu(SuggestDepartureCity);
-		departingCity.addListener(SWT.Modify, new Listener() {
+		Menu SuggestDepartureCity = new Menu(arrivingCity);
+		arrivingCity.setMenu(SuggestDepartureCity);
+		arrivingCity.addListener(SWT.Modify, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				String text = departingCity.getText();
+				String text = arrivingCity.getText();
 				disposeOfAutoCompleteItems(suggestDepartureCity);
 				if (text.length() == 0) 
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
 					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), departingCity);
-					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
@@ -115,21 +115,21 @@ public class SearchForFlightsView {
 		SuggestArrivalCity.setBounds(149, 131, 86, 14);
 		SuggestArrivalCity.setText("Leaving From:");
 		
-		arrivingCity = new Text(shell, SWT.BORDER);
-		arrivingCity.setBounds(149, 151, 164, 31);
-		suggestDepartureCity = new Menu(arrivingCity);
-		arrivingCity.setMenu(suggestDepartureCity);
-		arrivingCity.addListener(SWT.Modify, new Listener() {
+		departingCity = new Text(shell, SWT.BORDER);
+		departingCity.setBounds(149, 151, 164, 31);
+		suggestDepartureCity = new Menu(departingCity);
+		departingCity.setMenu(suggestDepartureCity);
+		departingCity.addListener(SWT.Modify, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				String text = arrivingCity.getText();
+				String text = departingCity.getText();
 				disposeOfAutoCompleteItems(suggestDepartureCity);
 				if (text.length() == 0) 
 				{
 					suggestDepartureCity.setVisible(false);
 				} else {
 					//MenuItem[] item = createMenuItems(suggestDepartureCity, text.length(), arrivingCity);
-					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, arrivingCity);
+					List<MenuItem> matches = FlightSearch.findPossibleAirportDatabaseMatches(text, suggestDepartureCity, departingCity);
 					suggestDepartureCity.setVisible(true);
 				}
 			}
@@ -202,14 +202,14 @@ public class SearchForFlightsView {
 	private Boolean SearchCriteriaIsValid()
 	{
 		Boolean valid = true;
-		if((departingCity.getText().isEmpty()) && (arrivingCity.getText().isEmpty())){
+		if((arrivingCity.getText().isEmpty()) && (departingCity.getText().isEmpty())){
 			valid = false;
 			errorMessage.setText(String.format("Please enter a source and destination city."));
 		}
-		else if(departingCity.getText().isEmpty()){
+		else if(arrivingCity.getText().isEmpty()){
 			valid = false;
 			errorMessage.setText(String.format("Please enter a departure city."));
-		} else if (arrivingCity.getText().isEmpty()){
+		} else if (departingCity.getText().isEmpty()){
 			valid = false;
 			errorMessage.setText(String.format("Please enter a destination."));
 		} else {
@@ -224,7 +224,7 @@ public class SearchForFlightsView {
 	private void createFlightSearchCriteria() 
 	{
 		String depCity = departingCity.getText().toUpperCase();
-		String arrCity = arrivingCity.getText().toUpperCase();
+		String arrCity = arrivingCity.getText().toUpperCase(); 
 		int depDay = dateTime.getDay();
 		int depMonth = dateTime.getMonth();
 		int depYear = dateTime.getYear();
@@ -232,6 +232,7 @@ public class SearchForFlightsView {
 		Calendar depDate = Calendar.getInstance();
 		depDate.set(depYear, depMonth, depDay);
 		FlightSearch currentSearch = FlightSearch.getInstance();
+		currentSearch.setSortByConnections(false);
 		currentSearch.createFlightSearch(depDate, depCity, arrCity, roundTrip);
 	}
 }

@@ -134,6 +134,7 @@ public class SQLInitializer {
 		} 
 		try {
 			connection = DriverManager.getConnection(m_url, username, password);
+			connection.close();
 		} catch(Exception e) {
 			return "SQLException: " + e.getMessage();
 		}
@@ -167,6 +168,15 @@ public class SQLInitializer {
 		return null;
 	}
 	
+	public static void closeConnection()
+	{
+		try{
+			connection.close();
+		} catch (SQLException e){
+			String mess = e.getMessage();
+		}
+	}
+	
 	public static void executeUpdate(String update) {
 		try 
 		{
@@ -175,6 +185,7 @@ public class SQLInitializer {
 			Statement stmt = connection.createStatement();
 		    stmt.executeUpdate(update);
 		    stmt.close();
+		    connection.close();
 		}
 		catch (Exception e) {
 

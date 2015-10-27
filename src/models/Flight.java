@@ -33,7 +33,7 @@ public class Flight
 		this.paid_price = price;
 	}
 	
-	public Integer getColumnNumber()
+	public static Integer getColumnNumber()
 	{
 		return 8;
 	}
@@ -41,11 +41,6 @@ public class Flight
 	public Float getPrice()
 	{
 		return this.paid_price;
-	}
-	
-	public float getPrice()
-	{
-		return 1.0f;
 	}
 	
 	public String getColumnItem(int columnNumber)
@@ -78,7 +73,14 @@ public class Flight
 		}
 		else if(columnNumber == 7)
 		{
-			returnColumnValue = layoverTime.toString();
+			if(layoverTime != null)
+			{
+				returnColumnValue = layoverTime.toString();
+			} 
+			else 
+			{
+				returnColumnValue = "Direct";
+			}
 		}
 		return returnColumnValue;
 	}
