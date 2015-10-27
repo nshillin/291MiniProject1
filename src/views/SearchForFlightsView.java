@@ -3,20 +3,11 @@ package views;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
-
 import controllers.LoginController;
 import models.FlightSearch;
-
-import java.awt.Rectangle;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -24,7 +15,6 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -160,6 +150,21 @@ public class SearchForFlightsView {
 		btnMainMenu.setText("Main Menu");
 		
 		btnRoundTrip = new Button(shell, SWT.CHECK);
+		btnRoundTrip.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				FlightSearch search = FlightSearch.getInstance();
+				if(search.isRoundTrip())
+				{
+					search.setRoundTrip(false);
+				} 
+				else 
+				{
+					search.setRoundTrip(true);
+				}
+			}
+		});
 		btnRoundTrip.setBounds(149, 188, 95, 18);
 		btnRoundTrip.setText("Round Trip");
 		

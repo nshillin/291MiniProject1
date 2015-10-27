@@ -25,7 +25,6 @@ import controllers.SQLInitializer;
 public class FlightSearch {
 	
 	private static FlightSearch instance = null;
-	private String airportCode;
 	private Calendar departureDate;
 	private String departureCity;
 	private String arrivalCity;
@@ -37,6 +36,7 @@ public class FlightSearch {
 	 */
 	protected FlightSearch()
 	{
+		roundTrip = false;
 	}
 	
 	/**
@@ -50,6 +50,20 @@ public class FlightSearch {
 			instance = new FlightSearch();
 		}
 		return instance;
+	}
+	
+	/**
+	 * Retrieves whether or not the flight should be a round trip.
+	 * @param isRoundTrip new boolean roundTrip flag
+	 */
+	public void setRoundTrip(Boolean isRoundTrip)
+	{
+		roundTrip = isRoundTrip;
+	}
+	
+	public Boolean isRoundTrip()
+	{
+		return roundTrip;
 	}
 	
 	public Boolean getSortByConnections()
@@ -109,7 +123,6 @@ public class FlightSearch {
 			{
 				findAirportCode = true;
 			}
-			SQLInitializer.closeConnection();
 		} 
 		catch (SQLException ex)
 		{
@@ -238,7 +251,6 @@ public class FlightSearch {
 						}
 					});
 				}
-				SQLInitializer.closeConnection();
 			}
 		} 
 		catch (SQLException ex)
@@ -250,30 +262,29 @@ public class FlightSearch {
 	
 	public static void FindSearchedFlights(Table table) 
 	{
-		// TODO Auto-generated method stub
-		String query = formatSearchIntoQuery(table);
-		
+		formatSearchIntoQuery(table);
 	}
 
-	private static String formatSearchIntoQuery(Table table) 
+	private static void formatSearchIntoQuery(Table table) 
 	{
-		// TODO Auto-generated method stub
 		String directFlightQuery = "";
 		FlightSearch search = FlightSearch.getInstance();
 		List<Flight> oneConnectionFlightResults = new ArrayList<Flight>();
+		List<Flight> twoConnectionFlightResults = new ArrayList<Flight>();
 		if(search.getSortByConnections())
 		{
 			directFlightQuery = findDirectFlightsQuery(FlightSearch.getInstance());
 			oneConnectionFlightResults = findOneConnectionFlightsByPrice(FlightSearch.getInstance());
+			
 		} 
 		else 
 		{
 			directFlightQuery = findDirectFlightsQueryByPrice(FlightSearch.getInstance());
 			oneConnectionFlightResults = findOneConnectionFlightsByPrice(FlightSearch.getInstance());
+			twoConnectionFlightResults = findTwoConnectionFlightsByPrice(FlightSearch.getInstance());
 		}
 		List<Flight> directFlightResults = getDirectFlightResults(directFlightQuery, FlightSearch.getInstance());
 		PopulateTableWithResults(directFlightResults, oneConnectionFlightResults, null, table);
-		return "";
 	}
 	
 	private static void PopulateTableWithResults(List<Flight> directFlightResults, List<Flight> oneConnectionFlightResults, List<Flight> twoConnectionFlightResults, Table table) 
@@ -308,7 +319,6 @@ public class FlightSearch {
 				String tableLabel = "";
 				for (int j = 1; j <= flight.getColumnNumber(); j++) {
 	                // Populate the item
-	                //tableItem.setText(i - 1, flight.getColumnItem(i));
 					tableLabel = tableLabel + flight.getColumnItem(j) + " ";
 	            }
                 tableItem.setText(0, tableLabel);
@@ -467,6 +477,65 @@ public class FlightSearch {
 		}
 		
 		
+		SQLInitializer.executeQuery("drop view available_flights");
+		SQLInitializer.closeConnection();
+		return flights;
+	}
+	
+	private static List<Flight> findTwoConnectionFlightsByPrice(FlightSearch search)
+	{
+		SQLInitializer.closeConnection();
+		String createAvailableFlightsView = new StringBuilder()
+		  .append("create view available_flights(flightno,dep_date, src,dst,dep_time,arr_time,fare,seats, price) as ")
+		  .append("select f.flightno as flightno, sf.dep_date as dep_date, f.src as src, f.dst as dst, f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time)) as dep_time," )
+			.append(" f.dep_time+(trunc(sf.dep_date)-trunc(f.dep_time))+(f.est_dur/60+a2.tzone-a1.tzone)/24 as arr_time,") 
+		    .append(" fa.fare as fare_type, fa.limit-count(tno) as available_seats, fa.price as price")
+		 .append(" from flights f, flight_fares fa, sch_flights sf, bookings b, airports a1, airports a2")
+		 .append(" where f.flightno=sf.flightno and f.flightno=fa.flightno and f.src=a1.acode and")
+			.append(" f.dst=a2.acode and fa.flightno=b.flightno(+) and fa.fare=b.fare(+) and")
+			.append(" sf.dep_date=b.dep_date(+)")
+		  .append(" group by f.flightno, sf.dep_date, f.src, f.dst, f.dep_time, f.est_dur,a2.tzone,")
+			.append(" a1.tzone, fa.fare, fa.limit, fa.price")
+		  .append(" having fa.limit-count(tno) > 0")
+		  .append(" order by fa.price").toString();
+		
+		String getRoundTripFlights = new StringBuilder()
+				.append("select a1.src, a3.dst, a1.dep_date, a3.arr_time, a1.flightno as flight1, a2.flightno as flight2, a3.flightno as flight3, a2.dep_time-a1.arr_time as layover, ")
+				.append("min(a1.price+a2.price) as price, a1.fare as fare_type ")
+			  .append("from available_flights a1, available_flights a2, available_flights a3 ")
+			  .append("where a1.dst=a2.src and a1.arr_time +1.5/24 <=a2.dep_time and a1.arr_time +5/24 >=a2.dep_time and a2.dst = a3.src and a2.arr_time +1.5/24 <=a3.dep_time and a2.arr_time +5/24 >=a3.dep_time ")
+			  .append("and a1.src = '" + search.getDepartureCity() + "' and a3.dst = '" + search.getArrivalCity() + "'  and extract(day from a1.dep_date) = " + search.getDepartureDay() + " and extract(month from a1.dep_date) = " + search.getDepartureMonth() + " and extract(year from a1.dep_date) = " + search.getDepartureYear() + " ")
+			  .append("group by a1.src, a3.dst, a1.dep_date, a1.flightno, a2.flightno, a3.flightno, a2.dep_time, a1.arr_time, a1.fare, a2.fare, a2.arr_time, a3.arr_time ")
+			  .append("order by min(a1.price+a2.price)").toString();
+		List<Flight> flights = new ArrayList<Flight>();
+		try{
+			SQLInitializer.executeQuery(createAvailableFlightsView);
+			ResultSet resultSet = SQLInitializer.executeQuery(getRoundTripFlights);
+			if(resultSet != null)
+			{
+				while(resultSet.next())
+				{
+					List<String> flightNo = new ArrayList<String>();
+					List<String> fare = new ArrayList<String>();
+					flightNo.add(resultSet.getString("flight1"));
+					flightNo.add(resultSet.getString("flight2"));
+					fare.add(resultSet.getString("fare_type"));
+					Float layover = resultSet.getFloat("layover");
+					Float price = resultSet.getFloat("price");
+					try{
+						Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_date"), resultSet.getDate("arr_time"), 1, flightNo, fare, layover, price);
+						flights.add(newFlight);
+					} catch (Exception e)
+					{
+						String error = e.getMessage();
+					}
+
+				}
+			}
+		} catch (SQLException e)
+		{
+			
+		}
 		SQLInitializer.executeQuery("drop view available_flights");
 		SQLInitializer.closeConnection();
 		return flights;

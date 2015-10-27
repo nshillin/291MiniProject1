@@ -3,29 +3,16 @@ package views;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-
 import controllers.LoginController;
 import models.Flight;
 import models.FlightResult;
 import models.FlightSearch;
-
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Control;
-
-import java.io.Console;
-import java.sql.*;
-import java.util.Date;
-
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
@@ -33,11 +20,8 @@ public class FlightResultsView {
 
 	protected Shell shell;
 	private static Table table;
-	private static String url = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
 	private static FlightSearch currentFlightSearch;
 	private Button sortByConnections;
-	private String[] tableColumns = {"flightSource","flightDestination","flightDepartureTime","flightArrivalTime","numberOfConnections","flightNumbers","layoverTime", "paid_price"};
-	private LoginController loginController;
 
 	/**
 	 * Launch the application.
@@ -81,13 +65,7 @@ public class FlightResultsView {
 		final CheckboxTableViewer flightResults = CheckboxTableViewer.newCheckList(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = flightResults.getTable();
 		table.setBounds(10, 43, 430, 158);
-		//for (int i = 0; i < tableColumns.length; i++) 
-		//{
-		//      TableColumn column = new TableColumn(table, SWT.NONE);
-		//      column.setText(tableColumns[i]);
-		//}
 		FlightSearch.FindSearchedFlights(table);
-		//createMenuItems(table, 5);
 		Label lblFlightsFound = new Label(shell, SWT.NONE);
 		lblFlightsFound.setBounds(10, 23, 92, 14);
 		lblFlightsFound.setText("Flights Found:");
@@ -116,24 +94,15 @@ public class FlightResultsView {
 				Boolean sortBy = sortByConnections.getEnabled();
 				currentFlightSearch.setSortByConnections(sortBy);
 				FlightSearch.FindSearchedFlights(table);
-				//PreparedStatement query = currentFlightSearch.getSearchQuery();
 				table.setVisible(true);
-
-				/**for(int i = 0; i < table.getItemCount(); i++)
-				{
-					table.remove(i);
-				}
-				Boolean sortBy = sortByConnections.getEnabled();
-				currentFlightSearch.setSortByConnections(sortBy);
-				FlightSearch.FindSearchedFlights(table);**/
 			}
 		});
 		sortByConnections.setBounds(293, 207, 147, 28);
 		sortByConnections.setText("Sort By Connections");
-		
+
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(84, 23, 350, 14);
-		lblNewLabel.setText("src-dst-dep_date-arr_time- flightnos - connectionno- layovertime - price");
+		lblNewLabel.setText("src-dst-dep_date-arr_time- flightnos - NoOfConnections- layovertime - price");
 		
 		Button backToFlightSearch = new Button(shell, SWT.NONE);
 		backToFlightSearch.addSelectionListener(new SelectionAdapter() 
@@ -146,14 +115,5 @@ public class FlightResultsView {
 		});
 		backToFlightSearch.setBounds(166, 229, 134, 32);
 		backToFlightSearch.setText("Back To Search");
-
-	}
-	
-	private TableItem[] createMenuItems(Table menuToAddTo, int length){
-		for(int i = 0; i < length; i++){
-			final TableItem newItem = new TableItem(menuToAddTo, SWT.PUSH, i);
-			newItem.setText(String.format("%d", i));
-		}
-		return menuToAddTo.getItems();
 	}
 }
