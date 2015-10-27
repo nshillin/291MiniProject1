@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 
 import java.io.Console;
 import java.sql.*;
@@ -33,7 +34,7 @@ public class FlightResultsView {
 	private static FlightSearch currentFlightSearch;
 	private Button sortByConnections;
 	private String[] tableColumns = {"flightSource","flightDestination","flightDepartureTime","flightArrivalTime","numberOfConnections","flightNumbers","layoverTime", "paid_price"};
-	
+	private LoginController loginController;
 
 	/**
 	 * Launch the application.
@@ -74,7 +75,7 @@ public class FlightResultsView {
 		shell.setSize(LoginController.size);
 		shell.setLocation(LoginController.position);
 		
-		CheckboxTableViewer flightResults = CheckboxTableViewer.newCheckList(shell, SWT.BORDER | SWT.FULL_SELECTION);
+		final CheckboxTableViewer flightResults = CheckboxTableViewer.newCheckList(shell, SWT.BORDER | SWT.FULL_SELECTION);
 		table = flightResults.getTable();
 		table.setBounds(10, 43, 430, 158);
 		//for (int i = 0; i < tableColumns.length; i++) 
@@ -97,7 +98,15 @@ public class FlightResultsView {
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				table.clearAll();
+				Control[] children = table.getChildren();
+				for(Control child: children)
+				{
+					child.dispose();
+				}
+				for(int i = 0; i < table.getItemCount(); i++)
+				{
+					table.remove(i);
+				}
 				Boolean sortBy = sortByConnections.getEnabled();
 				currentFlightSearch.setSortByConnections(sortBy);
 				FlightSearch.FindSearchedFlights(table);
@@ -109,6 +118,18 @@ public class FlightResultsView {
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(84, 23, 350, 14);
 		lblNewLabel.setText("src-dst-dep_date-arr_time- flightnos - connectionno- layovertime - price");
+		
+		Button backToFlightSearch = new Button(shell, SWT.NONE);
+		backToFlightSearch.addSelectionListener(new SelectionAdapter() 
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e) 
+			{
+				LoginController.searchForFlightsView(shell);
+			}
+		});
+		backToFlightSearch.setBounds(166, 229, 134, 32);
+		backToFlightSearch.setText("Back To Search");
 
 	}
 }
