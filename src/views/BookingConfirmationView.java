@@ -48,8 +48,9 @@ public class BookingConfirmationView {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
-		shell.setText("SWT Application");
+		shell.setSize(LoginController.size);
+		shell.setLocation(LoginController.position);
+		shell.setText("Booking Result");
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(190, 92, 55, 15);

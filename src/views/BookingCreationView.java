@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import controllers.LoginController;
 import controllers.QueryHandler;
 import models.User;
 import models.Flight;
@@ -59,7 +60,8 @@ public class BookingCreationView {
 	 */
 	protected void createContents() {
 		shlBookingInfo = new Shell();
-		shlBookingInfo.setSize(450, 300);
+		shlBookingInfo.setSize(LoginController.size);
+		shlBookingInfo.setLocation(LoginController.position);
 		shlBookingInfo.setText("Passenger Info");
 		
 		nameText = new Text(shlBookingInfo, SWT.BORDER);
