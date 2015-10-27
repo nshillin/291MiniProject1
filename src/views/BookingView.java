@@ -83,8 +83,13 @@ public class BookingView {
 		final LinkedList<Booking> bookings = QueryHandler.getBookings();
 		
 		final Combo bookingCombo = new Combo(shell, SWT.READ_ONLY);
+		// the ticket number, the passenger name, the departure date and the price
 		for (int i = 0; i < bookings.size(); i++) {
-			bookingCombo.add(bookings.get(i).getFlightNumber() + " on " + bookings.get(i).getDepDate().toString());
+			Float price = bookings.get(i).getPrice();
+			bookingCombo.add("Flight: " + bookings.get(i).getFlightNumber() + 
+					", Passenger: " + bookings.get(i).getpName() +
+					", Departure: " + bookings.get(i).getDepDate().toString() + 
+					", Price: " + price.toString());
 		}
 		bookingCombo.select(0);
 		bookingCombo.setBounds(58, 106, 355, 22);
