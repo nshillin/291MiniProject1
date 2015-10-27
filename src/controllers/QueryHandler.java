@@ -1,6 +1,7 @@
 package controllers;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -253,11 +254,15 @@ public class QueryHandler {
 	public static void setBooking(Integer ticketNo, Flight f) {
 		for (int i = 0; i < f.getFlightNums().size(); i++)
 		{
-			String query = "INSERT INTO bookings ADD VALUES (" + ticketNo
-					+ ", '" + f.getFlightNums().get(i)
-					+ "', '" + f.getFare().get(i)
-					+ ", " + f.getDepDate()
-					+ ", NULL)";
+			String query = "INSERT INTO bookings ADD VALUES (?, ?, ?, ?, NULL)";
+			try {
+				PreparedStatement ps = SQLInitializer.prepareStatement(query);
+				ps.setInt(1, ticketNo);
+				ps.setString(2, f.getFlightNums().get(i));
+				ps.setString(3, f.getFare().get(i));
+				ps.setDate(4, f.getDepDate());
+				ps.executeUpdate();
+			} catch (Exception e) { }
 		}
 	}
 	
