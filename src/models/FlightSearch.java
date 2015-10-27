@@ -281,7 +281,7 @@ public class FlightSearch {
 		{
 			directFlightQuery = findDirectFlightsQueryByPrice(FlightSearch.getInstance());
 			oneConnectionFlightResults = findOneConnectionFlightsByPrice(FlightSearch.getInstance());
-			twoConnectionFlightResults = findTwoConnectionFlightsByPrice(FlightSearch.getInstance());
+			//twoConnectionFlightResults = findTwoConnectionFlightsByPrice(FlightSearch.getInstance());
 		}
 		List<Flight> directFlightResults = getDirectFlightResults(directFlightQuery, FlightSearch.getInstance());
 		PopulateTableWithResults(directFlightResults, oneConnectionFlightResults, null, table);
@@ -376,32 +376,12 @@ public class FlightSearch {
 				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, fare, null, resultSet.getFloat("price"));
 				flights.add(newFlight);
 			}
-			SQLInitializer.closeConnection();
 		} 
 		catch (SQLException ex)
 		{
 			
 		}
 		return flights;
-	}
-	
-	private PreparedStatement createBasicFlightSearchPreparedStatement(String flightsQuery, Connection connection, FlightSearch search)
-	{
-		PreparedStatement statement = null;
-		try	
-		{
-			statement = connection.prepareStatement(flightsQuery);
-			statement.setString(1, search.getDepartureCity());
-			statement.setString(2, search.getArrivalCity());
-			statement.setInt(3, search.getDepartureDate().get(Calendar.DAY_OF_MONTH));
-			statement.setInt(4, search.getDepartureDate().get(Calendar.MONTH));
-			statement.setInt(5, search.getDepartureDate().get(Calendar.YEAR));
-		} 
-		catch (SQLException ex)
-		{
-			
-		}
-		return statement;
 	}
 
 	private static String findDirectFlightsQuery(FlightSearch search)
