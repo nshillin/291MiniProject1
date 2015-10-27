@@ -88,7 +88,7 @@ public class SQLInitializer {
 			Statement stmt = connection.createStatement();
 		    stmt.executeUpdate(update);
 		    stmt.close();
-		    connection.close();
+		    //connection.close();
 		}
 		catch (Exception e) {
 
