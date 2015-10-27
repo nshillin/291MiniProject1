@@ -42,7 +42,6 @@ public class QueryHandler {
 				
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 		}
 		catch (Exception e) {
 			
@@ -55,7 +54,6 @@ public class QueryHandler {
 		String username = User.getUser();
         String query = "insert into users values ('" + username +  "', '" + password + "' , SYSDATE)";
 		SQLInitializer.executeQuery(query);
-		SQLInitializer.closeConnection();
 	}
 	
 	// Checks if the username already exists
@@ -70,7 +68,6 @@ public class QueryHandler {
 				return true;	
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 		}
 		catch (Exception e) {
 			
@@ -90,7 +87,6 @@ public class QueryHandler {
 				
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 		}
 		catch (Exception e) {
 			
@@ -111,7 +107,6 @@ public class QueryHandler {
 				return rs.getInt("tnonew");
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 		}
 		catch (Exception e) {
 			
@@ -144,7 +139,6 @@ public class QueryHandler {
 				bookingList.add(booking);
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 				
 		}
 		catch (Exception e) {
@@ -165,7 +159,6 @@ public class QueryHandler {
 			update = "DELETE FROM Tickets "
 					+ "where tno = " + tno.toString();
 			SQLInitializer.executeUpdate(update);
-			SQLInitializer.closeConnection();
 		} catch (Exception e) {
 			
 		}
@@ -177,7 +170,6 @@ public class QueryHandler {
 		String update = "UPDATE users SET last_login = SYSDATE "
 				+ "WHERE email = '" + User.getUser() + "'";
 		SQLInitializer.executeQuery(update);
-		SQLInitializer.closeConnection();
 	}
 	
 	// Creates a new passenger, provided they do not already exist
@@ -190,7 +182,6 @@ public class QueryHandler {
 				SQLInitializer.executeQuery(update);
 			}
 		} catch (Exception e) { }
-		SQLInitializer.closeConnection();
 	}
 	
 	// Creates a new ticket
@@ -198,7 +189,6 @@ public class QueryHandler {
 		Integer newTicketNo = newTicketNo();
         String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + User.getUser() + "' , '" + paid_price + "')";
 		SQLInitializer.executeQuery(query);
-		SQLInitializer.closeConnection();
 		return newTicketNo;
 	}
 	
@@ -222,7 +212,6 @@ public class QueryHandler {
 				{
 					return false;
 				}
-				SQLInitializer.closeConnection();
 			}
 			catch(Exception e) { }
 		}
@@ -247,7 +236,6 @@ public class QueryHandler {
 				flightList.add(flight);
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 				
 		}
 		catch (Exception e) {
@@ -287,7 +275,6 @@ public class QueryHandler {
 				System.out.println(s + "," + supid+"," +sales+"," +n+"," +total);
 			}
 			rs.close();
-			SQLInitializer.closeConnection();
 		}
 		catch (Exception e) {
 			
@@ -303,7 +290,6 @@ public class QueryHandler {
         		+ "where flightno = '"+ flight.getFlightNumber() + "' "
         		+ "and dep_date = " + flight.getDepartureDate().toString();
 		SQLInitializer.executeQuery(query);
-		SQLInitializer.closeConnection();
 		
 	}
 }
