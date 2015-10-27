@@ -83,7 +83,7 @@ public class BookingCreationView {
 				checkInfo();
 			}
 		    });
-		bookButton.setBounds(178, 212, 75, 25);
+		bookButton.setBounds(178, 151, 75, 25);
 		bookButton.setText("Book");
 		
 		errLabel = new Label(shlBookingInfo, SWT.NONE);
