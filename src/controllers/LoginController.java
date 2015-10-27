@@ -10,6 +10,7 @@ import models.FlightSearch;
 import models.Sch_Flight;
 import models.User;
 import views.ArrDepView;
+import views.BookingConfirmationView;
 import views.BookingView;
 import views.FlightResultsView;
 import views.IndividualBookingView;
@@ -76,6 +77,17 @@ public class LoginController {
 	public static void arrDepView(Shell shell) {
 		closeShell(shell);
 		ArrDepView.main(null);
+	}
+	
+	public static void bookingConfirmationView(Shell shell, Integer ticketNo, Boolean success) {
+		closeShell(shell);
+		String[] Args = new String[1];
+		if (success)
+		{
+			Args[0] = "Flight successfully booked. Ticket number: " + ticketNo;
+		}
+		else { Args[0] = "Flight has become unavailable. Please select a different flight."; }
+		BookingConfirmationView.main(Args);
 	}
 	
 	public static void indBookingView(Shell shell, Booking booking) {

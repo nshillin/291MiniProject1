@@ -14,6 +14,8 @@ import org.eclipse.swt.events.SelectionEvent;
 public class BookingConfirmationView {
 
 	protected Shell shell;
+	
+	private static String message;
 
 	/**
 	 * Launch the application.
@@ -22,6 +24,7 @@ public class BookingConfirmationView {
 	public static void main(String[] args) {
 		try {
 			BookingConfirmationView window = new BookingConfirmationView();
+			message = args[0];
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,6 +57,7 @@ public class BookingConfirmationView {
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(190, 92, 55, 15);
+		lblNewLabel.setText(message);
 		
 		Button btnNewButton_1 = new Button(shell, SWT.NONE);
 		btnNewButton_1.addSelectionListener(new SelectionAdapter() {

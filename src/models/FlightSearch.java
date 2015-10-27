@@ -288,8 +288,10 @@ public class FlightSearch {
 			while(resultSet.next())
 			{
 				List<String> flightNo = new ArrayList<String>();
+				List<String> fare = new ArrayList<String>();
 				flightNo.add(resultSet.getString("flightno"));
-				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, null, resultSet.getFloat("price"));
+				fare.add(resultSet.getString("fare_type"));
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, fare, null, resultSet.getFloat("price"));
 				flights.add(newFlight);
 			}
 		} 
@@ -368,8 +370,10 @@ public class FlightSearch {
 			while(resultSet.next())
 			{
 				List<String> flightNo = new ArrayList<String>();
+				List<String> fare = new ArrayList<String>();
 				flightNo.add(resultSet.getString("flightno"));
-				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, resultSet.getTime("arr_time"), resultSet.getFloat("price"));
+				fare.add(resultSet.getString("fare_type"));
+				Flight newFlight = new Flight(resultSet.getString("src"), resultSet.getString("dst"), resultSet.getDate("dep_time"), resultSet.getDate("arr_time"), 0, flightNo, fare, resultSet.getTime("arr_time"), resultSet.getFloat("price"));
 				flights.add(newFlight);
 			}
 		} catch (SQLException e){

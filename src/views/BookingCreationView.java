@@ -97,12 +97,15 @@ public class BookingCreationView {
 	private void checkInfo()
 	{
 		//TODO: Finish coding this
-		if (nameText.getText().isEmpty()) {
-			errLabel.setText("Required.");
-		}
-		else if (QueryHandler.isFlightAvailable(flightToBook)) {
+		if (nameText.getText().isEmpty()) { errLabel.setText("Required."); }
+		else {
 			QueryHandler.setPassenger(nameText.getText(), countryText.getText());
-			Integer ticketNo = QueryHandler.setTicket(nameText.getText(), flightToBook.getPrice());
+			if (QueryHandler.isFlightAvailable(flightToBook)) {
+				Integer ticketNo = QueryHandler.setTicket(nameText.getText(), flightToBook.getPrice());
+				QueryHandler.setBooking(ticketNo, flightToBook);
+				LoginController.bookingConfirmationView(shlBookingInfo, ticketNo, true);
+			}
+			LoginController.bookingConfirmationView(shlBookingInfo, 0, false);
 		}
 	}
 }

@@ -178,9 +178,9 @@ public class QueryHandler {
 		String queryPart1 = "select ff.limit-count(tno) as available_seats from flight_fares ff, sch_flights sf, bookings b"
 				+ " where sf.flightno = ff.flightno and sf.flightno = b.flightno and sf.flightno = '";
 		String queryPart2 = "' and ff.fare = b.fare and sf.dep_date = b.dep_date"
-				+ " and extract(day from sf.dep_date) = " + f.getDepDate().get(Calendar.DAY_OF_MONTH)
-				+ " and extract(month from sf.dep_date) = " + (f.getDepDate().get(Calendar.MONTH) + 1)
-				+ " and extract(year from sf.dep_date) = " + f.getDepDate().get(Calendar.YEAR)
+				+ " and extract(day from sf.dep_date) = " + f.getDepDate_Cal().get(Calendar.DAY_OF_MONTH)
+				+ " and extract(month from sf.dep_date) = " + (f.getDepDate_Cal().get(Calendar.MONTH) + 1)
+				+ " and extract(year from sf.dep_date) = " + f.getDepDate_Cal().get(Calendar.YEAR)
 				+ " group by ff.limit having ff.limit-count(tno) > 0";
 		String finalquery;
 		for (String flightno : f.getFlightNums())
@@ -221,6 +221,17 @@ public class QueryHandler {
 			
 		}
 		return flightList;
+	}
+	
+	public static void setBooking(Integer ticketNo, Flight f) {
+		for (int i = 0; i < f.getFlightNums().size(); i++)
+		{
+			String query = "INSERT INTO bookings ADD VALUES (" + ticketNo
+					+ ", '" + f.getFlightNums().get(i)
+					+ "', '" + f.getFare().get(i)
+					+ ", " + f.getDepDate()
+					+ ", NULL)";
+		}
 	}
 	
 	public static void exampleQuery() {
