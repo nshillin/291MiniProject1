@@ -26,12 +26,13 @@ public class LoginController {
 	public static Point size = new Point(450, 300);
 	public static String currentView = "";
 	
+	// Opens SQL Login
 	public static void main(String[] args) {
 		currentView = "SQLPlus Login";
 		LoginView.main(args);
-		//MainView.main(args);
 	}
 	
+	// Logs user out, updates last login, returns to mainview
 	public static void logout(Shell shell) {
 		QueryHandler.updateLastLogin();
 		
@@ -42,6 +43,7 @@ public class LoginController {
 		MainView.main(null);
 	}
 	
+	// Opens Login View
 	public static void loginView(Shell shell) {
 		SQLInitializer.closeConnection();
 		currentView = "Login";
@@ -49,36 +51,43 @@ public class LoginController {
 		LoginView.main(null);
 	}
 	
+	// Opens Register View
 	public static void registerView(Shell shell) {
 		closeShell(shell);
 		RegisterView.main(null);
 	}
 	
+	// Opens Menu View (Main page once logged in)
 	public static void menuView(Shell shell) {
 		closeShell(shell);
 		MenuView.main(null);
 	}
 	
+	// Updates flight, returns to menu
 	public static void recordArrDep(Shell shell, Sch_Flight flight) {
 		QueryHandler.updateFlight(flight);
 		closeShell(shell);
 		MenuView.main(null);
 	}
 	
+	// Opens SearchForFlightsView
 	public static void searchForFlightsView(Shell shell) {
 		closeShell(shell);
 		SearchForFlightsView.main(null);
 	}
 	
+	// Opens BookingView
 	public static void bookingView(Shell shell) {
 		closeShell(shell);
 		BookingView.main(null);
 	}
 	
+	// Opens ArrDepView
 	public static void arrDepView(Shell shell) {
 		closeShell(shell);
 		ArrDepView.main(null);
 	}
+	
 	
 	public static void bookingConfirmationView(Shell shell, Integer ticketNo, Boolean success) {
 		closeShell(shell);
@@ -91,18 +100,21 @@ public class LoginController {
 		BookingConfirmationView.main(Args);
 	}
 	
+	// Opens more detailed view of specific booking
 	public static void indBookingView(Shell shell, Booking booking) {
 		closeShell(shell);
 		IndividualBookingView.booking = booking;
 		IndividualBookingView.main(null);
 	}
 	
+	// Closes previous window, resizes and moves view to that position
 	private static void closeShell(Shell shell) {
 		position = shell.getLocation();
 		size = shell.getSize();
 		shell.close();
 	}
 	
+	// Attempts to Log user into SQL
 	public static void sqlLogin(String username, String password, Shell shell) {
 		String error = SQLInitializer.login(username, password);
 		if (error.equals(SQLInitializer.SUCCESS_MESSAGE)) {
@@ -116,6 +128,7 @@ public class LoginController {
 		}
 	}
 	
+	// Attempts to Log user into system
 	public static void login(String username, String password, Shell shell) {
 		User.setUser(username);
 		if (QueryHandler.authenticateUser(password)) {
@@ -127,6 +140,7 @@ public class LoginController {
 		}
 	}
 	
+	// Attempts to register user
 	public static void register(String username, String password, Shell shell) {
 		User.setUser(username);
 		if (!QueryHandler.isUsername()) {
