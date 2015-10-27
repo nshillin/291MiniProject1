@@ -283,16 +283,20 @@ public class QueryHandler {
 
 	// Updates a flight's act_arr_time and act_dep_time
 	public static void updateFlight(Sch_Flight flight) {
-		String insertTableSQL = "INSERT INTO sch_flights"
+		String query = "INSERT INTO sch_flights"
 				+ " SET "
-				+ "act_dep_time = ? ,"
-				+ "act_arr_time = ? "
-				+ "where flightno = ?"+ flight.getFlightNumber() + "' ";
+				+ "act_dep_time = to_date('"
+				+ flight.getAct_dep_time().toString()
+				+ "', 'yyyy-mm-dd) ,"
+				+ "act_arr_time = to_date('"
+				+ flight.getAct_arr_time().toString()
+				+ "', 'yyyy-mm-dd) "
+				+ "where flightno = '" + flight.getFlightNumber() + "' ";
 		try {
-			PreparedStatement preparedStatement = SQLInitializer.connection.prepareStatement(insertTableSQL);
+			PreparedStatement preparedStatement = SQLInitializer.connection.prepareStatement(query);
 			preparedStatement.setDate(1, flight.getAct_dep_time());
 			preparedStatement.setDate(2, flight.getAct_arr_time());
-			preparedStatement.setString(3,flight.getAct_arr_time().toString());
+			SQLInitializer.executeQuery(query);
 		}
 		catch (Exception e) {}
 	}
