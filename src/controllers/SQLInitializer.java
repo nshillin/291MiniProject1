@@ -74,7 +74,7 @@ public class SQLInitializer {
 	{
 		try{
 			connection.close();
-		} catch (SQLException e){
+		} catch (Exception e){
 			String mess = e.getMessage();
 		}
 	}
