@@ -13,10 +13,7 @@
 	<classpathentry kind="lib" path="plugins/org.eclipse.text_3.5.400.v20150505-1044.jar"/>
 	<classpathentry kind="lib" path="plugins/org.eclipse.ui.forms_3.6.200.v20150506-2029.jar"/>
 	<classpathentry kind="lib" path="plugins/org.eclipse.ui.workbench_3.107.0.v20150825-2206.jar"/>
-<<<<<<< HEAD
 	<classpathentry kind="lib" path="/opt/oracle/12cR1/client/jdbc/lib/ojdbc6.jar"/>
 	<classpathentry kind="lib" path="plugins/org.eclipse.swt.gtk.linux.x86_64_3.104.0.v20150528-0211.jar"/>
-=======
->>>>>>> 4e3315f82656be7e40629299ee82b1fad3fa1c6c
 	<classpathentry kind="output" path="bin"/>
 </classpath>
