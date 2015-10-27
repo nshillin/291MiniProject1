@@ -115,8 +115,10 @@ public class FlightResultsView {
 				table.removeAll();
 				Boolean sortBy = sortByConnections.getEnabled();
 				currentFlightSearch.setSortByConnections(sortBy);
+				FlightSearch.FindSearchedFlights(table);
 				//PreparedStatement query = currentFlightSearch.getSearchQuery();
 				table.setVisible(true);
+
 				/**for(int i = 0; i < table.getItemCount(); i++)
 				{
 					table.remove(i);
