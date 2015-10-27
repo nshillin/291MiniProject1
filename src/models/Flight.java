@@ -2,6 +2,7 @@ package models;
 
 import java.sql.Connection;
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +12,8 @@ public class Flight
 {
 	private String flightSource;
 	private String flightDestination;
-	private Date flightDepartureTime;
-	private Date flightArrivalTime;
+	private Calendar flightDepartureTime;
+	private Calendar flightArrivalTime;
 	private Integer numberOfConnections;
 	private List<String> flightNumber;
 	private Time layoverTime;
@@ -25,8 +26,10 @@ public class Flight
 	{
 		this.flightSource = src;
 		this.flightDestination = dst;
-		this.flightDepartureTime = depTime;
-		this.flightArrivalTime = arrTime;
+		this.flightDepartureTime = Calendar.getInstance();
+		flightDepartureTime.setTime(depTime);
+		this.flightArrivalTime = Calendar.getInstance();
+		flightArrivalTime.setTime(arrTime);
 		this.flightNumber = flightNum;
 		this.numberOfConnections = numOfConnections;
 		this.layoverTime = layover;
@@ -46,6 +49,10 @@ public class Flight
 	public List<String> getFlightNums()
 	{
 		return this.flightNumber;
+	}
+
+	public Calendar getDepDate() {
+		return this.flightDepartureTime;
 	}
 	
 	public String getColumnItem(int columnNumber)

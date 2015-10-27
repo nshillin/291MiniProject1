@@ -3,6 +3,7 @@ package controllers;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import org.eclipse.swt.widgets.Shell;
@@ -174,13 +175,27 @@ public class QueryHandler {
 	
 	public static Boolean isFlightAvailable(Flight f)
 	{
-		//TODO: Write this
 		String queryPart1 = "select ff.limit-count(tno) as available_seats from flight_fares ff, sch_flights sf, bookings b"
-				+ " where sf.flightno = ff.flightno and sf.flightno = b.flightno and sf.flightno = ";
-		String queryPart2 = " and ff.fare = b.fare and sf.dep_date = b.dep_date"
-				+ " and extract(day from sf.dep_date) = ? and extract(month from sf.dep_date) = ? and extract(year from sf.dep_date) = ?"
+				+ " where sf.flightno = ff.flightno and sf.flightno = b.flightno and sf.flightno = '";
+		String queryPart2 = "' and ff.fare = b.fare and sf.dep_date = b.dep_date"
+				+ " and extract(day from sf.dep_date) = " + f.getDepDate().get(Calendar.DAY_OF_MONTH)
+				+ " and extract(month from sf.dep_date) = " + (f.getDepDate().get(Calendar.MONTH) + 1)
+				+ " and extract(year from sf.dep_date) = " + f.getDepDate().get(Calendar.YEAR)
 				+ " group by ff.limit having ff.limit-count(tno) > 0";
-		return false;
+		String finalquery;
+		for (String flightno : f.getFlightNums())
+		{
+			finalquery = queryPart1 + flightno + queryPart2;
+			ResultSet rs = SQLInitializer.executeQuery(finalquery);
+			try {
+				if (!rs.next())
+				{
+					return false;
+				}
+			}
+			catch(Exception e) { }
+		}
+		return true;
 	}
 	
 	public static LinkedList<Sch_Flight> getSingleFlights() {
