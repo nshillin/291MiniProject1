@@ -84,7 +84,7 @@ public class FlightResultsView {
 		//      column.setText(tableColumns[i]);
 		//}
 		FlightSearch.FindSearchedFlights(table);
-		
+		//createMenuItems(table, 5);
 		Label lblFlightsFound = new Label(shell, SWT.NONE);
 		lblFlightsFound.setBounds(10, 23, 92, 14);
 		lblFlightsFound.setText("Flights Found:");
@@ -98,18 +98,19 @@ public class FlightResultsView {
 			@Override
 			public void widgetSelected(SelectionEvent e) 
 			{
-				Control[] children = table.getChildren();
-				for(Control child: children)
-				{
-					child.dispose();
-				}
-				for(int i = 0; i < table.getItemCount(); i++)
+				table.setVisible(false);
+				table.removeAll();
+				Boolean sortBy = sortByConnections.getEnabled();
+				currentFlightSearch.setSortByConnections(sortBy);
+				//PreparedStatement query = currentFlightSearch.getSearchQuery();
+				table.setVisible(true);
+				/**for(int i = 0; i < table.getItemCount(); i++)
 				{
 					table.remove(i);
 				}
 				Boolean sortBy = sortByConnections.getEnabled();
 				currentFlightSearch.setSortByConnections(sortBy);
-				FlightSearch.FindSearchedFlights(table);
+				FlightSearch.FindSearchedFlights(table);**/
 			}
 		});
 		sortByConnections.setBounds(293, 207, 147, 28);
@@ -131,5 +132,13 @@ public class FlightResultsView {
 		backToFlightSearch.setBounds(166, 229, 134, 32);
 		backToFlightSearch.setText("Back To Search");
 
+	}
+	
+	private TableItem[] createMenuItems(Table menuToAddTo, int length){
+		for(int i = 0; i < length; i++){
+			final TableItem newItem = new TableItem(menuToAddTo, SWT.PUSH, i);
+			newItem.setText(String.format("%d", i));
+		}
+		return menuToAddTo.getItems();
 	}
 }
