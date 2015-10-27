@@ -180,10 +180,16 @@ public class QueryHandler {
 		SQLInitializer.closeConnection();
 	}
 	
-	// Creates a new passenger
+	// Creates a new passenger, provided they do not already exist
 	public static void setPassenger(String name, String country) {
-        String query = "insert into passengers values ('" + User.getUser() +  "', '" + name + "' , '" + country + "')";
-		SQLInitializer.executeQuery(query);
+		String query = "select * from passengers where name = '" + name + "' and email = '" + User.getUser() + "'";
+		String update = "insert into passengers values ('" + User.getUser() +  "', '" + name + "' , '" + country + "')";
+		ResultSet rs = SQLInitializer.executeQuery(query);
+		try {
+			if (!rs.next()) {
+				SQLInitializer.executeQuery(update);
+			}
+		} catch (Exception e) { }
 		SQLInitializer.closeConnection();
 	}
 	
