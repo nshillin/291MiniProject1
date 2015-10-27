@@ -293,6 +293,8 @@ public class FlightSearch {
 	            }
 				tableItem.setText(0, tableLabel);
 			}
+			FlightResult result = FlightResult.getInstance();
+			result.setFlightResult(combinedResults);
 		} 
 		else 
 		{
@@ -309,6 +311,8 @@ public class FlightSearch {
 	            }
                 tableItem.setText(0, tableLabel);
 			}
+			FlightResult result = FlightResult.getInstance();
+			result.setFlightResult(combinedResults);
 		}
 	}
 	

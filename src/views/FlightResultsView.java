@@ -108,7 +108,7 @@ public class FlightResultsView {
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(84, 23, 350, 14);
-		lblNewLabel.setText("src-dst-dep_date-arr_time- flightnos - connectionno - price");
+		lblNewLabel.setText("src-dst-dep_date-arr_time- flightnos - connectionno- layovertime - price");
 
 	}
 }
