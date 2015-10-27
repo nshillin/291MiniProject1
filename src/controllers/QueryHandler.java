@@ -166,7 +166,6 @@ public class QueryHandler {
 	}
 	
 	public static Integer setTicket(String name, float paid_price) {
-		//TODO: Write this
 		Integer newTicketNo = newTicketNo();
 
         String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + User.getUser() + "' , '" + paid_price + "')";
@@ -177,6 +176,11 @@ public class QueryHandler {
 	public static Boolean isFlightAvailable(Flight f)
 	{
 		//TODO: Write this
+		String queryPart1 = "select ff.limit-count(tno) as available_seats from flight_fares ff, sch_flights sf, bookings b"
+				+ " where sf.flightno = ff.flightno and sf.flightno = b.flightno and sf.flightno = ";
+		String queryPart2 = " and ff.fare = b.fare and sf.dep_date = b.dep_date"
+				+ " and extract(day from sf.dep_date) = ? and extract(month from sf.dep_date) = ? and extract(year from sf.dep_date) = ?"
+				+ " group by ff.limit having ff.limit-count(tno) > 0";
 		return false;
 	}
 	

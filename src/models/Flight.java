@@ -43,6 +43,11 @@ public class Flight
 		return this.paid_price;
 	}
 	
+	public List<String> getFlightNums()
+	{
+		return this.flightNumber;
+	}
+	
 	public String getColumnItem(int columnNumber)
 	{
 		String returnColumnValue = "";
