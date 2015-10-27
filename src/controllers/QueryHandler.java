@@ -24,6 +24,7 @@ public class QueryHandler {
 		// Setup SQL stuff	
 	}
 	
+	// Checks if user is in the system
 	public static Boolean authenticateUser(String password) {
 		// Checks SQL for user
 		String username = User.getUser();
@@ -47,12 +48,14 @@ public class QueryHandler {
 		return false;
 	}
 
+	// Adds user to the system
 	public static void addUser(String password) {
 		String username = User.getUser();
         String query = "insert into users values ('" + username +  "', '" + password + "' , SYSDATE)";
 		SQLInitializer.executeQuery(query);
 	}
 	
+	// Checks if the username already exists
 	public static Boolean isUsername() {
 		//Checks if username already exists
 		String username = User.getUser();
@@ -71,6 +74,7 @@ public class QueryHandler {
 		return false;
 	}
 	
+	// Checks if user is an airline agent
 	public static Boolean isAirlineAgent() {
 		String username = User.getUser();
 		String query = "select email from airline_agents where email = '" + username + "'";
@@ -89,6 +93,7 @@ public class QueryHandler {
 		return false;
 	}
 	
+	// Creates a new ticket number
 	public static int newTicketNo()
 	{
 		//Generates a new unique ticket number by incrementing the current maximum by 1.
@@ -108,6 +113,7 @@ public class QueryHandler {
 		return 0;
 	}
 	
+	// Retrieves all bookings made by user
 	public static LinkedList<Booking> getBookings() {
 		String username = User.getUser();
 		String query = "select bookings.tno, flightno, fare, dep_date, seat, name, paid_price "
@@ -140,6 +146,7 @@ public class QueryHandler {
 		return bookingList;
 	}
 	
+	// Removes a particular booking
 	public static void removeBooking(Booking booking, Shell shell) {
 		try {
 			Integer tno = booking.getTicketNumber();
@@ -156,6 +163,7 @@ public class QueryHandler {
 		LoginController.bookingView(shell);
 	}
 	
+	// Updates the user's last login
 	public static void updateLastLogin() {
 		String update = "UPDATE users SET last_login = SYSDATE "
 				+ "WHERE email = '" + User.getUser() + "'";
@@ -163,11 +171,13 @@ public class QueryHandler {
 		SQLInitializer.closeConnection();
 	}
 	
+	// Creates a new passenger
 	public static void setPassenger(String name, String country) {
         String query = "insert into passengers values ('" + User.getUser() +  "', '" + name + "' , '" + country + "')";
 		SQLInitializer.executeQuery(query);
 	}
 	
+	// Creates a new ticket
 	public static Integer setTicket(String name, float paid_price) {
 		Integer newTicketNo = newTicketNo();
         String query = "insert into tickets values (" + newTicketNo +  ", '" + name + "' , '" + User.getUser() + "' , '" + paid_price + "')";
@@ -175,6 +185,7 @@ public class QueryHandler {
 		return newTicketNo;
 	}
 	
+	// Checks if a flight is available
 	public static Boolean isFlightAvailable(Flight f)
 	{
 		String queryPart1 = "select ff.limit-count(tno) as available_seats from flight_fares ff, sch_flights sf, bookings b"
@@ -200,6 +211,7 @@ public class QueryHandler {
 		return true;
 	}
 	
+	// Returns a list of all flights
 	public static LinkedList<Sch_Flight> getSingleFlights() {
 		String username = User.getUser();
 		String query = "select * from sch_flights";
@@ -225,6 +237,7 @@ public class QueryHandler {
 		return flightList;
 	}
 	
+	// Creates a new booking
 	public static void setBooking(Integer ticketNo, Flight f) {
 		for (int i = 0; i < f.getFlightNums().size(); i++)
 		{
@@ -236,6 +249,7 @@ public class QueryHandler {
 		}
 	}
 	
+	// Example query for demonstrating setup
 	public static void exampleQuery() {
 		String query = "select T_NAME, SUP_ID, SALES, PRICE, TOTAL from toffees";
 		ResultSet rs = SQLInitializer.executeQuery(query);
@@ -256,6 +270,7 @@ public class QueryHandler {
 		}
  	}
 
+	// Updates a flight's act_arr_time and act_dep_time
 	public static void updateFlight(Sch_Flight flight) {
 		Integer newTicketNo = newTicketNo();
         String query = "update sch_flights "
