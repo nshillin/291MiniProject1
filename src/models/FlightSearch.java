@@ -268,7 +268,6 @@ public class FlightSearch {
 		{
 			directFlightQuery = findDirectFlightsQueryByPrice(FlightSearch.getInstance());
 			oneConnectionFlightResults = findOneConnectionFlightsByPrice(FlightSearch.getInstance());
-			
 		}
 		List<Flight> directFlightResults = getDirectFlightResults(directFlightQuery, FlightSearch.getInstance());
 		PopulateTableWithResults(directFlightResults, oneConnectionFlightResults, null, table);
@@ -425,7 +424,7 @@ public class FlightSearch {
 		  .append(" order by fa.price").toString();
 		
 		String getRoundTripFlights = new StringBuilder()
-				.append("select a1.src, a2.dst, a1.dep_date, a2.arr_time, a1.flightno, a2.flightno, a2.dep_time-a1.arr_time as layover, ")
+				.append("select a1.src, a2.dst, a1.dep_date, a2.arr_time, a1.flightno as flight1, a2.flightno as flight2, a2.dep_time-a1.arr_time as layover, ")
 				.append("min(a1.price+a2.price) as price, a1.fare as fare_type ")
 			  .append("from available_flights a1, available_flights a2 ")
 			  .append("where a1.dst=a2.src and a1.arr_time +1.5/24 <=a2.dep_time and a1.arr_time +5/24 >=a2.dep_time ")
@@ -442,8 +441,8 @@ public class FlightSearch {
 				{
 					List<String> flightNo = new ArrayList<String>();
 					List<String> fare = new ArrayList<String>();
-					flightNo.add(resultSet.getString("flightno"));
-					
+					flightNo.add(resultSet.getString("flight1"));
+					flightNo.add(resultSet.getString("flight2"));
 					fare.add(resultSet.getString("fare_type"));
 					Float layover = resultSet.getFloat("layover");
 					Float price = resultSet.getFloat("price");
