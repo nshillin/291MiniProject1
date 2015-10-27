@@ -56,7 +56,7 @@ public class BookingConfirmationView {
 		shell.setText("Booking Result");
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(190, 92, 55, 15);
+		lblNewLabel.setBounds(10, 92, 400, 15);
 		lblNewLabel.setText(message);
 		
 		Button btnNewButton_1 = new Button(shell, SWT.NONE);

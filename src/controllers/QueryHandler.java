@@ -245,18 +245,24 @@ public class QueryHandler {
 	}
 	
 	// Creates a new booking
-	public static void setBooking(Integer ticketNo, Flight f) {
+	public static void setBooking(int ticketNo, Flight f) {
 		for (int i = 0; i < f.getFlightNums().size(); i++)
 		{
-			String query = "INSERT INTO bookings ADD VALUES (?, ?, ?, ?, NULL)";
-			try {
+			String query = "INSERT INTO bookings VALUES (?, ?, ?, ?, NULL)";
 				PreparedStatement ps = SQLInitializer.prepareStatement(query);
-				ps.setInt(1, ticketNo);
-				ps.setString(2, f.getFlightNums().get(i));
-				ps.setString(3, f.getFare().get(i));
-				ps.setDate(4, f.getDepDate());
-				ps.executeUpdate();
-			} catch (Exception e) { }
+				try {
+					ps.setInt(1, ticketNo);
+					String flightno = f.getFlightNums().get(i);
+					ps.setString(2, flightno);
+					String fare = f.getFare().get(i);
+					ps.setString(3, fare);
+					Date depDate = f.getDepDate();
+					ps.setDate(4, depDate);
+					ps.executeUpdate();
+				}
+				catch (SQLException e)
+				{
+				}
 		}
 	}
 	
